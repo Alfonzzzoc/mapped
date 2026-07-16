@@ -1,0 +1,12 @@
+streamlit>=1.35.0
+google-generativeai>=0.8.0
+pandas>=2.0.0
+folium>=0.16.0
+streamlit-folium>=0.24.0
+plotly>=5.22.0
+branca>=0.7.0
+Pillow>=10.0.0
+gtts>=2.5.0
+gradio-client>=1.0.0
+qrcode[pil]>=7.4.0
+requests>=2.31.0

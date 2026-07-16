@@ -1,0 +1,12 @@
+.streamlit/secrets.toml
+backups/
+backend/
+mobile/
+ai-service/
+node_modules/
+*.log
+*.pyc
+__pycache__/
+*.wav
+*.m4a
+mashi_logo_b64.txt
