@@ -4685,7 +4685,11 @@ def render_bottom_nav(active):
             is_active = current_idx == i
             if st.button(f"{icon}\n{label}", key=f"nv_{key}", use_container_width=True, type="primary" if is_active else "secondary"):
                 if not is_active:
-                    st.session_state["_nav_rkey"] = key
+                    if key == "_demo":
+                        st.session_state["demo_mode"] = True
+                        st.session_state["demo_step"] = 0
+                    else:
+                        st.session_state["_nav_rkey"] = key
                     st.rerun()
 
 # ========================================================================
