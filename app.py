@@ -2825,13 +2825,16 @@ def render_ecotourist():
     ::-webkit-scrollbar-thumb{background:rgba(16,185,129,0.2);border-radius:4px}
     ::-webkit-scrollbar-thumb:hover{background:rgba(16,185,129,0.35)}
     '''
+    def _md2html(t):
+        return re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', t)
     lang_code = "en-US" if L == "en" else "es-ES"
     bubbles = ''
     for i, msg in enumerate(st.session_state.chat_messages):
+        content_html = _md2html(msg["content"])
         if msg["role"]=="assistant":
-            bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="chat-bubble-mashi">' + msg["content"] + '</div><button class="speaker-btn" onclick="var el=this.parentElement.querySelector(\'.chat-bubble-mashi\');var t=el.innerText.replace(/[\\u{1F300}-\\u{1FAFF}\\u{2600}-\\u{27BF}\\u{1F50A}\\u{1F399}\\u{1F31F}]+/g,\'\').replace(/https?:\\/\\/\\S+/g,\'\').replace(/<[^>]+>/g,\'\').replace(/!\\[.*?\\]\\(.*?\\)/g,\'\').replace(/\\b\\w+\\.(jpg|jpeg|png|gif|webp|bmp|svg)\\b/g,\'\').replace(/\\s+/g,\' \').trim();if(t){var u=new SpeechSynthesisUtterance(t);u.lang=\'' + lang_code + '\';u.rate=0.92;u.pitch=1.1;u.volume=1.0;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}">🔊</button></div>'
+            bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="chat-bubble-mashi">' + content_html + '</div><button class="speaker-btn" onclick="var el=this.parentElement.querySelector(\'.chat-bubble-mashi\');var t=el.innerText.replace(/[\\u{1F300}-\\u{1FAFF}\\u{2600}-\\u{27BF}\\u{1F50A}\\u{1F399}\\u{1F31F}]+/g,\'\').replace(/https?:\\/\\/\\S+/g,\'\').replace(/<[^>]+>/g,\'\').replace(/!\\[.*?\\]\\(.*?\\)/g,\'\').replace(/\\b\\w+\\.(jpg|jpeg|png|gif|webp|bmp|svg)\\b/g,\'\').replace(/\\s+/g,\' \').trim();if(t){var u=new SpeechSynthesisUtterance(t);u.lang=\'' + lang_code + '\';u.rate=0.92;u.pitch=1.1;u.volume=1.0;window.speechSynthesis.cancel();window.speechSynthesis.speak(u);}">🔊</button></div>'
         else:
-            bubbles += '<div class="bubble-row user"><div class="chat-bubble-user">' + msg["content"] + '</div><div class="bubble-avatar user">👤</div></div>'
+            bubbles += '<div class="bubble-row user"><div class="chat-bubble-user">' + content_html + '</div><div class="bubble-avatar user">👤</div></div>'
     if processing:
         bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>'
     iframe_css = chat_css.replace("{B64}", MASHI_LOGO_B64)
@@ -3567,12 +3570,15 @@ def render_emprendedor():
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:rgba(16,185,129,0.2);border-radius:4px}
     '''
+    def _md2html(t):
+        return re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', t)
     emp_bubbles = ''
     for msg in st.session_state.emp_chat_messages:
+        content_html = _md2html(msg["content"])
         if msg["role"]=="assistant":
-            emp_bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="chat-bubble-mashi">' + msg["content"] + '</div></div>'
+            emp_bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="chat-bubble-mashi">' + content_html + '</div></div>'
         else:
-            emp_bubbles += '<div class="bubble-row user"><div class="chat-bubble-user">' + msg["content"] + '</div><div class="bubble-avatar user">👤</div></div>'
+            emp_bubbles += '<div class="bubble-row user"><div class="chat-bubble-user">' + content_html + '</div><div class="bubble-avatar user">👤</div></div>'
     if emp_processing:
         emp_bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>'
     emp_iframe_css = emp_chat_css.replace("{B64}", MASHI_LOGO_B64)
