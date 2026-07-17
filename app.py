@@ -854,8 +854,8 @@ def get_system_prompt(mode):
         "Clima Loreto: 28-32°C, húmedo, lluvias nov-may, seco jun-oct. "
         "Productos: shiringa, jabones copaiba, cerámica Shipibo. "
         "Siempre promueve cultura amazónica y comercio justo.\n\n"
-        "Reglas: 1) Responde natural, como si estuvieras conversando con un visitante en la selva. "
-        "2) Se breve pero con personalidad — no suenes a Google, suena a Mashi. "
+        "Reglas: 1) Responde MUY CORTO. Máximo 2-3 oraciones. Sé directo, sin rodeos. "
+        "2) No sueltes toda la info de golpe — deja que el usuario pregunte más. "
         "3) Si preguntan fuera de contexto, desvía a MAPPED. "
         "4) Recomienda basado en datos del dataset. "
         "5) Si preguntan por precios o mercado, analiza con datos de MAPPED. "
@@ -1609,10 +1609,10 @@ def mock_response(user_input, mode, dataset):
                         + f"\n\n📱 Want to connect directly with buyers? We can share your product on WhatsApp too! 🦥✨\n\nFair trade means you set the price. I guide you with data.")
             if L == "qw":
                 return (f"¡Ari, mashi! 📊 {n_similar} shuk rurakunawa rikushpa:\n\n"
-                        f"• Rango: S/ {min_p:.2f} – S/ {max_p:.2f}\n"
-                        f"• Mercado promedio: S/ {avg_market:.2f}\n"
-                        f"• Mashi sugiere: **S/ {suggested:.2f}** {trend}\n"
-                        f"• Munana: {demand_icon} **{demand_lbl}**\n\n"
+                        f"• S/ {min_p:.2f} manta S/ {max_p:.2f} kama\n"
+                        f"• Chawpi chanin: S/ {avg_market:.2f}\n"
+                        f"• Mashi nispa: **S/ {suggested:.2f}** {trend}\n"
+                        f"• Munay: {demand_icon} **{demand_lbl}**\n\n"
                         f"📱 WhatsApppi turiskunawan rimanakuy! 🦥")
             return (f"¡Excelente pregunta, mashi artesano! 🦥 Déjame analizar el mercado.\n\n"
                     f"📊 **Análisis de mercado** (confianza: {conf_lbl})\n"
@@ -2067,7 +2067,7 @@ def get_mashi_response(user_input, mode, history, api_key):
     if lang == "en":
         lang_instruction = "IMPORTANT: Respond in English. Greet in Kichwa ('Allianllachu') but answer in English."
     elif lang == "qw":
-        lang_instruction = "IMPORTANT: Respond in Kichwa (Runasimi). Use the Kichwa vocabulary we have. Mix Spanish only when necessary. Greet with 'Allianllachu mashi'."
+        lang_instruction = "IMPORTANT: Respond ENTIRELY in Kichwa (Runasimi). DO NOT use Spanish — not even single words. Use the Kichwa vocabulary we have. If a concept has no Kichwa word, use English loanwords instead of Spanish. Greet with 'Allianllachu mashi'."
     sp = sp + "\n" + lang_instruction
     ctx = json.dumps([{"name":e["name"],"sector":e["sector"],"products":e["products"],
         "reviews":e["reviews"],"years_selling":e["years_selling"],"materials":e.get("materials","")} for e in ds],
@@ -2110,7 +2110,7 @@ def get_mashi_response(user_input, mode, history, api_key):
     if msg_count > 3:
         st.session_state.pop("last_ent", None)
 
-    prompt = f"{user_input}\n\nDataset: {ctx}\n\nIMPORTANTE: Responde natural, como Mashi — cálido, de la selva, sin sonar robótico. Se breve pero con personalidad.\n\nNOTA: NO digas que no puedes mostrar imagenes. Las imagenes se anaden solas."
+    prompt = f"{user_input}\n\nDataset: {ctx}\n\nIMPORTANTE: Responde natural, cálido y MUY breve. Máximo 3 oraciones. No des toda la info de golpe.\n\nNOTA: NO digas que no puedes mostrar imagenes. Las imagenes se anaden solas."
 
     # ── Adjuntar historial de conversación ──
     if history and len(history) > 1:
@@ -2120,7 +2120,7 @@ def get_mashi_response(user_input, mode, history, api_key):
             role = "Usuario" if m["role"] == "user" else "Mashi"
             conv_lines.append(f"{role}: {m['content'][:200]}")
         conv_text = "\n".join(conv_lines)
-        prompt = f"{conv_text}\n\nUsuario: {user_input}\n\nDataset: {ctx}\n\nIMPORTANTE: Responde natural, como Mashi — cálido, de la selva, sin sonar robótico. Se breve pero con personalidad.\n\nNOTA: NO digas que no puedes mostrar imagenes. Las imagenes de los productos se anaden automaticamente por el sistema. Solo describe el producto y la comunidad."
+        prompt = f"{conv_text}\n\nUsuario: {user_input}\n\nDataset: {ctx}\n\nIMPORTANTE: Responde MUY breve, cálido, como un amigo. Máximo 3 oraciones.\n\nNOTA: NO digas que no puedes mostrar imagenes. Las imagenes de los productos se anaden automaticamente por el sistema. Solo describe el producto y la comunidad."
 
     # ── Pasar contexto de la última comunidad mencionada ──
     if st.session_state.get("last_ent"):
@@ -2596,35 +2596,37 @@ def _tts_generate(text, lang):
                 client = Client("https://qwen-qwen3-tts.hf.space", verbose=False, **kwargs)
                 result = client.predict(text, qwen_lang, qwen_prompt, api_name="/generate_voice_design")
                 audio_data = None
-                if isinstance(result, (list, tuple)):
-                    raw = result[0]
-                    if isinstance(raw, str) and os.path.exists(raw):
-                        audio_data = raw
-                    elif isinstance(raw, (list, tuple)) and len(raw) == 2:
-                        import numpy as np, wave
-                        sr, wav = raw
+                if isinstance(result, (list, tuple)) and len(result) == 2 and isinstance(result[0], (int, float)):
+                    import numpy as np, wave
+                    sr, wav = result
+                    if hasattr(wav, 'dtype'):
                         wav = (wav * 32767).astype(np.int16) if wav.dtype == np.float32 else wav
                         buf = io.BytesIO()
                         with wave.open(buf, 'wb') as wf:
-                            wf.setnchannels(1); wf.setsampwidth(2); wf.setframerate(sr)
+                            wf.setnchannels(1); wf.setsampwidth(2); wf.setframerate(int(sr))
                             wf.writeframes(wav.tobytes())
                         audio_data = buf.getvalue()
                         audio_cache[cache_key] = audio_data
                         return audio_data
+                if isinstance(result, (list, tuple)):
+                    raw = result[0]
+                    if isinstance(raw, str):
+                        audio_data = raw
                     elif isinstance(raw, dict) and "path" in raw:
                         audio_data = raw["path"]
                 elif isinstance(result, dict):
                     for k in ("audio", "path", "value"):
                         if k in result:
                             raw = result[k]
-                            if isinstance(raw, str) and os.path.exists(raw):
+                            if isinstance(raw, str):
                                 audio_data = raw
                             break
-                if audio_data and isinstance(audio_data, str) and os.path.exists(audio_data):
-                    with open(audio_data, "rb") as f:
-                        data = f.read()
-                    audio_cache[cache_key] = data
-                    return data
+                if audio_data and isinstance(audio_data, str):
+                    if os.path.exists(audio_data):
+                        with open(audio_data, "rb") as f:
+                            data = f.read()
+                        audio_cache[cache_key] = data
+                        return data
             except Exception:
                 if attempt == 0:
                     continue
