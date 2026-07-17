@@ -847,12 +847,12 @@ def _estimate_travel_time(km, mode="car"):
 def get_system_prompt(mode):
     base = (
         "Eres Mashi, guía amazónico de MAPPED. "
-        "Habla como amigo: cálido, directo, sin floros. "
+        "Habla como un amigo de la selva: cálido, cercano, con cariño. "
         "Clima Loreto: 28-32°C, húmedo, lluvias nov-may, seco jun-oct. "
         "Productos: shiringa, jabones copaiba, cerámica Shipibo. "
         "Siempre promueve cultura amazónica y comercio justo.\n\n"
-        "Reglas: 1) Respuestas MUY CORTAS — máximo 2 párrafos breves. "
-        "2) Ve directo al grano. Nada de descripciones poéticas. "
+        "Reglas: 1) Responde natural, como si estuvieras conversando con un visitante en la selva. "
+        "2) Se breve pero con personalidad — no suenes a Google, suena a Mashi. "
         "3) Si preguntan fuera de contexto, desvía a MAPPED. "
         "4) Recomienda basado en datos del dataset. "
         "5) Si preguntan por precios o mercado, analiza con datos de MAPPED. "
@@ -860,8 +860,8 @@ def get_system_prompt(mode):
     )
     if mode=="Ecoturista":
         return base+(" Eres guía turístico. Saluda en kichwa ('Allianllachu'). "
-                     "Pregunta qué busca. Recomienda del dataset. "
-                     "Da tips de viaje solo si los piden. "
+                     "Pregunta qué busca, recomiéndale con entusiasmo. "
+                     "Da tips de viaje como un local que conoce la zona. "
                      "Puedes sugerir contactar comunidades por WhatsApp si el turista muestra interés en comprar.")
     if mode=="Emprendedor Local":
         return base+(" Eres mentor de emprendedores amazónicos. Guía el registro paso a paso. "
@@ -1294,33 +1294,127 @@ def mock_response(user_input, mode, dataset):
             else:
                 car_time = _estimate_travel_time(car_km, "car")
                 travel_lines = f'🚗 {_format_distance(car_km)} ({car_time})'
+            log_notes = last_ent.get("logistics_notes", "")
             if L == "en":
-                return (f'<div style="font-size:0.9rem;"><b>{last_ent["name"]}</b><br><br>'
-                        f'<b>Address:</b> {addr}<br>'
-                        f'<b>Zone:</b> {last_ent.get("zone","")}<br>'
+                return (f'<div style="font-size:0.9rem;">'
+                        f'Here is how to get to <b>{last_ent["name"]}</b>, mashi 🦥<br><br>'
+                        f'📍 <b>Address:</b> {addr}<br>'
+                        f'🏞️ <b>Zone:</b> {last_ent.get("zone","")}<br>'
                         f'{dist_line}<br>'
-                        f'<b>Route:</b> {travel_lines}<br><br>'
-                        f'{last_ent.get("logistics_notes", "Contact the community directly.")}<br><br>'
-                        f'A map with the route{origin_txt} is shown below. 🦥</div>')
+                        f'🚗 <b>Route:</b> {travel_lines}<br><br>'
+                        f'💡 <i>{log_notes}</i><br><br>'
+                        f'I left you a little map just below. '
+                        f'Need anything else, friend? 🌿</div>')
             if L == "qw":
-                return (f'<div style="font-size:0.9rem;"><b>{last_ent["name"]}</b><br><br>'
+                return (f'<div style="font-size:0.9rem;">'
+                        f'Allimi, mashi! <b>{last_ent["name"]}</b> kaypi tiyan 🦥<br><br>'
                         f'{addr}pi tiyan<br>'
                         f'{last_ent.get("zone","")}<br>'
                         f'{dist_dest} Iquitosmanta<br>'
                         f'{travel_lines}<br><br>'
-                        f'{last_ent.get("logistics_notes", "Tapuy mashi.")}<br><br>'
-                        f'Mapapi ruta rikunki. 🦥</div>')
-            return (f'<div style="font-size:0.9rem;"><b>{last_ent["name"]}</b><br><br>'
-                    f'<b>Direccion:</b> {addr}<br>'
-                    f'<b>Zona:</b> {last_ent.get("zone","")}<br>'
+                        f'{log_notes}<br><br>'
+                        f'Mapapi ruta rikunki. ¿Imapish? 🌿</div>')
+            return (f'<div style="font-size:0.9rem;">'
+                    f'¡Claro, mashi! Aquí te cuento cómo llegar a <b>{last_ent["name"]}</b> 🦥<br><br>'
+                    f'📍 <b>Dirección:</b> {addr}<br>'
+                    f'🏞️ <b>Zona:</b> {last_ent.get("zone","")}<br>'
                     f'{dist_line}<br>'
-                    f'<b>Ruta:</b> {travel_lines}<br><br>'
-                    f'<b>Como llegar:</b> {last_ent.get("logistics_notes", "Contacta directamente con la comunidad.")}<br><br>'
-                    f'Un mapa con la ruta{origin_txt} se muestra abajo. 🦥</div>')
+                    f'🚗 <b>Ruta:</b> {travel_lines}<br><br>'
+                    f'💡 <i>{log_notes}</i><br><br>'
+                    f'Te dejé un mapita justo aquí abajo. '
+                    f'¿Necesitas algo más, amigo? 🌿</div>')
 
-        # ── RUTAS GENERALES (sin comunidad específica) ──
+        # ── RUTAS GENERALES (sin comunidad específica en contexto, pero quizás en el input) ──
         if any(w in ul for w in where_q) and not last_ent and not last_ent_id:
             st.session_state["last_topic"] = "location"
+            # Intentar extraer nombre de comunidad del input
+            found_ent = None
+            for e in dataset:
+                name_clean = e["name"].lower().strip()
+                if name_clean in ul or (len(name_clean) > 5 and name_clean.split()[0] in ul):
+                    found_ent = e
+                    break
+            if found_ent:
+                st.session_state["last_ent"] = found_ent["id"]
+                st.session_state["_msg_since_last_ent"] = 0
+                last_ent = found_ent
+                last_ent_id = found_ent["id"]
+                # Ahora sí mostrar ruta específica + mapa
+                st.session_state["selected_ent_id"] = found_ent["id"]
+                st.session_state["_focus_map_ent"] = found_ent["id"]
+                st.session_state["show_mini_map"] = True
+                addr = found_ent.get("address", found_ent.get("location",""))
+                lat = found_ent.get("lat",""); lng = found_ent.get("lng","")
+                u_lat = st.session_state.get("user_lat")
+                u_lng = st.session_state.get("user_lng")
+                d = _dist_from_iquitos(found_ent)
+                dist_dest = _format_distance(d) if d else ""
+                dest_id = found_ent.get("id")
+                river_info = COMMUNITY_RIVER_ACCESS.get(dest_id)
+                travel_lines = ""
+                car_km = d or 0; boat_km = 0
+                if u_lat and u_lng:
+                    d_user = _haversine(u_lat, u_lng, float(lat), float(lng))
+                    dist_from_user = _format_distance(d_user) if d_user else ""
+                    dist_line = f"<b>{_L('Distancia desde ti','Distance from you','Kammanta karuta')}:</b> {dist_from_user}"
+                    origin_txt = f" desde tu ubicación"
+                    if river_info:
+                        port = RIVER_PORTS.get(river_info["port"])
+                        if port:
+                            car_km = _haversine(u_lat, u_lng, port["coords"][0], port["coords"][1])
+                            boat_km = _haversine(port["coords"][0], port["coords"][1], float(lat), float(lng))
+                        else:
+                            car_km = d_user
+                    else:
+                        car_km = d_user
+                else:
+                    dist_line = f"<b>{_L('Distancia desde Iquitos','Distance from Iquitos','Iquitosmanta karuta')}:</b> {dist_dest}" if dist_dest else ""
+                    origin_txt = ""
+                    if river_info:
+                        port = RIVER_PORTS.get(river_info["port"])
+                        if port:
+                            car_km = _haversine(-3.7491, -73.2442, port["coords"][0], port["coords"][1])
+                            boat_km = _haversine(port["coords"][0], port["coords"][1], float(lat), float(lng))
+                        else:
+                            car_km = d or 0
+                if river_info:
+                    car_time = _estimate_travel_time(car_km, "car")
+                    boat_time = _estimate_travel_time(boat_km, "boat")
+                    travel_lines = (f'🚗 {_format_distance(car_km)} ({car_time}) → 🅿️ Puerto → '
+                                    f'🛶 {_format_distance(boat_km)} ({boat_time})<br>'
+                                    f'<span style="font-size:0.75rem;color:rgba(148,163,184,0.5);">{_L("Carro + bote/canoa","Car + boat/canoe","Anta + bote")} · {river_info["label"]}</span>')
+                else:
+                    car_time = _estimate_travel_time(car_km, "car")
+                    travel_lines = f'🚗 {_format_distance(car_km)} ({car_time})'
+                log_notes = found_ent.get("logistics_notes", "")
+                if L == "en":
+                    return (f'<div style="font-size:0.9rem;">'
+                            f'Claro, mashi! Here is how to get to <b>{found_ent["name"]}</b> 🦥<br><br>'
+                            f'📍 <b>Address:</b> {addr}<br>'
+                            f'🏞️ <b>Zone:</b> {found_ent.get("zone","")}<br>'
+                            f'{dist_line}<br>'
+                            f'🚗 <b>Route:</b> {travel_lines}<br><br>'
+                            f'💡 <i>{log_notes}</i><br><br>'
+                            f'I left you a little map just below with the route. '
+                            f'Need anything else, friend? 🌿</div>')
+                if L == "qw":
+                    return (f'<div style="font-size:0.9rem;">'
+                            f'Allimi, mashi! <b>{found_ent["name"]}</b> kaypim tiyan 🦥<br><br>'
+                            f'{addr}pi tiyan<br>'
+                            f'{found_ent.get("zone","")}<br>'
+                            f'{dist_dest} Iquitosmanta<br>'
+                            f'{travel_lines}<br><br>'
+                            f'{log_notes}<br><br>'
+                            f'Mapapi ruta rikunki. ¿Imapish? 🌿</div>')
+                return (f'<div style="font-size:0.9rem;">'
+                        f'¡Claro, mashi! Aquí te cuento cómo llegar a <b>{found_ent["name"]}</b> 🦥<br><br>'
+                        f'📍 <b>Dirección:</b> {addr}<br>'
+                        f'🏞️ <b>Zona:</b> {found_ent.get("zone","")}<br>'
+                        f'{dist_line}<br>'
+                        f'🚗 <b>Ruta:</b> {travel_lines}<br><br>'
+                        f'💡 <i>{log_notes}</i><br><br>'
+                        f'Te dejé un mapita justo aquí abajo con la ruta. '
+                        f'¿Necesitas algo más, amigo? 🌿</div>')
             nearest = _nearest_communities(dataset, n=5)
             if not nearest:
                 if L == "en":
@@ -1338,7 +1432,7 @@ def mock_response(user_input, mode, dataset):
                 return (f"🗺️ **Communities near Iquitos (sorted by distance):**\n\n"
                         f"{ranking}\n\n"
                         f"💡 **Tip:** The ones at the top are closest. "
-                        f"Tell me which one you're interested in and I'll give you exact directions! 🦥")
+                        f"Tell me which one you're interested in and I will give you exact directions! 🦥")
             if L == "qw":
                 return (f"🗺️ **Iquitosman kaylla llaktakuna:**\n\n"
                         f"{ranking}\n\n"
@@ -2013,7 +2107,7 @@ def get_mashi_response(user_input, mode, history, api_key):
     if msg_count > 3:
         st.session_state.pop("last_ent", None)
 
-    prompt = f"{user_input}\n\nDataset: {ctx}\n\nIMPORTANTE: Responde MUY CORTO, maximo 2 parrafos breves. Directo, sin rodeos.\n\nNOTA: NO digas que no puedes mostrar imagenes. Las imagenes se anaden solas."
+    prompt = f"{user_input}\n\nDataset: {ctx}\n\nIMPORTANTE: Responde natural, como Mashi — cálido, de la selva, sin sonar robótico. Se breve pero con personalidad.\n\nNOTA: NO digas que no puedes mostrar imagenes. Las imagenes se anaden solas."
 
     # ── Adjuntar historial de conversación ──
     if history and len(history) > 1:
@@ -2023,7 +2117,7 @@ def get_mashi_response(user_input, mode, history, api_key):
             role = "Usuario" if m["role"] == "user" else "Mashi"
             conv_lines.append(f"{role}: {m['content'][:200]}")
         conv_text = "\n".join(conv_lines)
-        prompt = f"{conv_text}\n\nUsuario: {user_input}\n\nDataset: {ctx}\n\nIMPORTANTE: Responde MUY CORTO, maximo 2 parrafos breves. Directo, sin rodeos.\n\nNOTA: NO digas que no puedes mostrar imagenes. Las imagenes de los productos se anaden automaticamente por el sistema. Solo describe el producto y la comunidad."
+        prompt = f"{conv_text}\n\nUsuario: {user_input}\n\nDataset: {ctx}\n\nIMPORTANTE: Responde natural, como Mashi — cálido, de la selva, sin sonar robótico. Se breve pero con personalidad.\n\nNOTA: NO digas que no puedes mostrar imagenes. Las imagenes de los productos se anaden automaticamente por el sistema. Solo describe el producto y la comunidad."
 
     # ── Pasar contexto de la última comunidad mencionada ──
     if st.session_state.get("last_ent"):
