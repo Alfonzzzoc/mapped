@@ -557,9 +557,12 @@ PHONE_CONTACTS = {
     "Taller de Instrumentos Musicales de Lamas": "+51965010017",
 }
 
-def _wa_link(text):
+def _wa_link(text, phone=""):
     """Generate a WhatsApp share link with pre-filled text."""
     import urllib.parse
+    if phone:
+        p = phone.lstrip("+")
+        return f"https://wa.me/{p}?text={urllib.parse.quote(text)}"
     return f"https://wa.me/?text={urllib.parse.quote(text)}"
 
 def _get_product_image(ent_or_community, prod=None, size="100%"):
@@ -4147,8 +4150,8 @@ td{{padding:8px;border-bottom:1px solid #ddd;font-size:13px}}
                         model = genai_old.GenerativeModel("gemini-2.5-flash")
                         resp = model.generate_content(inv_prompt)
                         result = resp.text
-                    except Exception:
-                        pass
+                    except Exception as e2:
+                        st.warning(f"Gemini no disponible: {str(e2)[:80]}")
             if not result:
                 result = mock_response(prompt, "Inversionista", ds) + _offline_tag()
             chat_history.append({"role":"assistant","content":result})
@@ -4249,6 +4252,7 @@ def render_camera():
                 st.session_state.identified = {"vision": vision, "from_vision": True}
             else:
                 st.session_state.identified = {"from_vision":False, "offline":True}
+                st.toast(_L("No se pudo conectar con la IA de visión. Mostrando datos del catálogo.","AI vision unavailable. Showing catalog data.","IA mana atin. Catálogomanta rikuchin."), icon="📸")
             st.rerun()
 
 # ========================================================================
@@ -4618,9 +4622,9 @@ def render_store_view():
               <div style="font-size:0.65rem;color:rgba(148,163,184,0.4);text-align:center;">{community_name[:35]}</div>
             </div>
             """, unsafe_allow_html=True)
-            phone = PHONE_CONTACTS.get(community_name, "")
+            phone = PHONE_CONTACTS.get(community_name, "+51999999999")
             buy_msg = f"¡Hola! Quiero comprar: {prod['name']} - S/ {prod['price']:.2f} de {community_name}. ¿Está disponible?"
-            buy_link = _wa_link(buy_msg)
+            buy_link = _wa_link(buy_msg, phone)
             sub = st.columns([1,1,1,1])
             ent_id = prod.get("ent_id")
             with sub[0]:
