@@ -470,7 +470,132 @@ ENTREPRENEURS = [
          {"user":"Pablo A.","stars":5,"text":"Comercio justo real. Se nota la calidad certificada."}],
      "contact":"garzaviva@mapet.pe",
      "logistics_notes":"Tienda en el centro de Iquitos.",
-     "materials":"Chambira, tagua, madera nativa, tintes naturales"},
+      "materials":"Chambira, tagua, madera nativa, tintes naturales"},
+    {"id":16,"name":"Cacao Amazónico de Amazonas Chocolat",
+     "location":"Mazán, Río Nanay","zone":"Amazonía Norte",
+     "address":"Carretera Iquitos-Nauta km 25, Mazán, Loreto",
+     "lat":-3.7012,"lng":-73.3421,
+     "years_selling":6,"sector":"Alimentos Naturales",
+      "sector_keywords":["cacao","chocolate","alimento","orgánico","natural","cacao amazónico","chocolate","organic","food","turismo","regalo","dulce","gourmet"],
+     "description":"Familia que cultiva cacao orgánico y elabora chocolate artesanal amazónico.",
+     "products":[
+         {"name":"Chocolate artesanal de cacao amazónico (100g)","price":18.00,"currency":"S/",
+          "description":"85% cacao. Sin aditivos. Sabor intenso."},
+         {"name":"Set de 4 bombones de cacao (caja)","price":32.00,"currency":"S/",
+          "description":"Rellenos de miel de abeja y copoazu."},
+         {"name":"Manteca de cacao pura (200g)","price":25.00,"currency":"S/",
+          "description":"Prensado en frío. Para piel y cocina."}],
+     "reviews":[
+         {"user":"Fernando G.","stars":5,"text":"El mejor chocolate que he probado. Puro Amazonas."},
+         {"user":"Isabel R.","stars":5,"text":"Los bombones son una delicia, regalo perfecto."},
+         {"user":"Martín P.","stars":4,"text":"Excelente calidad, sabor único."}],
+     "contact":"amazonas.chocolat@mapet.pe",
+     "logistics_notes":"Acceso por carretera 35 min desde Iquitos. Tienda en centro.",
+     "materials":"Cacao orgánico, miel de abeja, copoazu"},
+    {"id":17,"name":"Cerámica Shipibo de San Francisco de Yarinacocha",
+     "location":"Yarinacocha, Ucayali","zone":"Ucayali",
+     "address":"Jr. Fitzcarrald 120, San Francisco, Yarinacocha, Ucayali",
+     "lat":-8.3145,"lng":-74.5812,
+     "years_selling":25,"sector":"Cerámica y Arte",
+      "sector_keywords":["shipibo","cerámica","kené","diseño","geométrico","pottery","ceramic","geometric","art","indigenous","ayahuasca","textile","pintura","turismo","regalo","arte"],
+     "description":"Mujeres Shipibo-Konabo crean cerámicas con diseños kené ancestrales. Premiadas internacionalmente.",
+     "products":[
+         {"name":"Jarrón cerámico con diseño kené (30cm)","price":85.00,"currency":"S/",
+          "description":"Pintado a mano. Diseños ancestrales Shipibo."},
+         {"name":"Set de 4 platos ceremoniales","price":120.00,"currency":"S/",
+          "description":"Diseños kené inspirados en visions ayahuasca."},
+         {"name":"Collar de cerámica y chaquira","price":35.00,"currency":"S/",
+          "description":"Pieza única. Chaquira de vidrio + cerámica Shipibo."}],
+     "reviews":[
+         {"user":"Sandra M.","stars":5,"text":"Arte puro. Los diseños Shipibo son hipnóticos."},
+         {"user":"Jorge L.","stars":5,"text":"Compré el jarrón, es una obra de arte."},
+         {"user":"María F.","stars":5,"text":"Calidad excepcional. Merece cada sol."}],
+     "contact":"ceramica.shipibo@mapet.pe",
+     "logistics_notes":"Envíos a todo el país. Tienda en Yarinacocha.",
+     "materials":"Arcilla natural, tintes minerales, chaquira"},
+    {"id":18,"name":"Productores de Café Amazónico de Lamas",
+     "location":"Lamas, San Martín","zone":"San Martín",
+     "address":"Jr. San Martín 340, Lamas, San Martín",
+     "lat":-6.4167,"lng":-76.5333,
+     "years_selling":12,"sector":"Alimentos Naturales",
+      "sector_keywords":["café","coffee","alimento","orgánico","natural","café amazónico","organic","gourmet","turismo","regalo","bebida","tostado"],
+     "description":"Cooperativa de productores de café orgánico de altura en la selva de San Martín.",
+     "products":[
+         {"name":"Café orgánico tostado (250g)","price":22.00,"currency":"S/",
+          "description":"Tueste medio. Notas de chocolate y frutas tropicales."},
+         {"name":"Café en grano especial (500g)","price":38.00,"currency":"S/",
+          "description":"Cosecha selectiva. Altura 1200m. Sabor complejo."},
+         {"name":"Set de café + taza artesanal","price":55.00,"currency":"S/",
+          "description":"Café 250g + taza de cerámica hecha en Lamas."}],
+     "reviews":[
+         {"user":"Ricardo T.","stars":5,"text":"El mejor café del Perú. Notas increíbles."},
+         {"user":"Claudia V.","stars":4,"text":"Muy aromático, perfecto para regalo."},
+         {"user":"Pablo M.","stars":5,"text":"Cafe de altura con historia. Lo recomiendo."}],
+     "contact":"cafe.lamas@mapet.pe",
+     "logistics_notes":"Envíos a Lima y principales ciudades. Muestra gratis en la tienda.",
+     "materials":"Café orgánico arábica, agua de lluvia"},
+    {"id":19,"name":"Lodge Ecoamazónico de San Rafael",
+     "location":"San Rafael, Río Marañón","zone":"Amazonía Norte",
+     "address":"Río Marañón km 3, San Rafael, Loreto",
+     "lat":-4.0542,"lng":-73.5723,
+     "years_selling":8,"sector":"Turismo Comunitario",
+      "sector_keywords":["lodge","turismo","ecoturismo","hospedaje","naturaleza","selva","aventura","jungle lodge","accommodation","tourism","birdwatching","fishing","cultural","expedición"],
+     "description":"Lodge comunitario en la ribera del Marañón. Turismo sostenible con comunidades locales.",
+     "products":[
+         {"name":"Noche en lodge + desayuno amazónico","price":85.00,"currency":"S/",
+          "description":"Cabaña individual. Desayuno con frutas amazónicas."},
+         {"name":"Paquete 2 días / 1 noche con tour","price":180.00,"currency":"S/",
+          "description":"Hospedaje + tour de avistamiento + pesca."},
+         {"name":"Expedición al Pacaya Samiria (3 días)","price":420.00,"currency":"S/",
+          "description":"Todo incluido. Hospedaje, comidas, guía, transporte."}],
+     "reviews":[
+         {"user":"Andrea K.","stars":5,"text":"Experiencia mágica. La naturaleza en su máxima expresión."},
+         {"user":"Mark B.","stars":5,"text":"Best jungle lodge near Iquitos. Authentic and sustainable."},
+         {"user":"Lucía H.","stars":4,"text":"Muy bonito, personal amable. Volveré."}],
+     "contact":"lodge.sanrafael@mapet.pe",
+     "logistics_notes":"Acceso fluvial 3h desde Iquitos. Transporte incluido en paquetes.",
+     "materials":"Madera de tornillo, techo de palma, energía solar"},
+    {"id":20,"name":"Teñido Natural de Palma de Michuna",
+     "location":"Contamana, Ucayali","zone":"Ucayali",
+     "address":"Jr. Grau 567, Contamana, Ucayali",
+     "lat":-7.3333,"lng":-75.0167,
+     "years_selling":10,"sector":"Textiles y Artesanía",
+      "sector_keywords":["textil","teñido","natural","palma","bolsa","hamaca","tela","natural dye","palm","woven","bag","hammock","fiber","turismo","regalo","ecológico","sostenible"],
+     "description":"Asociación de tejedoras que teñen con plantas amazónicas y transforman palma en productos únicos.",
+     "products":[
+         {"name":"Bolsa tejida de palma teñida (mediano)","price":42.00,"currency":"S/",
+          "description":"Teñida con achiote y huito. Diseño exclusivo."},
+         {"name":"Hamaca doble de palma (2.5m)","price":160.00,"currency":"S/",
+          "description":"Resistente y cómoda. Teñida con tintes naturales."},
+         {"name":"Set de 3 posavasos de palma","price":20.00,"currency":"S/",
+          "description":"Cada uno con color diferente. Hecho a mano."}],
+     "reviews":[
+         {"user":"Elena C.","stars":5,"text":"El color natural es hermoso. Calidad excepcional."},
+         {"user":"Raúl G.","stars":4,"text":"La hamaca es muy cómoda, la uso todos los días."}],
+     "contact":"palma.michuna@mapet.pe",
+     "logistics_notes":"Acceso por carretera 4h desde Lima. Envíos disponibles.",
+     "materials":"Fibra de palma, tintes naturales (achiote, huito, chipirón)"},
+    {"id":21,"name":"Artesanos de la Villa de Combate",
+     "location":"Villa de Combate, Río Tahuayo","zone":"Amazonía Norte",
+     "address":"Río Tahuayo km 8, Villa de Combate, Loreto",
+     "lat":-3.8234,"lng":-73.3890,
+     "years_selling":22,"sector":"Artesanía en Madera",
+      "sector_keywords":["madera","tallado","animales","pájaro","jaguar","escultura","wood","carving","animal","bird","jaguar","sculpture","handmade","turismo","regalo","arte","decoración"],
+     "description":"Comunidad de talladores especializados en figuras de fauna amazónica. Reconocidos por su realismo.",
+     "products":[
+         {"name":"Tucán tallado en cedro (20cm)","price":55.00,"currency":"S/",
+          "description":"Detallado plumaje. Madera de cedro macizo."},
+         {"name":"Jaguar en caoba (25cm)","price":90.00,"currency":"S/",
+          "description":"Tallado a mano. Caoba. Detalle excepcional."},
+         {"name":"Set de 6 mini animales amazónicos","price":45.00,"currency":"S/",
+          "description":"Tucán, mono, perezoso, delfín, rana, mariposa. 8cm c/u."}],
+     "reviews":[
+         {"user":"Diana R.","stars":5,"text":"El tucán es una obra de arte. Realismo impresionante."},
+         {"user":"Héctor M.","stars":5,"text":"Compré el jaguar, es espectacular."},
+         {"user":"Valentina S.","stars":4,"text":"Artesanía de primera. Muy detallada."}],
+     "contact":"villacombate@mapet.pe",
+     "logistics_notes":"Acceso fluvial 1.5h desde Iquitos. Visita al taller disponible.",
+     "materials":"Cedro, caoba, chonta, barniz natural"}
 ]
 
 # Ubicaciones conocidas en Iquitos para que el usuario pueda decir "estoy en X"
@@ -4718,7 +4843,7 @@ def render_store_view():
                     st.rerun()
             with sub[2]:
                 if st.button("📱", key=f"store_buy_{idx}", help=_L("Comprar","Buy","Rantiy"), use_container_width=True):
-                    st.session_state["_buy_pending"] = buy_link
+                    st.session_state["_buy_pending"] = {"name":prod["name"],"price":prod["price"],"community":community_name,"phone":phone}
                     st.rerun()
             with sub[3]:
                 is_qr = _qr_toggle == f"qr_{idx}"
@@ -4744,8 +4869,36 @@ def render_store_view():
                 st.markdown(_render_product_detail(prod, ent, idx), unsafe_allow_html=True)
     # Handle pending WhatsApp buy
     if "_buy_pending" in st.session_state:
-        link = st.session_state.pop("_buy_pending")
-        st.markdown(f'<div style="text-align:center;padding:0.5rem;background:rgba(37,211,102,0.08);border:1px solid rgba(37,211,102,0.15);border-radius:12px;margin:0.5rem 0;"><a href="{link}" target="_blank" style="color:#25D366;font-weight:700;font-size:0.85rem;text-decoration:none;">📱 {_L("Abrir WhatsApp para comprar","Open WhatsApp to buy","WhatsAppta kichay rantinkapa")}</a></div>', unsafe_allow_html=True)
+        _bp = st.session_state["_buy_pending"]
+        _bp_name = _bp.get("name","")
+        _bp_price = _bp.get("price",0)
+        _bp_comm = _bp.get("community","")
+        _bp_phone = _bp.get("phone","+51999999999")
+        st.markdown(f"""<div style="text-align:center;padding:1rem;background:linear-gradient(135deg,#0a1f1a,#0d261f);border:1px solid rgba(16,185,129,0.15);border-radius:20px;margin:0.5rem 0;">
+            <div style="font-size:0.9rem;font-weight:700;color:#FFFFFF;margin-bottom:0.3rem;">🛍️ {_L("Comprar","Buy","Rantiy")}</div>
+            <div style="font-size:0.8rem;color:#10b981;margin-bottom:0.8rem;">{_bp_name} — S/ {_bp_price:.2f}</div>
+            <div style="font-size:0.7rem;color:rgba(148,163,184,0.5);margin-bottom:0.6rem;">{_bp_comm}</div>
+        </div>""", unsafe_allow_html=True)
+        pc1, pc2, pc3 = st.columns(3)
+        wa_msg = f"¡Hola! Quiero comprar: {_bp_name} - S/ {_bp_price:.2f} de {_bp_comm}. ¿Está disponible?"
+        wa_url = _wa_link(wa_msg, _bp_phone)
+        with pc1:
+            st.markdown(f'<a href="{wa_url}" target="_blank" style="display:block;text-align:center;background:#25D366;color:#fff;font-weight:700;padding:0.5rem;border-radius:12px;text-decoration:none;font-size:0.75rem;">📱 WhatsApp</a>', unsafe_allow_html=True)
+        with pc2:
+            yape_text = f"Yape: {_bp_name}\nS/ {_bp_price:.2f}\n{_bp_comm}"
+            yape_qr = _generate_qr_base64(yape_text)
+            st.markdown(f'<div style="text-align:center;cursor:pointer;" onclick="this.querySelector(\'img\').style.display=this.querySelector(\'img\').style.display===\'none\'?\'block\':\'none\'"><div style="background:rgba(139,92,246,0.15);color:#8b5cf6;font-weight:700;padding:0.5rem;border-radius:12px;font-size:0.75rem;">💳 Yape</div><img src="{yape_qr}" style="width:100px;height:100px;border-radius:8px;margin-top:0.3rem;display:none;border:2px solid rgba(139,92,246,0.2);"/></div>', unsafe_allow_html=True)
+        with pc3:
+            st.markdown(f'<div style="background:rgba(16,185,129,0.15);color:#10b981;font-weight:700;padding:0.5rem;border-radius:12px;font-size:0.75rem;text-align:center;">🏦 Plin<br><span style="font-size:0.6rem;color:rgba(148,163,184,0.5);">{_bp_phone}</span></div>', unsafe_allow_html=True)
+        if st.button(_L("✅ Confirmar pago","✅ Confirm payment","✅ Rantiy"), key="confirm_pay", use_container_width=True):
+            st.session_state.pop("_buy_pending", None)
+            st.session_state.setdefault("purchases",[]).append({"user":st.session_state.get("user_name","Visitor"),"product":_bp_name,"price":_bp_price,"ent_name":_bp_comm})
+            st.success(_L("🎉 ¡Pago registrado! El artesano recibió tu pedido.","🎉 Payment registered! The artisan received your order.","🎉 Rantiy rikchishka! Ruraqqa kanpa rantita ruwanapaq."))
+            st.balloons()
+            st.rerun()
+        if st.button(_L("❌ Cancelar","❌ Cancel","❌__), key="cancel_pay", use_container_width=True):
+            st.session_state.pop("_buy_pending", None)
+            st.rerun()
     if len(filtered) > 24:
         st.markdown(f'<div style="text-align:center;font-size:0.75rem;color:rgba(148,163,184,0.3);padding:0.5rem;">{_L("Mostrando 24 de","Showing 24 of","Rikuchin 24")} {len(filtered)}</div>', unsafe_allow_html=True)
 
