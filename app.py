@@ -3032,7 +3032,7 @@ def render_ecotourist():
     if processing:
         bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>'
     iframe_css = chat_css.replace("{B64}", MASHI_LOGO_B64)
-    iframe_html = f'<html><head><style>{iframe_css}</style></head><body><div class="chat-container" id="c">{bubbles}</div><script>var c=document.getElementById("c");if(c)c.scrollTop=c.scrollHeight;try{var last=document.querySelector(".bubble-row.mashi:last-child");if(last&&last.getBoundingClientRect().top>0)parent.window.mashiPlay&&parent.window.mashiPlay("notify")}catch(e){}</script></body></html>'
+    iframe_html = f'<html><head><style>{iframe_css}</style></head><body><div class="chat-container" id="c">{bubbles}</div><script>var c=document.getElementById("c");if(c)c.scrollTop=c.scrollHeight;try{{var last=document.querySelector(".bubble-row.mashi:last-child");if(last&&last.getBoundingClientRect().top>0)parent.window.mashiPlay&&parent.window.mashiPlay("notify")}}catch(e){{}}</script></body></html>'
     st.components.v1.html(iframe_html, height=380, scrolling=True)
     # ── Voz natural edge-tts ──
     assistant_msgs = [m for m in st.session_state.chat_messages if m["role"]=="assistant"]
@@ -3776,7 +3776,7 @@ def render_emprendedor():
     if emp_processing:
         emp_bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>'
     emp_iframe_css = emp_chat_css.replace("{B64}", MASHI_LOGO_B64)
-    emp_iframe_html = f'<html><head><style>{emp_iframe_css}</style></head><body><div class="chat-container" id="c">{emp_bubbles}</div><script>var c=document.getElementById("c");if(c)c.scrollTop=c.scrollHeight;try{var last=document.querySelector(".bubble-row.mashi:last-child");if(last&&last.getBoundingClientRect().top>0)parent.window.mashiPlay&&parent.window.mashiPlay("notify")}catch(e){}</script></body></html>'
+    emp_iframe_html = f'<html><head><style>{emp_iframe_css}</style></head><body><div class="chat-container" id="c">{emp_bubbles}</div><script>var c=document.getElementById("c");if(c)c.scrollTop=c.scrollHeight;try{{var last=document.querySelector(".bubble-row.mashi:last-child");if(last&&last.getBoundingClientRect().top>0)parent.window.mashiPlay&&parent.window.mashiPlay("notify")}}catch(e){{}}</script></body></html>'
     st.components.v1.html(emp_iframe_html, height=320, scrolling=True)
     # Chat input
     emp_inp = st.chat_input(_L("Pregunta a Mashi sobre tu negocio...","Ask Mashi about your business...","Negociokimanta Mashita tapuy..."), key="emp_chat_input")
