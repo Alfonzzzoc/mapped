@@ -2375,6 +2375,12 @@ CSS = """
     div[data-testid="stSelectboxDropdown"] li, ul[role="listbox"] li, li[role="option"] { color: #e2e8f0 !important; background: #0a1f1a !important; }
     div[data-testid="stSelectboxDropdown"] li:hover, ul[role="listbox"] li:hover, li[role="option"]:hover { background: rgba(16,185,129,0.15) !important; }
     div[data-testid="stSelectboxDropdown"] li[aria-selected="true"], ul[role="listbox"] li[aria-selected="true"], li[role="option"][aria-selected="true"] { background: rgba(16,185,129,0.25) !important; color: #10b981 !important; }
+    /* ── Kill ALL white backgrounds everywhere ── */
+    [data-baseweb="popover"], [role="listbox"], [role="option"], [data-baseweb="menu"] { background: #0a1f1a !important; color: #e2e8f0 !important; }
+    [data-baseweb="popover"] *, [role="listbox"] *, [role="option"] * { background: transparent !important; color: #e2e8f0 !important; }
+    [data-baseweb="select"] *, [data-baseweb="base-input"] * { background: transparent !important; color: #e2e8f0 !important; }
+    div[data-baseweb="select"] { background: #0a1f1a !important; }
+    li[role="option"] div, li[role="option"] span, li[role="option"] p { color: #e2e8f0 !important; background: transparent !important; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: #040e0b; }
     ::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
@@ -2621,9 +2627,10 @@ CSS = """
     .stTabs [aria-selected="true"] { background: #10b981 !important; color: #040e0b !important; }
     .stTabs [data-baseweb="tab"]:hover { color: #e2e8f0 !important; }
     /* ── Hide component iframes (sound injection) ── */
-    iframe[title="st.components.v1.html"], iframe[title="streamlit.components.v1.html"] { position: absolute; width: 0; height: 0; border: none; overflow: hidden; opacity: 0; pointer-events: none; }
-    .stComponent iframe { position: absolute; width: 0; height: 0; border: none; overflow: hidden; opacity: 0; pointer-events: none; }
-    div[data-testid="stVerticalBlock"] > div:has(iframe[title*="components"]) { height: 0; min-height: 0; padding: 0; margin: 0; overflow: hidden; }
+    iframe[title="st.components.v1.html"], iframe[title="streamlit.components.v1.html"] { position: absolute !important; width: 0 !important; height: 0 !important; border: none !important; overflow: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+    .stComponent, .stComponent > div, .stComponent iframe, [data-testid="stVerticalBlock"] div:has(> iframe) { background: transparent !important; border: none !important; box-shadow: none !important; height: 0 !important; min-height: 0 !important; padding: 0 !important; margin: 0 !important; overflow: hidden !important; }
+    /* ── Kill ALL white backgrounds globally ── */
+    .stApp, .main, .block-container, section[data-testid="stSidebar"], section[data-testid="stSidebar"] > div:first-child, div[data-testid="stVerticalBlock"], div[data-testid="stHorizontalBlock"], div[data-testid="stColumns"], .element-container, .stMarkdown, .stAlert, div[data-testid="stStatusWidget"], div[data-testid="stToolbar"] { background: transparent !important; }
 </style>""".replace("{B64}", MASHI_LOGO_B64 if MASHI_LOGO_B64 else "")
 
 # ========================================================================
@@ -2695,14 +2702,13 @@ obs.observe(PD.body,{childList:true,subtree:true});
 
 
 def _inject_js():
-    st.components.v1.html(MASHI_JS, height=0, scrolling=False)
+    st.components.v1.html(MASHI_JS, height=1, scrolling=False)
 
 # ========================================================================
 # ONBOARDING
 # ========================================================================
 def render_onboarding():
     st.markdown(CSS, unsafe_allow_html=True)
-    _inject_js()
     col1, col2 = st.columns([1,3])
     with col2:
         st.markdown('<div class="onboarding-container">', unsafe_allow_html=True)
@@ -5174,7 +5180,6 @@ def main():
         return
 
     st.markdown(CSS, unsafe_allow_html=True)
-    _inject_js()
 
     # Header
     lang_label = {"es":"ES","en":"EN","qw":"QW"}.get(st.session_state.lang,"ES")
@@ -5263,6 +5268,7 @@ def main():
                 except Exception:
                     st.caption(_L("Instala: pip install qrcode[pil]","Install: pip install qrcode[pil]","Churay: pip install qrcode[pil]"))
         st.markdown(f'<div style="color:rgba(148,163,184,0.15)!important;font-size:0.6rem;text-align:center;padding-top:1.5rem;">© 2026 MAPPED · Loreto, {_L("Perú","Peru","Perú")}</div>', unsafe_allow_html=True)
+        _inject_js()
 
     # Content
     _render_func = {
