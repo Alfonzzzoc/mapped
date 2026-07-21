@@ -4896,7 +4896,7 @@ def render_store_view():
             st.success(_L("🎉 ¡Pago registrado! El artesano recibió tu pedido.","🎉 Payment registered! The artisan received your order.","🎉 Rantiy rikchishka! Ruraqqa kanpa rantita ruwanapaq."))
             st.balloons()
             st.rerun()
-        if st.button(_L("❌ Cancelar","❌ Cancel","❌__), key="cancel_pay", use_container_width=True):
+        if st.button(_L("❌ Cancelar","❌ Cancel","❌ Qichuna"), key="cancel_pay", use_container_width=True):
             st.session_state.pop("_buy_pending", None)
             st.rerun()
     if len(filtered) > 24:
