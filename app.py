@@ -2320,6 +2320,14 @@ CSS = """
     .stButton > button::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg,transparent 40%,rgba(255,255,255,0.06) 100%); pointer-events: none; border-radius: 30px; }
     .stButton > button:hover { background: linear-gradient(135deg,#059669,#047857) !important; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(16,185,129,0.4), 0 0 0 1px rgba(16,185,129,0.1) !important; }
     .stButton > button:active { transform: scale(0.97) !important; box-shadow: 0 2px 8px rgba(16,185,129,0.25) !important; transition-duration: 0.05s !important; }
+    .stButton > button:focus { box-shadow: 0 0 0 2px rgba(16,185,129,0.3), 0 4px 20px rgba(16,185,129,0.2) !important; }
+    .stButton > button::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at var(--x,50%) var(--y,50%), rgba(255,255,255,0.15) 0%, transparent 60% ); opacity: 0; transition: opacity 0.3s; pointer-events: none; border-radius: 30px; }
+    .stButton > button:hover::before { opacity: 1; }
+    .stButton > button { --x: 50%; --y: 50%; }
+    .stButton > button { position: relative; }
+    .stButton > button { --x: 50%; --y: 50%; }
+    .glass-card { transition: all 0.3s cubic-bezier(0.4,0,0.2,1) !important; }
+    .glass-card:active { transform: scale(0.99) !important; transition-duration: 0.1s !important; }
     .stButton > button:disabled { opacity: 0.4 !important; transform: none !important; box-shadow: none !important; cursor: not-allowed !important; }
     .secondary-btn > button { background: transparent !important; color: #10b981 !important; border: 1.5px solid rgba(16,185,129,0.15) !important; box-shadow: none !important; }
     .secondary-btn > button:hover { background: rgba(16,185,129,0.06) !important; border-color: rgba(16,185,129,0.3) !important; }
@@ -2489,6 +2497,65 @@ CSS = """
     .stTabs [data-baseweb="tab"]:hover { color: #e2e8f0 !important; }
 </style><script>
 (function(){function f(){var e=document.querySelector('[data-testid="stChatInput"]');if(e){e.style.background='#0a1f1a';var t=e.querySelector('textarea');if(t){t.style.background='#0a1f1a';t.style.color='#e2e8f0'}var b=document.querySelector('[data-testid="stBottom"]');if(b){b.style.background='#040e0b';b.style.border='none'}var c=document.querySelector('[data-testid="stBottomBlockContainer"]');if(c){c.style.background='#040e0b';c.style.borderTop='1px solid rgba(16,185,129,0.06)'}return true}return false}if(!f()){new MutationObserver(function(m,o){if(f())o.disconnect()}).observe(document.body,{childList:true,subtree:true})}
+})();
+// ── Sound Effects (Web Audio API) ──
+var _audioCtx=null;
+function _getCtx(){if(!_audioCtx)_audioCtx=new(window.AudioContext||window.webkitAudioContext)();return _audioCtx}
+window.mashiPlay=function(type){
+try{
+if(window._mashiMuted)return;
+var c=_getCtx(),t=c.currentTime;
+if(type==='tap'){
+var o=c.createOscillator(),g=c.createGain();
+o.connect(g);g.connect(c.destination);
+o.type='sine';o.frequency.setValueAtTime(880,t);
+o.frequency.exponentialRampToValueAtTime(440,t+0.06);
+g.gain.setValueAtTime(0.08,t);
+g.gain.exponentialRampToValueAtTime(0.001,t+0.08);
+o.start(t);o.stop(t+0.08);
+}else if(type==='notify'){
+var o1=c.createOscillator(),g1=c.createGain();
+o1.connect(g1);g1.connect(c.destination);
+o1.type='sine';o1.frequency.setValueAtTime(523,t);
+o1.frequency.setValueAtTime(659,t+0.1);
+g1.gain.setValueAtTime(0.06,t);
+g1.gain.exponentialRampToValueAtTime(0.001,t+0.25);
+o1.start(t);o1.stop(t+0.25);
+}else if(type==='success'){
+var o=c.createOscillator(),g=c.createGain();
+o.connect(g);g.connect(c.destination);
+o.type='sine';o.frequency.setValueAtTime(440,t);
+o.frequency.exponentialRampToValueAtTime(880,t+0.15);
+g.gain.setValueAtTime(0.06,t);
+g.gain.exponentialRampToValueAtTime(0.001,t+0.2);
+o.start(t);o.stop(t+0.2);
+}
+}catch(e){}
+};
+// Auto-attach sounds to all Streamlit buttons
+(function(){
+document.addEventListener('mousemove',function(e){
+var t=e.target.closest('.stButton>button');
+if(t){var r=t.getBoundingClientRect();t.style.setProperty('--x',((e.clientX-r.left)/r.width*100)+'%');t.style.setProperty('--y',((e.clientY-r.top)/r.height*100)+'%');}
+});
+var obs=new MutationObserver(function(){
+document.querySelectorAll('.stButton>button, [data-testid="stChatInput"] button').forEach(function(b){
+if(!b.dataset.mashiSound){
+b.dataset.mashiSound='1';
+b.addEventListener('click',function(){
+var txt=(b.textContent||'').toLowerCase();
+if(txt.includes('publicar')||txt.includes('registrar')||txt.includes('compra')||txt.includes('accept')||txt.includes('chaskiy')){
+window.mashiPlay('success');
+}else if(txt.includes('modismo')||txt.includes('expo')||txt.includes('exposición')||txt.includes('nueva foto')||txt.includes('clear')){
+window.mashiPlay('tap');
+}else{
+window.mashiPlay('tap');
+}
+});
+}
+});
+});
+obs.observe(document.body,{childList:true,subtree:true});
 })();
 </script>""".replace("{B64}", MASHI_LOGO_B64 if MASHI_LOGO_B64 else "")
 
@@ -2840,7 +2907,7 @@ def render_ecotourist():
     if processing:
         bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>'
     iframe_css = chat_css.replace("{B64}", MASHI_LOGO_B64)
-    iframe_html = f'<html><head><style>{iframe_css}</style></head><body><div class="chat-container" id="c">{bubbles}</div><script>var c=document.getElementById("c");if(c)c.scrollTop=c.scrollHeight</script></body></html>'
+    iframe_html = f'<html><head><style>{iframe_css}</style></head><body><div class="chat-container" id="c">{bubbles}</div><script>var c=document.getElementById("c");if(c)c.scrollTop=c.scrollHeight;try{var last=document.querySelector(".bubble-row.mashi:last-child");if(last&&last.getBoundingClientRect().top>0)parent.window.mashiPlay&&parent.window.mashiPlay("notify")}catch(e){}</script></body></html>'
     st.components.v1.html(iframe_html, height=380, scrolling=True)
     # ── Voz natural edge-tts ──
     assistant_msgs = [m for m in st.session_state.chat_messages if m["role"]=="assistant"]
@@ -3584,7 +3651,7 @@ def render_emprendedor():
     if emp_processing:
         emp_bubbles += '<div class="bubble-row mashi"><div class="bubble-avatar mashi-avatar-img"></div><div class="typing-bubble"><span class="typing-dot"></span><span class="typing-dot"></span><span class="typing-dot"></span></div></div>'
     emp_iframe_css = emp_chat_css.replace("{B64}", MASHI_LOGO_B64)
-    emp_iframe_html = f'<html><head><style>{emp_iframe_css}</style></head><body><div class="chat-container" id="c">{emp_bubbles}</div><script>var c=document.getElementById("c");if(c)c.scrollTop=c.scrollHeight</script></body></html>'
+    emp_iframe_html = f'<html><head><style>{emp_iframe_css}</style></head><body><div class="chat-container" id="c">{emp_bubbles}</div><script>var c=document.getElementById("c");if(c)c.scrollTop=c.scrollHeight;try{var last=document.querySelector(".bubble-row.mashi:last-child");if(last&&last.getBoundingClientRect().top>0)parent.window.mashiPlay&&parent.window.mashiPlay("notify")}catch(e){}</script></body></html>'
     st.components.v1.html(emp_iframe_html, height=320, scrolling=True)
     # Chat input
     emp_inp = st.chat_input(_L("Pregunta a Mashi sobre tu negocio...","Ask Mashi about your business...","Negociokimanta Mashita tapuy..."), key="emp_chat_input")
@@ -4965,6 +5032,12 @@ def main():
                 act = st.session_state.lang==code
                 if st.button(T(lk), key=f"lang_{code}", use_container_width=True, type="primary" if act else "secondary"):
                     st.session_state.lang = code; st.rerun()
+        if st.toggle(_L("🔊 Sonidos","🔊 Sounds","🔊 Tuku"), value=st.session_state.get("sounds_on",True), key="sounds_toggle"):
+            st.session_state["sounds_on"] = True
+            st.markdown('<script>window._mashiMuted=false</script>', unsafe_allow_html=True)
+        else:
+            st.session_state["sounds_on"] = False
+            st.markdown('<script>window._mashiMuted=true</script>', unsafe_allow_html=True)
         st.markdown(f'<p style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(148,163,184,0.4)!important;margin:0.8rem 0 0.5rem;">👤 {_L("Rol","Role","Rol")}</p>', unsafe_allow_html=True)
         cam_label = _L("📸 Cámara IA","📸 AI Camera","📸 Kamara")
         mapa_label = _L("🗺️ Mapa","🗺️ Map","🗺️ Mapa")
