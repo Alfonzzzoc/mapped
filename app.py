@@ -2620,6 +2620,10 @@ CSS = """
     .stTabs [data-baseweb="tab"] { border-radius: 12px !important; transition: all 0.2s ease !important; color: rgba(148,163,184,0.5) !important; font-weight: 600 !important; }
     .stTabs [aria-selected="true"] { background: #10b981 !important; color: #040e0b !important; }
     .stTabs [data-baseweb="tab"]:hover { color: #e2e8f0 !important; }
+    /* ── Hide component iframes (sound injection) ── */
+    iframe[title="st.components.v1.html"], iframe[title="streamlit.components.v1.html"] { position: absolute; width: 0; height: 0; border: none; overflow: hidden; opacity: 0; pointer-events: none; }
+    .stComponent iframe { position: absolute; width: 0; height: 0; border: none; overflow: hidden; opacity: 0; pointer-events: none; }
+    div[data-testid="stVerticalBlock"] > div:has(iframe[title*="components"]) { height: 0; min-height: 0; padding: 0; margin: 0; overflow: hidden; }
 </style>""".replace("{B64}", MASHI_LOGO_B64 if MASHI_LOGO_B64 else "")
 
 # ========================================================================
