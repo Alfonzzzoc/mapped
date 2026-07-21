@@ -2620,15 +2620,21 @@ CSS = """
     .stTabs [data-baseweb="tab"] { border-radius: 12px !important; transition: all 0.2s ease !important; color: rgba(148,163,184,0.5) !important; font-weight: 600 !important; }
     .stTabs [aria-selected="true"] { background: #10b981 !important; color: #040e0b !important; }
     .stTabs [data-baseweb="tab"]:hover { color: #e2e8f0 !important; }
-</style><script>
-(function(){function f(){var e=document.querySelector('[data-testid="stChatInput"]');if(e){e.style.background='#0a1f1a';var t=e.querySelector('textarea');if(t){t.style.background='#0a1f1a';t.style.color='#e2e8f0'}var b=document.querySelector('[data-testid="stBottom"]');if(b){b.style.background='#040e0b';b.style.border='none'}var c=document.querySelector('[data-testid="stBottomBlockContainer"]');if(c){c.style.background='#040e0b';c.style.borderTop='1px solid rgba(16,185,129,0.06)'}return true}return false}if(!f()){new MutationObserver(function(m,o){if(f())o.disconnect()}).observe(document.body,{childList:true,subtree:true})}
+</style>""".replace("{B64}", MASHI_LOGO_B64 if MASHI_LOGO_B64 else "")
+
+# ========================================================================
+# JAVASCRIPT — injected via st.components.v1.html() (st.markdown doesn't execute <script>)
+# ========================================================================
+MASHI_JS = """<script>
+(function(){
+var PD=window.parent.document,PW=window.parent;
+(function(){function f(){var e=PD.querySelector('[data-testid="stChatInput"]');if(e){e.style.background='#0a1f1a';var t=e.querySelector('textarea');if(t){t.style.background='#0a1f1a';t.style.color='#e2e8f0'}var b=PD.querySelector('[data-testid="stBottom"]');if(b){b.style.background='#040e0b';b.style.border='none'}var c=PD.querySelector('[data-testid="stBottomBlockContainer"]');if(c){c.style.background='#040e0b';c.style.borderTop='1px solid rgba(16,185,129,0.06)'}return true}return false}if(!f()){new MutationObserver(function(m,o){if(f())o.disconnect()}).observe(PD.body,{childList:true,subtree:true})}
 })();
-// ── Sound Effects (Web Audio API) ──
 var _audioCtx=null;
 function _getCtx(){if(!_audioCtx)_audioCtx=new(window.AudioContext||window.webkitAudioContext)();return _audioCtx}
-window.mashiPlay=function(type){
+PW.mashiPlay=function(type){
 try{
-if(window._mashiMuted)return;
+if(PW._mashiMuted)return;
 var c=_getCtx(),t=c.currentTime;
 if(type==='tap'){
 var o=c.createOscillator(),g=c.createGain();
@@ -2657,38 +2663,42 @@ o.start(t);o.stop(t+0.2);
 }
 }catch(e){}
 };
-// Auto-attach sounds to all Streamlit buttons
 (function(){
-document.addEventListener('mousemove',function(e){
+PD.addEventListener('mousemove',function(e){
 var t=e.target.closest('.stButton>button');
 if(t){var r=t.getBoundingClientRect();t.style.setProperty('--x',((e.clientX-r.left)/r.width*100)+'%');t.style.setProperty('--y',((e.clientY-r.top)/r.height*100)+'%');}
 });
 var obs=new MutationObserver(function(){
-document.querySelectorAll('.stButton>button, [data-testid="stChatInput"] button').forEach(function(b){
+PD.querySelectorAll('.stButton>button, [data-testid="stChatInput"] button').forEach(function(b){
 if(!b.dataset.mashiSound){
 b.dataset.mashiSound='1';
 b.addEventListener('click',function(){
 var txt=(b.textContent||'').toLowerCase();
 if(txt.includes('publicar')||txt.includes('registrar')||txt.includes('compra')||txt.includes('accept')||txt.includes('chaskiy')){
-window.mashiPlay('success');
+PW.mashiPlay('success');
 }else if(txt.includes('modismo')||txt.includes('expo')||txt.includes('exposición')||txt.includes('nueva foto')||txt.includes('clear')){
-window.mashiPlay('tap');
+PW.mashiPlay('tap');
 }else{
-window.mashiPlay('tap');
+PW.mashiPlay('tap');
 }
 });
 }
 });
 });
-obs.observe(document.body,{childList:true,subtree:true});
+obs.observe(PD.body,{childList:true,subtree:true});
 })();
-</script>""".replace("{B64}", MASHI_LOGO_B64 if MASHI_LOGO_B64 else "")
+</script>"""
+
+
+def _inject_js():
+    st.components.v1.html(MASHI_JS, height=0, scrolling=False)
 
 # ========================================================================
 # ONBOARDING
 # ========================================================================
 def render_onboarding():
     st.markdown(CSS, unsafe_allow_html=True)
+    _inject_js()
     col1, col2 = st.columns([1,3])
     with col2:
         st.markdown('<div class="onboarding-container">', unsafe_allow_html=True)
@@ -5160,6 +5170,7 @@ def main():
         return
 
     st.markdown(CSS, unsafe_allow_html=True)
+    _inject_js()
 
     # Header
     lang_label = {"es":"ES","en":"EN","qw":"QW"}.get(st.session_state.lang,"ES")
@@ -5187,10 +5198,10 @@ def main():
                     st.session_state.lang = code; st.rerun()
         if st.toggle(_L("🔊 Sonidos","🔊 Sounds","🔊 Tuku"), value=st.session_state.get("sounds_on",True), key="sounds_toggle"):
             st.session_state["sounds_on"] = True
-            st.markdown('<script>window._mashiMuted=false</script>', unsafe_allow_html=True)
+            st.components.v1.html('<script>window.parent._mashiMuted=false</script>', height=0)
         else:
             st.session_state["sounds_on"] = False
-            st.markdown('<script>window._mashiMuted=true</script>', unsafe_allow_html=True)
+            st.components.v1.html('<script>window.parent._mashiMuted=true</script>', height=0)
         st.markdown(f'<p style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(148,163,184,0.4)!important;margin:0.8rem 0 0.5rem;">👤 {_L("Rol","Role","Rol")}</p>', unsafe_allow_html=True)
         cam_label = _L("📸 Cámara IA","📸 AI Camera","📸 Kamara")
         mapa_label = _L("🗺️ Mapa","🗺️ Map","🗺️ Mapa")
