@@ -4923,8 +4923,7 @@ def render_store_view():
         st.markdown(f'<div style="text-align:center;font-size:0.75rem;color:rgba(148,163,184,0.3);padding:0.5rem;">{_L("Mostrando 24 de","Showing 24 of","Rikuchin 24")} {len(filtered)}</div>', unsafe_allow_html=True)
 
 def render_bottom_nav(active):
-    tabs = [("🧭",_L("Explorar","Explore","Maskay"),"Ecoturista"),("🗺️",_L("Mapa","Map","Mapa"),"Mapa")]
-    tabs.append(("🎬",_L("Demo","Demo","Demo"),"_demo"))
+    tabs = [("🧭",_L("Explorar","Explore","Maskay"),"Ecoturista"),("🗺️",_L("Mapa","Map","Mapa"),"Mapa"),("🛒",_L("Tienda","Store","Rantina"),"Tienda"),("👤",_L("Perfil","Profile","Perfil"),"Perfil"),("🎬",_L("Demo","Demo","Demo"),"_demo")]
     st.markdown('<div class="bnav-header">— ' + _L("Navegar","Navigate","Rina") + ' —</div>', unsafe_allow_html=True)
     cols = st.columns(len(tabs))
     current_idx = next((i for i, t in enumerate(tabs) if t[2] == active), 0)
@@ -5150,8 +5149,431 @@ def render_demo_tour():
     """, unsafe_allow_html=True)
 
 # ========================================================================
-# MAIN
+# WELCOME / LOGIN / REGISTER
 # ========================================================================
+def render_welcome():
+    st.markdown(CSS, unsafe_allow_html=True)
+    _inject_js()
+    lang = st.session_state.get("lang", "es")
+    L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    st.markdown(f"""
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;background:radial-gradient(ellipse at 50% 30%,rgba(16,185,129,0.06) 0%,transparent 60%);">
+        <div style="width:100px;height:100px;border-radius:50%;background:rgba(16,185,129,0.1);border:2px solid rgba(16,185,129,0.3);margin-bottom:1.5rem;overflow:hidden;box-shadow:0 0 60px rgba(16,185,129,0.1);" class="mashi-avatar-img"></div>
+        <h1 style="font-size:2.2rem;font-weight:800;color:#FFFFFF!important;margin:0;letter-spacing:-0.03em;font-family:'Outfit',sans-serif;">MAPPED</h1>
+        <p style="font-size:0.65rem;color:#10b981 !important;text-transform:uppercase;letter-spacing:3px;margin:0.3rem 0 1rem;font-weight:600;">Amazonía · Loreto · Perú</p>
+        <p style="font-size:0.95rem;color:rgba(148,163,184,0.7)!important;max-width:400px;line-height:1.6;margin-bottom:2.5rem;">
+            {L("Conectamos artesanos amazónicos con el mundo. Comercio justo, turismo consciente.",
+               "We connect Amazonian artisans with the world. Fair trade, conscious tourism.",
+               "Tantapak chiqap Amazonía rurakunata watukushpa. Rikchiriy chiqapllata.")}
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+    tab1, tab2, tab3 = st.tabs([f"🔑 {L('Iniciar sesión','Login','Yapay')}", f"📝 {L('Registrarse','Register','Rikchikuy')}", f"🌐 {L('Idioma','Language','Shimi')}", ])
+    with tab1:
+        st.markdown(f"<p style='color:#FFFFFF;font-weight:600;font-size:0.9rem;margin-bottom:1rem;'>{L('Bienvenido de vuelta','Welcome back','Allianllachu')}</p>", unsafe_allow_html=True)
+        email = st.text_input("Email", placeholder="tu@email.com", key="login_email")
+        pw = st.text_input(L("Contraseña","Password","Yupay"), type="password", key="login_pw")
+        if st.button(L("Entrar","Log in","Yapay"), use_container_width=True, type="primary"):
+            if email and pw:
+                try:
+                    import database as _db
+                    user = _db.login_user(email, pw)
+                    if user:
+                        st.session_state["logged_in"] = True
+                        st.session_state["user_id"] = user["id"]
+                        st.session_state["user_name"] = user["name"]
+                        st.session_state["user_email"] = user["email"]
+                        st.session_state["user_role"] = user["role"]
+                        st.session_state["onboarded"] = True
+                        st.rerun()
+                    else:
+                        st.error(L("Email o contraseña incorrectos","Invalid email or password","Email ò contraseña incorrecto"))
+                except Exception as e:
+                    st.error(f"Error: {e}")
+            else:
+                st.warning(L("Completa todos los campos","Fill in all fields","Tukuchikypi mayllak"))
+    with tab2:
+        st.markdown(f"<p style='color:#FFFFFF;font-weight:600;font-size:0.9rem;margin-bottom:1rem;'>{L('Crea tu cuenta','Create account','Cuenta musuk')}</p>", unsafe_allow_html=True)
+        rname = st.text_input(L("Nombre completo","Full name","Sapa mikun"), key="reg_name")
+        remail = st.text_input("Email", placeholder="tu@email.com", key="reg_email")
+        rpw = st.text_input(L("Contraseña","Password","Yupay"), type="password", key="reg_pw")
+        rpw2 = st.text_input(L("Confirmar contraseña","Confirm password","Yupay utkilla"), type="password", key="reg_pw2")
+        if st.button(L("Crear cuenta","Create account","Cuenta musuk"), use_container_width=True, type="primary"):
+            if rname and remail and rpw:
+                if rpw != rpw2:
+                    st.error(L("Las contraseñas no coinciden","Passwords don't match","Contraseña mayllanapaqchu"))
+                else:
+                    try:
+                        import database as _db
+                        user = _db.create_user(rname, remail, rpw)
+                        if user:
+                            st.session_state["logged_in"] = True
+                            st.session_state["user_id"] = user["id"]
+                            st.session_state["user_name"] = user["name"]
+                            st.session_state["user_email"] = user["email"]
+                            st.session_state["user_role"] = "tourist"
+                            st.session_state["onboarded"] = True
+                            st.rerun()
+                        else:
+                            st.error(L("Ese email ya está registrado","That email is already registered","Email kaypi kañan Mushuk"))
+                    except Exception as e:
+                        st.error(f"Error: {e}")
+            else:
+                st.warning(L("Completa todos los campos","Fill in all fields","Tukuchikypi mayllak"))
+    with tab3:
+        st.markdown(f"<p style='color:#FFFFFF;font-weight:600;font-size:0.9rem;margin-bottom:1rem;'>{L('Elige tu idioma','Choose language','Shimi akllay')} 🌐</p>", unsafe_allow_html=True)
+        lc = st.columns(3)
+        for i, (code, label) in enumerate([("es","🇪🇸 Español"),("en","🇬🇧 English"),("qw","🇰🇮 Kichwa")]):
+            with lc[i]:
+                if st.button(label, key=f"wlang_{code}", use_container_width=True, type="primary" if st.session_state.get("lang","es")==code else "secondary"):
+                    st.session_state["lang"] = code
+                    st.rerun()
+    st.markdown(f"""
+    <div style="text-align:center;margin-top:1rem;padding:0.8rem;background:rgba(10,43,31,0.4);border-radius:16px;border:1px solid rgba(16,185,129,0.06);">
+        <p style="font-size:0.65rem;color:rgba(148,163,184,0.35)!important;margin:0;">
+            © 2026 MAPPED · Loreto, Perú · {L('Hecho con 💚 para la Amazonía','Made with 💚 for the Amazon','Rurashka Amazonía')};
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+# ========================================================================
+# USER TYPE SELECTOR
+# ========================================================================
+def render_user_type():
+    st.markdown(CSS, unsafe_allow_html=True)
+    _inject_js()
+    lang = st.session_state.get("lang", "es")
+    L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    st.markdown(f"""
+    <div style="text-align:center;padding:2rem 1rem 1rem;">
+        <h2 style="color:#FFFFFF!important;font-size:1.5rem;font-weight:700;">{L("¿Cómo quieres usar MAPPED?","How do you want to use MAPPED?","MAPPEDta imaynata ruranki")}</h2>
+        <p style="font-size:0.85rem;color:rgba(148,163,184,0.6)!important;">{L("Elige tu perfil para personalizar la experiencia","Choose your profile to personalize the experience","Akllichi profileta")}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg,#0a1f1a,#0d261f);border:1px solid rgba(16,185,129,0.12);border-radius:24px;padding:2rem 1.2rem;text-align:center;">
+            <div style="font-size:2.5rem;margin-bottom:0.8rem;">🌿</div>
+            <h3 style="color:#FFFFFF!important;font-size:1rem;font-weight:700;margin:0;">{L("Ecoturista","Ecotourist","Ekoturista")}</h3>
+            <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;margin:0.5rem 0 0;">{L("Explora, compra artesanía y conecta con comunidades","Explore, buy crafts & connect with communities","Kutiyta, artesanía rantiyta ñanallananki")}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button(L("🌿 Soy Ecoturista","🌿 I'm an Ecotourist","🌿 Ekoturista kani"), use_container_width=True, type="primary", key="utype_eco"):
+            import database as _db
+            _db.update_user_role(st.session_state.get("user_id", 0), "tourist")
+            st.session_state["user_role"] = "tourist"
+            st.rerun()
+    with c2:
+        st.markdown(f"""
+        <div style="background:linear-gradient(135deg,#0a1f1a,#1a1a0a);border:1px solid rgba(245,158,11,0.12);border-radius:24px;padding:2rem 1.2rem;text-align:center;">
+            <div style="font-size:2.5rem;margin-bottom:0.8rem;">🏪</div>
+            <h3 style="color:#FFFFFF!important;font-size:1rem;font-weight:700;margin:0;">{L("Emprendedor","Entrepreneur","Emprendedor")}</h3>
+            <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;margin:0.5rem 0 0;">{L("Registra tu negocio, vende y gestiona tus productos","Register your business, sell & manage products","Negocioyta rikchikuy, rantiyta yuyayta")}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button(L("🏪 Soy Emprendedor","🏪 I'm an Entrepreneur","🏪 Emprendedor kani"), use_container_width=True, type="secondary", key="utype_emp"):
+            import database as _db
+            _db.update_user_role(st.session_state.get("user_id", 0), "entrepreneur")
+            st.session_state["user_role"] = "entrepreneur"
+            st.rerun()
+    if st.button(L("Saltar por ahora","Skip for now","Ñakarikuy"), key="skip_utype", use_container_width=True):
+        st.session_state["user_role"] = "tourist"
+        st.rerun()
+
+# ========================================================================
+# PROFILE PAGE
+# ========================================================================
+def render_profile():
+    st.markdown(f"""
+    <div style="text-align:center;padding:1rem;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(16,185,129,0.1);border:2px solid rgba(16,185,129,0.3);margin:0 auto 1rem;overflow:hidden;" class="mashi-avatar-img"></div>
+        <h2 style="color:#FFFFFF!important;font-size:1.3rem;font-weight:700;margin:0;">{st.session_state.get('user_name','')}</h2>
+        <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;margin:0.3rem 0;">{st.session_state.get('user_email','')}</p>
+        <span style="display:inline-block;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:0.2rem 0.8rem;border-radius:20px;font-size:0.7rem;color:#10b981;font-weight:600;">{st.session_state.get('user_role','tourist').upper()}</span>
+    </div>
+    """, unsafe_allow_html=True)
+    lang = st.session_state.get("lang", "es")
+    L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    uid = st.session_state.get("user_id")
+    if uid:
+        try:
+            import database as _db
+            user = _db.get_user(uid)
+            if user and user.get("role") == "entrepreneur":
+                eprof = _db.get_entrepreneur_profile(uid)
+                if eprof:
+                    st.markdown(f"""
+                    <div class="glass-card">
+                        <h3 style="color:#FFFFFF!important;font-size:0.9rem;margin:0 0 0.5rem;">🏪 {L("Mi Negocio","My Business","Negocioy")}</h3>
+                        <p style="font-size:0.8rem;color:#e2e8f0;">{eprof.get('business_name','')}</p>
+                        <p style="font-size:0.7rem;color:rgba(148,163,184,0.5);">📍 {eprof.get('location','')} · 📂 {eprof.get('sector','')}</p>
+                    </div>
+                    """, unsafe_allow_html=True)
+        except Exception:
+            pass
+    stats = {
+        L("Favoritos","Favorites","Huñunakuy"): len(st.session_state.get("favorites", [])),
+        L("Compras","Purchases","Rantishka"): len(st.session_state.get("purchases", [])),
+        L("Comunidades visitadas","Communities visited","Comunidad rikchana"): len(set(p.get("community_id") for p in st.session_state.get("purchases", []) if p.get("community_id"))),
+    }
+    cols = st.columns(len(stats))
+    for col, (label, val) in zip(cols, stats.items()):
+        with col:
+            st.markdown(f"""
+            <div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:1rem;">
+                <div style="font-size:1.5rem;font-weight:700;color:#10b981;">{val}</div>
+                <div style="font-size:0.65rem;color:rgba(148,163,184,0.5);">{label}</div>
+            </div>
+            """, unsafe_allow_html=True)
+    st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
+    if st.session_state.get("favorites"):
+        with st.expander(f"❤️ {L('Mis Favoritos','My Favorites','Huñunakuykun')}"):
+            ds = get_full_dataset()
+            fav_ids = st.session_state.get("favorites", [])
+            for ent in ds:
+                if ent.get("id") in fav_ids:
+                    st.markdown(f"**{ent['name']}** · 📍 {ent.get('location','')}")
+    if st.session_state.get("purchases"):
+        with st.expander(f"🛒 {L('Mis Compras','My Purchases','Rantishkakun')}"):
+            for p in st.session_state["purchases"]:
+                st.markdown(f"**{p.get('product','')}** — S/ {p.get('price',0):.2f} · {p.get('community','')}")
+    st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
+    if st.button(f"🚪 {L('Cerrar sesión','Log out','Kutiy')}", use_container_width=True, type="secondary"):
+        for k in ["logged_in","user_id","user_name","user_email","user_role","onboarded"]:
+            st.session_state.pop(k, None)
+        st.rerun()
+
+# ========================================================================
+# EXPLORE PAGE
+# ========================================================================
+def render_explore():
+    lang = st.session_state.get("lang", "es")
+    L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    st.markdown(f"""
+    <div style="padding:0.8rem 0 0.5rem;">
+        <h2 style="color:#FFFFFF!important;font-size:1.3rem;font-weight:700;margin:0;">🧭 {L("Explorar","Explore","Rikuchiy")}</h2>
+        <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;">{L("Descubre comunidades y productos amazónicos","Discover Amazonian communities & products","Amazonía comunidadkunata rikuchiy")}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    search = st.text_input("🔍", placeholder=L("Buscar comunidades, productos, sectores...","Search communities, products, sectors...","Buskay..."), label_visibility="collapsed", key="explore_search")
+    ds = get_full_dataset()
+    sectors = sorted(set(e.get("sector", "") for e in ds if e.get("sector")))
+    sel_sector = st.multiselect(L("Filtrar por sector","Filter by sector","Sector"), sectors, key="explore_sectors")
+    if search:
+        sq = search.lower()
+        ds = [e for e in ds if sq in e.get("name","").lower() or sq in e.get("description","").lower() or sq in " ".join(e.get("sector_keywords",[])).lower() or sq in e.get("sector","").lower()]
+    if sel_sector:
+        ds = [e for e in ds if e.get("sector") in sel_sector]
+    for ent in ds:
+        ent_id = ent.get("id")
+        n_reviews = len(ent.get("reviews", []))
+        avg_stars = sum(r.get("stars", 0) for r in ent.get("reviews", [])) / max(n_reviews, 1)
+        favs = st.session_state.get("favorites", [])
+        is_fav = ent_id in favs
+        star_str = "⭐" * int(avg_stars) + f" ({n_reviews})"
+        prods = ent.get("products", [])
+        prod_text = ", ".join(p.get("name", "") for p in prods[:2])
+        if len(prods) > 2:
+            prod_text += f" +{len(prods)-2}"
+        fav_icon = "💚" if is_fav else "🤍"
+        st.markdown(f"""
+        <div class="glass-card" style="margin-bottom:0.8rem;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+                <div style="flex:1;">
+                    <h3 style="color:#FFFFFF!important;font-size:0.9rem;font-weight:700;margin:0;">{ent.get('name','')}</h3>
+                    <p style="font-size:0.7rem;color:rgba(148,163,184,0.5)!important;margin:0.2rem 0;">📍 {ent.get('location','')} · 📂 {ent.get('sector','')}</p>
+                    <p style="font-size:0.7rem;color:#10b981!important;margin:0.2rem 0;">{star_str}</p>
+                    <p style="font-size:0.7rem;color:rgba(148,163,184,0.4)!important;margin:0;">{prod_text}</p>
+                </div>
+                <span style="font-size:1.5rem;">{fav_icon}</span>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        fc1, fc2, fc3 = st.columns([2, 1, 1])
+        with fc1:
+            if st.button(L("💬 Chat con Mashi","💬 Chat with Mashi","💬 Mashi ruwanapach"), key=f"exp_chat_{ent_id}", use_container_width=True):
+                st.session_state["last_ent"] = ent
+                st.session_state["selected_ent_id"] = ent_id
+                st.session_state["_nav_rkey"] = "Ecoturista"
+                st.rerun()
+        with fc2:
+            if st.button(f"{fav_icon}", key=f"exp_fav_{ent_id}"):
+                favs = st.session_state.get("favorites", [])
+                if ent_id in favs:
+                    favs.remove(ent_id)
+                else:
+                    favs.append(ent_id)
+                st.session_state["favorites"] = favs
+                st.rerun()
+        with fc3:
+            if prods:
+                if st.button(L("🛒","🛒","🛒"), key=f"exp_store_{ent_id}", use_container_width=True):
+                    st.session_state["selected_ent_id"] = ent_id
+                    st.session_state["_nav_rkey"] = "Tienda"
+                    st.rerun()
+
+# ========================================================================
+# REGISTRO EMPRENDEDOR
+# ========================================================================
+def render_registro_emprendedor():
+    lang = st.session_state.get("lang", "es")
+    L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    st.markdown(f"""
+    <div style="padding:0.8rem 0 0.5rem;">
+        <h2 style="color:#FFFFFF!important;font-size:1.3rem;font-weight:700;margin:0;">🏪 {L("Registrar mi negocio","Register my business","Negocioy rikchikuy")}</h2>
+        <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;">{L("Completa los datos para aparecer en MAPPED","Fill in your details to appear on MAPPED","MAPPEDta rikchiriy")}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    step = st.session_state.get("reg_step", 1)
+    if step == 1:
+        st.markdown(f"**{L('Paso 1: Datos del negocio','Step 1: Business info','Paso 1: Negocio data')}**")
+        bname = st.text_input(L("Nombre del negocio","Business name","Negocio mikun"), key="reg_bname")
+        sector = st.selectbox(L("Sector","Sector","Sector"), ["Textiles y Artesanía","Cosméticos Naturales","Alimentos y Bebidas","Madera y Tallado","Turismo y Eco-lodge","Agricultura","Cacao y Café","Otro"], key="reg_sector")
+        location = st.text_input(L("Ubicación","Location","Uchilla"), placeholder="Ej: Iquitos, Loreto", key="reg_location")
+        if st.button(L("Siguiente →","Next →","Utkilla →"), use_container_width=True, type="primary"):
+            if bname and sector and location:
+                st.session_state["reg_bname"] = bname
+                st.session_state["reg_sector"] = sector
+                st.session_state["reg_location"] = location
+                st.session_state["reg_step"] = 2
+                st.rerun()
+            else:
+                st.warning(L("Completa todos los campos","Fill in all fields","Tukuchikypi mayllak"))
+    elif step == 2:
+        st.markdown(f"**{L('Paso 2: Descripción y contacto','Step 2: Description & contact','Paso 2: Puriyta sutiyta')}**")
+        desc = st.text_area(L("Descripción del negocio","Business description","Negocio puriy"), placeholder=L("Describe tu negocio y productos...","Describe your business...","Negocioyta puriy..."), key="reg_desc", height=120)
+        phone = st.text_input(L("Teléfono","Phone","Kutipa"), placeholder="+51 999 999 999", key="reg_phone")
+        whatsapp = st.text_input("WhatsApp", placeholder="+51 999 999 999", key="reg_wa")
+        bc1, bc2 = st.columns(2)
+        with bc1:
+            if st.button(f"← {L('Atrás','Back','Kutiy')}", use_container_width=True):
+                st.session_state["reg_step"] = 1
+                st.rerun()
+        with bc2:
+            if st.button(L("Registrar 🚀","Register 🚀","Rikchikuy 🚀"), use_container_width=True, type="primary"):
+                if desc:
+                    try:
+                        import database as _db
+                        _db.save_entrepreneur_profile(
+                            st.session_state.get("user_id", 0),
+                            st.session_state.get("reg_bname", ""),
+                            st.session_state.get("reg_sector", ""),
+                            st.session_state.get("reg_location", ""),
+                            desc, phone, whatsapp
+                        )
+                        _db.update_user_role(st.session_state.get("user_id", 0), "entrepreneur")
+                        st.session_state["user_role"] = "entrepreneur"
+                        st.session_state.pop("reg_step", None)
+                        st.success(L("¡Negocio registrado!","Business registered!","Negocioy rikchishka!"))
+                        st.rerun()
+                    except Exception as e:
+                        st.error(f"Error: {e}")
+                else:
+                    st.warning(L("Completa la descripción","Fill in the description","Puriyta tukuchiy"))
+
+# ========================================================================
+# PANEL COMPAÑÍA
+# ========================================================================
+def render_panel_compania():
+    lang = st.session_state.get("lang", "es")
+    L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    uid = st.session_state.get("user_id")
+    eprof = None
+    if uid:
+        try:
+            import database as _db
+            eprof = _db.get_entrepreneur_profile(uid)
+        except Exception:
+            pass
+    if not eprof:
+        st.markdown(f"""
+        <div style="text-align:center;padding:3rem 1rem;">
+            <div style="font-size:3rem;margin-bottom:1rem;">🏪</div>
+            <h2 style="color:#FFFFFF!important;">{L("Aún no tienes un negocio registrado","You don't have a registered business","Negocioyta kaninchu")}</h2>
+            <p style="font-size:0.85rem;color:rgba(148,163,184,0.5)!important;">{L("Registra tu negocio para aparecer en MAPPED","Register your business to appear on MAPPED","Negocioyta rikchikuy MAPPEDta")}</p>
+        </div>
+        """, unsafe_allow_html=True)
+        if st.button(L("🏪 Registrar negocio","🏪 Register business","🏪 Negocioy rikchikuy"), use_container_width=True, type="primary"):
+            st.session_state["_nav_rkey"] = "Emprendedor Local"
+            st.rerun()
+        return
+    st.markdown(f"""
+    <div style="padding:0.8rem 0 0.5rem;">
+        <h2 style="color:#FFFFFF!important;font-size:1.3rem;font-weight:700;margin:0;">📊 {L("Panel de","Dashboard of","Panel")} {eprof.get('business_name','')}</h2>
+        <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;">{eprof.get('sector','')} · 📍 {eprof.get('location','')}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    purchases = st.session_state.get("purchases", [])
+    my_sales = [p for p in purchases if p.get("community_name", "") == eprof.get("business_name", "")]
+    total_revenue = sum(p.get("price", 0) for p in my_sales)
+    kcols = st.columns(3)
+    with kcols[0]:
+        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:1rem;">
+            <div style="font-size:1.5rem;font-weight:700;color:#10b981;">{len(my_sales)}</div>
+            <div style="font-size:0.65rem;color:rgba(148,163,184,0.5);">{L("Ventas","Sales","Rantishka")}</div>
+        </div>""", unsafe_allow_html=True)
+    with kcols[1]:
+        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:1rem;">
+            <div style="font-size:1.5rem;font-weight:700;color:#10b981;">S/ {total_revenue:.0f}</div>
+            <div style="font-size:0.65rem;color:rgba(148,163,184,0.5);">{L("Ingresos","Revenue","Yanapay")}</div>
+        </div>""", unsafe_allow_html=True)
+    with kcols[2]:
+        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:1rem;">
+            <div style="font-size:1.5rem;font-weight:700;color:#10b981;">4.8 ⭐</div>
+            <div style="font-size:0.65rem;color:rgba(148,163,184,0.5);">{L("Calificación","Rating","Valoración")}</div>
+        </div>""", unsafe_allow_html=True)
+    st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
+    if st.button(L("💬 Chat con Mashi para análisis","💬 Chat with Mashi for analysis","💬 Mashi rikuchiy analisis"), use_container_width=True):
+        st.session_state["_nav_rkey"] = "Ecoturista"
+        st.session_state["chat_prompt"] = L("Dame un análisis de mi negocio y cómo mejorar","Give me a business analysis and how to improve","Negocioy analysis ña wayta")
+        st.rerun()
+
+# ========================================================================
+# REPORTAR INCIDENTE
+# ========================================================================
+def render_reportar_incidente():
+    lang = st.session_state.get("lang", "es")
+    L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    st.markdown(f"""
+    <div style="padding:0.8rem 0 0.5rem;">
+        <h2 style="color:#FFFFFF!important;font-size:1.3rem;font-weight:700;margin:0;">🚨 {L("Reportar incidente","Report incident","Ñananchiy")}</h2>
+        <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;">{L("Ayuda a mantener segura la comunidad","Help keep the community safe","Comunidadta churankiy")}</p>
+    </div>
+    """, unsafe_allow_html=True)
+    ititle = st.text_input(L("Título","Title","Suti"), placeholder=L("Ej: Camino cortado por derrumbe","E.g.: Road blocked by landslide","Ej: Ñan"), key="inc_title")
+    icat = st.selectbox(L("Categoría","Category","Kategoría"), [L("🌲 Daño ambiental","🌲 Environmental damage","🌲 Sacha"), L("🚧 Camino bloqueado","🚧 Blocked road","🚧 Ñan"), L("⚠️ Seguridad","⚠️ Security","⚠️ Churana"), L("🚰 Agua contaminada","🚰 Water pollution","🚰 Yaku"), L("🔥 Incendio","🔥 Fire","🔥 Rawa"), L("📋 Otro","📋 Other","📋 Otro")], key="inc_cat")
+    idesc = st.text_area(L("Descripción","Description","Puriy"), placeholder=L("Describe lo que observaste...","Describe what you observed...","Imayna rikurakushpa..."), key="inc_desc", height=100)
+    iloc = st.text_input(L("Ubicación","Location","Uchilla"), placeholder="Ej: Río Nanay, kilómetro 5", key="inc_loc")
+    if st.button(L("🚨 Reportar","🚨 Report","🚨 Ñananchiy"), use_container_width=True, type="primary"):
+        if ititle and idesc:
+            try:
+                import database as _db
+                _db.report_incident(
+                    st.session_state.get("user_id", 0),
+                    ititle, idesc, icat, iloc, 0, 0
+                )
+                st.success(L("¡Incidente reportado! Gracias por tu aporte.","Incident reported! Thanks for your contribution.","Ñanashka! Yanapayta churarinmi!"))
+            except Exception as e:
+                st.error(f"Error: {e}")
+        else:
+            st.warning(L("Completa título y descripción","Fill in title and description","Sutiypa puriytapa tukuchiy"))
+    incidents = []
+    try:
+        import database as _db
+        incidents = _db.get_all_incidents()
+    except Exception:
+        pass
+    if incidents:
+        st.markdown(f"<h3 style='color:#FFFFFF!important;font-size:0.9rem;margin-top:1.5rem;'>📋 {L('Reportes recientes','Recent reports','Ñanashkakun')}</h3>", unsafe_allow_html=True)
+        for inc in incidents[:5]:
+            st.markdown(f"""
+            <div class="glass-card" style="margin-bottom:0.5rem;">
+                <p style="font-size:0.8rem;font-weight:600;color:#FFFFFF;margin:0;">{inc.get('title','')}</p>
+                <p style="font-size:0.65rem;color:rgba(148,163,184,0.5);margin:0.2rem 0;">{inc.get('category','')} · 📍 {inc.get('location_name','')}</p>
+                <p style="font-size:0.7rem;color:rgba(148,163,184,0.6);margin:0;">{inc.get('description','')[:100]}</p>
+            </div>
+            """, unsafe_allow_html=True)
 def main():
     st.session_state.setdefault("onboarded", False)
     st.session_state.setdefault("lang", "es")
@@ -5170,13 +5592,21 @@ def main():
     st.session_state.setdefault("planner_route", [])
     st.session_state.setdefault("demo_mode", False)
     st.session_state.setdefault("demo_step", 0)
+    st.session_state.setdefault("logged_in", False)
+    st.session_state.setdefault("user_id", None)
+    st.session_state.setdefault("user_email", "")
+    st.session_state.setdefault("user_role", "tourist")
     nav_code = st.query_params.get("nav", "")
     mode_map = {"map":"Mapa","eco":"Ecoturista","cam":"Cámara IA","emp":"Emprendedor Local","inv":"Inversionista"}
     if nav_code in mode_map:
         st.session_state["_nav_rkey"] = mode_map[nav_code]
 
+    if not st.session_state.logged_in:
+        render_welcome()
+        return
+
     if not st.session_state.onboarded:
-        render_onboarding()
+        render_user_type()
         return
 
     st.markdown(CSS, unsafe_allow_html=True)
@@ -5214,8 +5644,12 @@ def main():
         st.markdown(f'<p style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(148,163,184,0.4)!important;margin:0.8rem 0 0.5rem;">👤 {_L("Rol","Role","Rol")}</p>', unsafe_allow_html=True)
         cam_label = _L("📸 Cámara IA","📸 AI Camera","📸 Kamara")
         mapa_label = _L("🗺️ Mapa","🗺️ Map","🗺️ Mapa")
-        role = st.selectbox("", [T("role_eco"), cam_label, T("role_emp"), T("role_inv"), mapa_label], label_visibility="collapsed")
-        rmap = {T("role_eco"):"Ecoturista", cam_label:"Cámara IA", T("role_emp"):"Emprendedor Local", T("role_inv"):"Inversionista", mapa_label:"Mapa"}
+        explore_label = _L("🧭 Explorar","🧭 Explore","🧭 Rikuchiy")
+        profile_label = _L("👤 Perfil","👤 Profile","👤 Perfil")
+        panel_label = _L("📊 Panel Compañía","📊 Company Dashboard","📊 Panel")
+        report_label = _L("🚨 Reportar","🚨 Report","🚨 Ñananchiy")
+        role = st.selectbox("", [T("role_eco"), cam_label, T("role_emp"), T("role_inv"), mapa_label, explore_label, profile_label, panel_label, report_label], label_visibility="collapsed")
+        rmap = {T("role_eco"):"Ecoturista", cam_label:"Cámara IA", T("role_emp"):"Emprendedor Local", T("role_inv"):"Inversionista", mapa_label:"Mapa", explore_label:"Explorar", profile_label:"Perfil", panel_label:"Panel Compañía", report_label:"Reportar Incidente"}
         rkey = rmap.get(role, "Ecoturista")
         nav_rkey = st.session_state.pop("_nav_rkey", "")
         if nav_rkey == "_demo":
@@ -5277,6 +5711,10 @@ def main():
         "Cámara IA": render_camera,
         "Tienda": render_store_view,
         "Emprendedor Local": render_emprendedor,
+        "Explorar": render_explore,
+        "Perfil": render_profile,
+        "Panel Compañía": render_panel_compania,
+        "Reportar Incidente": render_reportar_incidente,
     }
     if st.session_state.get("demo_mode", False):
         try: render_demo_tour()

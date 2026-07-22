@@ -310,6 +310,42 @@ def _init_db():
             user TEXT, stars INTEGER, text TEXT,
             FOREIGN KEY(community_id) REFERENCES communities(id)
         );
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT NOT NULL,
+            email TEXT UNIQUE NOT NULL,
+            password TEXT NOT NULL,
+            role TEXT DEFAULT 'tourist',
+            avatar_url TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE TABLE IF NOT EXISTS entrepreneur_profiles (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            business_name TEXT NOT NULL,
+            sector TEXT,
+            location TEXT,
+            description TEXT,
+            phone TEXT,
+            whatsapp TEXT,
+            photo_url TEXT,
+            verified INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(user_id) REFERENCES users(id)
+        );
+        CREATE TABLE IF NOT EXISTS incidents (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            title TEXT NOT NULL,
+            description TEXT,
+            category TEXT,
+            location_name TEXT,
+            lat REAL, lng REAL,
+            photo_url TEXT,
+            status TEXT DEFAULT 'reported',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(user_id) REFERENCES users(id)
+        );
     """)
     count = c.execute("SELECT COUNT(*) FROM communities").fetchone()[0]
     if count == 0:
@@ -356,3 +392,68 @@ def reset_db():
     if os.path.exists(DB_PATH):
         os.remove(DB_PATH)
     _init_db()
+
+# ── User Auth ──
+def create_user(name, email, password):
+    _init_db()
+    conn = sqlite3.connect(DB_PATH)
+    try:
+        conn.execute("INSERT INTO users (name,email,password) VALUES (?,?,?)", (name, email, password))
+        conn.commit()
+        u = conn.execute("SELECT id,name,email,role FROM users WHERE email=?", (email,)).fetchone()
+        conn.close()
+        return {"id":u[0],"name":u[1],"email":u[2],"role":u[3]} if u else None
+    except sqlite3.IntegrityError:
+        conn.close()
+        return None
+
+def login_user(email, password):
+    _init_db()
+    conn = sqlite3.connect(DB_PATH)
+    u = conn.execute("SELECT id,name,email,role FROM users WHERE email=? AND password=?", (email, password)).fetchone()
+    conn.close()
+    return {"id":u[0],"name":u[1],"email":u[2],"role":u[3]} if u else None
+
+def update_user_role(user_id, role):
+    _init_db()
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("UPDATE users SET role=? WHERE id=?", (role, user_id))
+    conn.commit(); conn.close()
+
+def get_user(user_id):
+    _init_db()
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    u = conn.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
+    conn.close()
+    return dict(u) if u else None
+
+def save_entrepreneur_profile(user_id, business_name, sector, location, description, phone, whatsapp):
+    _init_db()
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("INSERT INTO entrepreneur_profiles (user_id,business_name,sector,location,description,phone,whatsapp) VALUES (?,?,?,?,?,?,?)",
+                 (user_id, business_name, sector, location, description, phone, whatsapp))
+    conn.commit(); conn.close()
+
+def get_entrepreneur_profile(user_id):
+    _init_db()
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    r = conn.execute("SELECT * FROM entrepreneur_profiles WHERE user_id=?", (user_id,)).fetchone()
+    conn.close()
+    return dict(r) if r else None
+
+def report_incident(user_id, title, description, category, location_name, lat, lng):
+    _init_db()
+    conn = sqlite3.connect(DB_PATH)
+    conn.execute("INSERT INTO incidents (user_id,title,description,category,location_name,lat,lng) VALUES (?,?,?,?,?,?,?)",
+                 (user_id, title, description, category, location_name, lat, lng))
+    conn.commit(); conn.close()
+
+def get_all_incidents():
+    _init_db()
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    rows = conn.execute("SELECT * FROM incidents ORDER BY created_at DESC").fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
