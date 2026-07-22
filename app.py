@@ -5540,22 +5540,13 @@ def main():
         else:
             st.session_state["sounds_on"] = False
             st.components.v1.html('<script>window.parent._mashiMuted=true</script>', height=0)
-        st.markdown(f'<p style="font-size:0.65rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:rgba(148,163,184,0.4)!important;margin:0.8rem 0 0.5rem;">👤 {_L("Rol","Role","Rol")}</p>', unsafe_allow_html=True)
-        cam_label = _L("📸 Cámara IA","📸 AI Camera","📸 Kamara")
-        mapa_label = _L("🗺️ Mapa","🗺️ Map","🗺️ Mapa")
-        explore_label = _L("🧭 Explorar","🧭 Explore","🧭 Rikuchiy")
-        profile_label = _L("👤 Perfil","👤 Profile","👤 Perfil")
-        panel_label = _L("📊 Panel Compañía","📊 Company Dashboard","📊 Panel")
-        report_label = _L("🚨 Reportar","🚨 Report","🚨 Ñananchiy")
-        role = st.selectbox("", [T("role_eco"), cam_label, T("role_emp"), T("role_inv"), mapa_label, explore_label, profile_label, panel_label, report_label], label_visibility="collapsed")
-        rmap = {T("role_eco"):"Ecoturista", cam_label:"Cámara IA", T("role_emp"):"Emprendedor Local", T("role_inv"):"Inversionista", mapa_label:"Mapa", explore_label:"Explorar", profile_label:"Perfil", panel_label:"Panel Compañía", report_label:"Reportar Incidente"}
-        rkey = rmap.get(role, "Ecoturista")
         nav_rkey = st.session_state.pop("_nav_rkey", "")
+        rkey = "Mapa"
         if nav_rkey == "_demo":
             st.session_state["demo_mode"] = True
             st.session_state["demo_step"] = 0
-            rkey = "Ecoturista"
-        elif nav_rkey and (nav_rkey in rmap.values() or nav_rkey in _render_func):
+            rkey = "Mashi"
+        elif nav_rkey:
             rkey = nav_rkey
         has_key = bool(_resolve_api_key()) or bool(_resolve_or_key())
         if has_key:
@@ -5603,7 +5594,7 @@ def main():
         st.markdown(f'<div style="color:rgba(148,163,184,0.15)!important;font-size:0.6rem;text-align:center;padding-top:1.5rem;">© 2026 MAPPED · Loreto, {_L("Perú","Peru","Perú")}</div>', unsafe_allow_html=True)
         _inject_js()
 
-    # Content
+    # Content — single view dispatched by _nav_rkey
     _render_func = {
         "Mapa": render_map_view,
         "Ecoturista": render_ecotourist,
@@ -5614,12 +5605,13 @@ def main():
         "Perfil": render_profile,
         "Panel Compañía": render_panel_compania,
         "Reportar Incidente": render_reportar_incidente,
+        "Mashi": render_ecotourist,
     }
     if st.session_state.get("demo_mode", False):
         try: render_demo_tour()
         except Exception as e: st.error(f"Error en demo: {e}")
     else:
-        fn = _render_func.get(rkey, render_inversionista)
+        fn = _render_func.get(rkey, render_map_view)
         try: fn()
         except Exception as e:
             st.error(f"Error en {rkey}: {e}")
