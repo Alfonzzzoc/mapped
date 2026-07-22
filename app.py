@@ -10,9 +10,75 @@ python -m streamlit run app.py
 """
 
 import os, json, random, time, requests, re, math, base64
+import sqlite3 as _sqlite3
 import pandas as pd
 import streamlit as st
 import database as _db
+
+_DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "mapet.db")
+
+def _db_create_user(name, email, password):
+    conn = _sqlite3.connect(_DB_PATH)
+    try:
+        conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,email TEXT UNIQUE NOT NULL,password TEXT NOT NULL,role TEXT DEFAULT 'tourist',avatar_url TEXT,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+        conn.execute("CREATE TABLE IF NOT EXISTS entrepreneur_profiles (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,business_name TEXT NOT NULL,sector TEXT,location TEXT,description TEXT,phone TEXT,whatsapp TEXT,photo_url TEXT,verified INTEGER DEFAULT 0,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(user_id) REFERENCES users(id))")
+        conn.execute("CREATE TABLE IF NOT EXISTS incidents (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,title TEXT NOT NULL,description TEXT,category TEXT,location_name TEXT,lat REAL,lng REAL,photo_url TEXT,status TEXT DEFAULT 'reported',created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(user_id) REFERENCES users(id))")
+        conn.execute("INSERT INTO users (name,email,password) VALUES (?,?,?)", (name, email, password))
+        conn.commit()
+        u = conn.execute("SELECT id,name,email,role FROM users WHERE email=?", (email,)).fetchone()
+        conn.close()
+        return {"id":u[0],"name":u[1],"email":u[2],"role":u[3]} if u else None
+    except _sqlite3.IntegrityError:
+        conn.close()
+        return None
+
+def _db_login_user(email, password):
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,email TEXT UNIQUE NOT NULL,password TEXT NOT NULL,role TEXT DEFAULT 'tourist',avatar_url TEXT,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+    u = conn.execute("SELECT id,name,email,role FROM users WHERE email=? AND password=?", (email, password)).fetchone()
+    conn.close()
+    return {"id":u[0],"name":u[1],"email":u[2],"role":u[3]} if u else None
+
+def _db_update_user_role(user_id, role):
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute("UPDATE users SET role=? WHERE id=?", (role, user_id))
+    conn.commit(); conn.close()
+
+def _db_get_user(user_id):
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute("CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL,email TEXT UNIQUE NOT NULL,password TEXT NOT NULL,role TEXT DEFAULT 'tourist',avatar_url TEXT,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)")
+    conn.row_factory = _sqlite3.Row
+    u = conn.execute("SELECT * FROM users WHERE id=?", (user_id,)).fetchone()
+    conn.close()
+    return dict(u) if u else None
+
+def _db_save_entrepreneur_profile(user_id, business_name, sector, location, description, phone, whatsapp):
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute("CREATE TABLE IF NOT EXISTS entrepreneur_profiles (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,business_name TEXT NOT NULL,sector TEXT,location TEXT,description TEXT,phone TEXT,whatsapp TEXT,photo_url TEXT,verified INTEGER DEFAULT 0,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(user_id) REFERENCES users(id))")
+    conn.execute("INSERT INTO entrepreneur_profiles (user_id,business_name,sector,location,description,phone,whatsapp) VALUES (?,?,?,?,?,?,?)", (user_id, business_name, sector, location, description, phone, whatsapp))
+    conn.commit(); conn.close()
+
+def _db_get_entrepreneur_profile(user_id):
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute("CREATE TABLE IF NOT EXISTS entrepreneur_profiles (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER NOT NULL,business_name TEXT NOT NULL,sector TEXT,location TEXT,description TEXT,phone TEXT,whatsapp TEXT,photo_url TEXT,verified INTEGER DEFAULT 0,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(user_id) REFERENCES users(id))")
+    conn.row_factory = _sqlite3.Row
+    r = conn.execute("SELECT * FROM entrepreneur_profiles WHERE user_id=?", (user_id,)).fetchone()
+    conn.close()
+    return dict(r) if r else None
+
+def _db_report_incident(user_id, title, description, category, location_name, lat, lng):
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute("CREATE TABLE IF NOT EXISTS incidents (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,title TEXT NOT NULL,description TEXT,category TEXT,location_name TEXT,lat REAL,lng REAL,photo_url TEXT,status TEXT DEFAULT 'reported',created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(user_id) REFERENCES users(id))")
+    conn.execute("INSERT INTO incidents (user_id,title,description,category,location_name,lat,lng) VALUES (?,?,?,?,?,?,?)", (user_id, title, description, category, location_name, lat, lng))
+    conn.commit(); conn.close()
+
+def _db_get_all_incidents():
+    conn = _sqlite3.connect(_DB_PATH)
+    conn.execute("CREATE TABLE IF NOT EXISTS incidents (id INTEGER PRIMARY KEY AUTOINCREMENT,user_id INTEGER,title TEXT NOT NULL,description TEXT,category TEXT,location_name TEXT,lat REAL,lng REAL,photo_url TEXT,status TEXT DEFAULT 'reported',created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,FOREIGN KEY(user_id) REFERENCES users(id))")
+    conn.row_factory = _sqlite3.Row
+    rows = conn.execute("SELECT * FROM incidents ORDER BY created_at DESC").fetchall()
+    conn.close()
+    return [dict(r) for r in rows]
 
 # ─── Auto-backup on startup ──────────────────────────────────────────
 try:
@@ -5177,7 +5243,7 @@ def render_welcome():
         if st.button(L("Entrar","Log in","Yapay"), use_container_width=True, type="primary"):
             if email and pw:
                 try:
-                    user = _db.login_user(email, pw)
+                    user = _db_login_user(email, pw)
                     if user:
                         st.session_state["logged_in"] = True
                         st.session_state["user_id"] = user["id"]
@@ -5205,7 +5271,7 @@ def render_welcome():
                 else:
                     try:
                         import database as _db
-                        user = _db.create_user(rname, remail, rpw)
+                        user = _db_create_user(rname, remail, rpw)
                         if user:
                             st.session_state["logged_in"] = True
                             st.session_state["user_id"] = user["id"]
@@ -5261,7 +5327,7 @@ def render_user_type():
         """, unsafe_allow_html=True)
         if st.button(L("🌿 Soy Ecoturista","🌿 I'm an Ecotourist","🌿 Ekoturista kani"), use_container_width=True, type="primary", key="utype_eco"):
             import database as _db
-            _db.update_user_role(st.session_state.get("user_id", 0), "tourist")
+            _db_update_user_role(st.session_state.get("user_id", 0), "tourist")
             st.session_state["user_role"] = "tourist"
             st.rerun()
     with c2:
@@ -5274,7 +5340,7 @@ def render_user_type():
         """, unsafe_allow_html=True)
         if st.button(L("🏪 Soy Emprendedor","🏪 I'm an Entrepreneur","🏪 Emprendedor kani"), use_container_width=True, type="secondary", key="utype_emp"):
             import database as _db
-            _db.update_user_role(st.session_state.get("user_id", 0), "entrepreneur")
+            _db_update_user_role(st.session_state.get("user_id", 0), "entrepreneur")
             st.session_state["user_role"] = "entrepreneur"
             st.rerun()
     if st.button(L("Saltar por ahora","Skip for now","Ñakarikuy"), key="skip_utype", use_container_width=True):
@@ -5299,9 +5365,9 @@ def render_profile():
     if uid:
         try:
             import database as _db
-            user = _db.get_user(uid)
+            user = _db_get_user(uid)
             if user and user.get("role") == "entrepreneur":
-                eprof = _db.get_entrepreneur_profile(uid)
+                eprof = _db_get_entrepreneur_profile(uid)
                 if eprof:
                     st.markdown(f"""
                     <div class="glass-card">
@@ -5455,14 +5521,14 @@ def render_registro_emprendedor():
                 if desc:
                     try:
                         import database as _db
-                        _db.save_entrepreneur_profile(
+                        _db_save_entrepreneur_profile(
                             st.session_state.get("user_id", 0),
                             st.session_state.get("reg_bname", ""),
                             st.session_state.get("reg_sector", ""),
                             st.session_state.get("reg_location", ""),
                             desc, phone, whatsapp
                         )
-                        _db.update_user_role(st.session_state.get("user_id", 0), "entrepreneur")
+                        _db_update_user_role(st.session_state.get("user_id", 0), "entrepreneur")
                         st.session_state["user_role"] = "entrepreneur"
                         st.session_state.pop("reg_step", None)
                         st.success(L("¡Negocio registrado!","Business registered!","Negocioy rikchishka!"))
@@ -5483,7 +5549,7 @@ def render_panel_compania():
     if uid:
         try:
             import database as _db
-            eprof = _db.get_entrepreneur_profile(uid)
+            eprof = _db_get_entrepreneur_profile(uid)
         except Exception:
             pass
     if not eprof:
@@ -5549,7 +5615,7 @@ def render_reportar_incidente():
         if ititle and idesc:
             try:
                 import database as _db
-                _db.report_incident(
+                _db_report_incident(
                     st.session_state.get("user_id", 0),
                     ititle, idesc, icat, iloc, 0, 0
                 )
@@ -5561,7 +5627,7 @@ def render_reportar_incidente():
     incidents = []
     try:
         import database as _db
-        incidents = _db.get_all_incidents()
+        incidents = _db_get_all_incidents()
     except Exception:
         pass
     if incidents:
