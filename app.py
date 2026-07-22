@@ -2519,6 +2519,16 @@ iframe[title="st.components.v1.html"],iframe[title="streamlit.components.v1.html
 
 @media(max-width:768px){.main>.block-container{max-width:100%!important;padding:0!important}.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child{height:60px}.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button{height:60px;min-height:60px}}
 @media(min-width:769px){.main>.block-container{max-width:512px!important;padding:0 1rem!important}}
+.phone-frame{max-width:512px;margin:0 auto;min-height:100vh;position:relative;overflow-x:hidden}
+@media(min-width:769px){body{background:#010d09!important}.phone-frame{border-left:1px solid rgba(0,245,255,0.08);border-right:1px solid rgba(0,245,255,0.08);box-shadow:0 0 80px rgba(0,245,255,0.03)}}
+.cat-pill{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:20px;font-size:0.7rem;font-weight:600;border:1px solid var(--border);color:var(--text2);background:var(--card);white-space:nowrap;cursor:pointer;transition:all 0.2s}
+.cat-pill:hover,.cat-pill.active{border-color:var(--accent);color:var(--accent);background:rgba(0,245,255,0.06)}
+.cat-pill.active{background:rgba(0,245,255,0.12);color:var(--accent)}
+.map-overlay-header{position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg),rgba(2,27,21,0.95) 80%,transparent);padding:0.8rem 1rem 1.2rem;pointer-events:none}
+.map-overlay-header>*{pointer-events:auto}
+.map-search-overlay{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.65rem 1rem;display:flex;align-items:center;gap:8px;margin-top:0.3rem}
+.map-search-overlay input{background:transparent!important;border:none!important;color:var(--text)!important;font-size:0.8rem!important;box-shadow:none!important}
+.store-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
 
 .stSelectbox>div[data-baseweb="select"]{background:var(--bg2)!important}
 div[data-testid="stSelectboxDropdown"],div[data-baseweb="popover"],ul[role="listbox"]{background:var(--bg2)!important;border:1px solid var(--border)!important;border-radius:16px!important;backdrop-filter:blur(20px)!important}
@@ -2625,6 +2635,9 @@ def _render_mashi_fab():
     #mashi-fab{{animation:fabPulse 3s infinite ease-in-out;}}
     </style>"""
     st.components.v1.html(fab_html, height=0, scrolling=False)
+
+def _inject_viewport():
+    st.components.v1.html('<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">', height=0, scrolling=False)
 
 def _inject_js():
     st.components.v1.html(MASHI_JS, height=1, scrolling=False)
@@ -4468,9 +4481,27 @@ def render_map_view():
     ds = get_full_dataset()
     lang = st.session_state.get("lang", "es")
     L = _L
-
-    # Search bar
-    search = st.text_input("", placeholder=L("Busca emprendimientos, productos o ruta...","Search ventures, products or routes...","Maskay rantina, rurakuna o ñan..."), label_visibility="collapsed", key="map_search")
+    user_name = st.session_state.get("user_name", "Visitor")
+    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" />' if MASHI_LOGO_B64 else f'<div style="width:32px;height:32px;border-radius:50%;background:#042017;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.7rem;">👤</div>'
+    st.markdown(f"""
+    <div class="map-overlay-header">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:1rem;">🗺️</span>
+                <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1rem;color:#F0FFF4;">MAPPED</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:0.65rem;color:rgba(240,255,244,0.35);">{user_name[:15]}</span>
+                <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;">{avatar_html}</div>
+            </div>
+        </div>
+        <div class="map-search-overlay">
+            <span style="font-size:0.8rem;opacity:0.5;">🔍</span>
+            <span style="font-size:0.75rem;color:rgba(240,255,244,0.3);">{L("Buscar emprendimientos, productos o ruta...","Search ventures, products or routes...","Maskay rantina, rurakuna o ñan...")}</span>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    search = st.text_input("", placeholder=L("Buscar emprendimientos, productos o ruta...","Search ventures, products or routes...","Maskay rantina, rurakuna o ñan..."), label_visibility="collapsed", key="map_search")
 
     # Dynamic pin colors by distance from Iquitos
     _dists = [_dist_from_iquitos(e) for e in ds]
@@ -4695,7 +4726,20 @@ def render_store_view():
         st.success(f'🔄 {_L("Sincronizado","Synced","Allichashka")} — {len(sync_queue)} {_L("pendientes enviados","pending sent","kachashka")}')
     status_color = "#00F5FF" if online else "#f59e0b"
     status_text = _L("En línea · sincronizado","Online · synced","Kaypi · allichashka") if online else _L("Sin conexión · cola local","Offline · local queue","Mana kaypi · kaymanta")
-    st.markdown(f'<div style="padding:1rem 1rem 0.5rem"><h2 class="section-title">🛍️ {_L("Tienda MAPPED","MAPPED Store","MAPPED Rantina")}{title_suffix} <span style="font-size:0.6rem;color:{status_color};">● {status_text}</span></h2></div>', unsafe_allow_html=True)
+    user_name = st.session_state.get("user_name", "Visitor")
+    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" />' if MASHI_LOGO_B64 else f'<div style="width:32px;height:32px;border-radius:50%;background:#042017;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.7rem;">👤</div>'
+    st.markdown(f"""
+    <div style="position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg),rgba(2,27,21,0.95) 80%,transparent);padding:0.8rem 1rem 1rem;pointer-events:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;pointer-events:auto;">
+            <div>
+                <h2 style="color:#F0FFF4!important;font-size:1.2rem;font-weight:700;margin:0;font-family:'Space Grotesk',sans-serif;">🛍️ {_L("Tienda","Store","Rantina")}{title_suffix} <span style="font-size:0.55rem;color:{status_color};font-weight:500;">● {status_text}</span></h2>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+                <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;">{avatar_html}</div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     ds = get_full_dataset()
     all_prods = []
     for ent in ds:
@@ -5276,10 +5320,17 @@ def render_profile():
 def render_explore():
     lang = st.session_state.get("lang", "es")
     L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    user_name = st.session_state.get("user_name", "Visitor")
+    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" />' if MASHI_LOGO_B64 else f'<div style="width:32px;height:32px;border-radius:50%;background:#042017;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.7rem;">👤</div>'
     st.markdown(f"""
-    <div style="padding:0.8rem 0 0.5rem;">
-        <h2 style="color:#FFFFFF!important;font-size:1.3rem;font-weight:700;margin:0;">🧭 {L("Explorar","Explore","Rikuchiy")}</h2>
-        <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;">{L("Descubre comunidades y productos amazónicos","Discover Amazonian communities & products","Amazonía comunidadkunata rikuchiy")}</p>
+    <div style="position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg),rgba(2,27,21,0.95) 80%,transparent);padding:0.8rem 1rem 1rem;pointer-events:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;pointer-events:auto;">
+            <div>
+                <h2 style="color:#F0FFF4!important;font-size:1.2rem;font-weight:700;margin:0;font-family:'Space Grotesk',sans-serif;">🧭 {L("Explorar","Explore","Rikuchiy")}</h2>
+                <p style="font-size:0.7rem;color:rgba(240,255,244,0.35);margin:0.15rem 0 0;">{L("Descubre comunidades y productos amazónicos","Discover Amazonian communities & products","Amazonía comunidadkunata rikuchiy")}</p>
+            </div>
+            <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;">{avatar_html}</div>
+        </div>
     </div>
     """, unsafe_allow_html=True)
     search = st.text_input("🔍", placeholder=L("Buscar comunidades, productos, sectores...","Search communities, products, sectors...","Buskay..."), label_visibility="collapsed", key="explore_search")
@@ -5530,6 +5581,7 @@ def main():
     if not st.session_state.logged_in:
         render_welcome()
         return
+    _inject_viewport()
 
     if not st.session_state.onboarded:
         render_user_type()
