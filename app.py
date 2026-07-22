@@ -2613,28 +2613,13 @@ def _render_mashi_fab():
     rkey = st.session_state.get("_nav_rkey", "Mapa")
     if rkey in ("Mashi", "Ecoturista"):
         return
-    fab_html = f"""<div id="mashi-fab-wrap" style="position:fixed;bottom:80px;right:24px;z-index:9999;">
-        <form method="post" id="mashi-fab-form">
-            <input type="hidden" name="mashi_fab" value="1"/>
-            <button type="submit" id="mashi-fab" style="
-                width:60px;height:60px;border-radius:50%;border:none;cursor:pointer;
-                background:linear-gradient(135deg,#00F5FF,#00FFAB);
-                box-shadow:0 8px 24px rgba(0,245,255,0.35);display:flex;align-items:center;justify-content:center;
-                transition:transform 0.2s;position:relative;
-            ">
-                <span style="font-size:1.6rem;">🤖</span>
-            </button>
-        </form>
-    </div>
-    <style>
-    #mashi-fab-wrap{{position:fixed!important;bottom:80px!important;right:24px!important;z-index:9999!important;}}
-    #mashi-fab{{transition:transform 0.2s cubic-bezier(.4,0,.2,1)!important;}}
-    #mashi-fab:hover{{transform:scale(1.1)!important;box-shadow:0 12px 32px rgba(0,245,255,0.5)!important;}}
-    #mashi-fab:active{{transform:scale(0.95)!important;}}
-    @keyframes fabPulse{{0%,100%{{box-shadow:0 8px 24px rgba(0,245,255,0.35);}}50%{{box-shadow:0 8px 24px rgba(0,245,255,0.55),0 0 0 8px rgba(0,245,255,0.1);}}}}
-    #mashi-fab{{animation:fabPulse 3s infinite ease-in-out;}}
-    </style>"""
-    st.components.v1.html(fab_html, height=0, scrolling=False)
+    st.markdown('<div style="position:relative;height:0;">', unsafe_allow_html=True)
+    fc1, fc2 = st.columns([6,1])
+    with fc2:
+        if st.button("🤖", key="mashi_fab_btn", help="Mashi AI", use_container_width=True):
+            st.session_state["_nav_rkey"] = "Mashi"
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 def _inject_viewport():
     st.components.v1.html('<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">', height=0, scrolling=False)
@@ -4482,22 +4467,21 @@ def render_map_view():
     lang = st.session_state.get("lang", "es")
     L = _L
     user_name = st.session_state.get("user_name", "Visitor")
-    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" />' if MASHI_LOGO_B64 else f'<div style="width:32px;height:32px;border-radius:50%;background:#042017;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.7rem;">👤</div>'
+    initial = user_name[0].upper() if user_name else "U"
+    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />' if MASHI_LOGO_B64 else f'<span style="font-size:0.7rem;font-weight:700;color:#00F5FF;">{initial}</span>'
     st.markdown(f"""
-    <div class="map-overlay-header">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-            <div style="display:flex;align-items:center;gap:8px;">
-                <span style="font-size:1rem;">🗺️</span>
-                <span style="font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1rem;color:#F0FFF4;">MAPPED</span>
+    <div style="position:sticky;top:0;z-index:1000;background:linear-gradient(to bottom,rgba(2,27,21,0.97),rgba(2,27,21,0.85) 70%,transparent);padding:16px 16px 20px;">
+        <div style="max-width:512px;margin:0 auto;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="window.parent.postMessage('navigate_profile','*')">
+                    <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(0,245,255,0.2),rgba(0,255,171,0.2));border:1.5px solid rgba(0,245,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">{avatar_html}</div>
+                    <span style="color:#F0FFF4;font-size:0.85rem;font-weight:500;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{user_name}</span>
+                </div>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-                <span style="font-size:0.65rem;color:rgba(240,255,244,0.35);">{user_name[:15]}</span>
-                <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;">{avatar_html}</div>
+            <div style="position:relative;">
+                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:0.8rem;opacity:0.3;">🔍</span>
+                <input type="text" placeholder="{L("Buscar emprendimientos, productos o ruta...","Search ventures, products or routes...","Maskay rantina, rurakuna o ñan...")}" style="width:100%;padding:14px 16px 14px 40px;border-radius:16px;background:rgba(2,27,21,0.95);backdrop-filter:blur(12px);border:1px solid rgba(240,255,244,0.1);color:#F0FFF4;font-size:0.8rem;outline:none;box-sizing:border-box;" />
             </div>
-        </div>
-        <div class="map-search-overlay">
-            <span style="font-size:0.8rem;opacity:0.5;">🔍</span>
-            <span style="font-size:0.75rem;color:rgba(240,255,244,0.3);">{L("Buscar emprendimientos, productos o ruta...","Search ventures, products or routes...","Maskay rantina, rurakuna o ñan...")}</span>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -4683,13 +4667,14 @@ def render_map_view():
             unsafe_allow_html=True
         )
 
-    # FAB-style button
-    fab_col1, fab_col2, fab_col3 = st.columns([3,1,3])
-    with fab_col2:
-        st.markdown('<div style="text-align:center;">', unsafe_allow_html=True)
-        if st.button("⚠️", key="fab_sos", help=L("Reportar incidente","Report incident","Willay"), use_container_width=True):
-            st.info(L("Número de emergencia: 105 📞","Emergency number: 105 📞","Urgente: 105 📞"))
-        st.markdown('</div>', unsafe_allow_html=True)
+    # FAB reportar button — matches Base44 spec (bottom-24 right-4)
+    st.markdown('<div style="position:relative;height:0;">', unsafe_allow_html=True)
+    fab_c1, fab_c2, fab_c3 = st.columns([5,1,1])
+    with fab_c3:
+        if st.button("⚠️", key="fab_reportar_btn", help=L("Reportar incidente","Report incident","Willay"), use_container_width=True):
+            st.session_state["_nav_rkey"] = "Reportar Incidente"
+            st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
     # Legend
     st.markdown(
@@ -5247,37 +5232,30 @@ def render_profile():
     user_name = st.session_state.get('user_name','')
     user_email = st.session_state.get('user_email','')
     user_role = st.session_state.get('user_role','tourist')
-    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;" />' if MASHI_LOGO_B64 else '<div style="width:80px;height:80px;border-radius:50%;background:#042017;"></div>'
+    initial = user_name[0].upper() if user_name else "U"
+    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />' if MASHI_LOGO_B64 else f'<span style="font-size:1.2rem;font-weight:700;color:#00F5FF;">{initial}</span>'
     st.markdown(f"""
-    <div style="text-align:center;padding:1.5rem 1rem 1rem;">
-        <div style="width:88px;height:88px;border-radius:50%;padding:3px;background:linear-gradient(135deg,#00F5FF,#00FFAB);margin:0 auto 1rem;display:inline-block;">
-            <div style="width:100%;height:100%;border-radius:50%;background:#021B15;display:flex;align-items:center;justify-content:center;overflow:hidden;">
-                {avatar_html}
-            </div>
+    <div style="text-align:center;padding:48px 20px 24px;">
+        <div style="width:96px;height:96px;border-radius:50%;padding:3px;background:linear-gradient(135deg,rgba(0,245,255,0.2),rgba(0,255,171,0.2));margin:0 auto 16px;display:inline-block;border:2px solid rgba(0,245,255,0.3);">
+            <div style="width:100%;height:100%;border-radius:50%;background:#021B15;display:flex;align-items:center;justify-content:center;overflow:hidden;">{avatar_html}</div>
         </div>
-        <h2 style="color:#F0FFF4!important;font-size:1.2rem;font-weight:700;margin:0;font-family:'Space Grotesk',sans-serif;">{user_name}</h2>
-        <p style="font-size:0.75rem;color:rgba(240,255,244,0.4);margin:0.25rem 0 0.6rem;">{user_email}</p>
-        <span style="display:inline-block;background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.2);padding:0.2rem 0.8rem;border-radius:20px;font-size:0.65rem;color:#00F5FF;font-weight:600;text-transform:uppercase;letter-spacing:1px;">{user_role}</span>
+        <h1 style="font-size:1.25rem;font-weight:700;color:#F0FFF4;margin:0;font-family:'Space Grotesk',sans-serif;">{user_name}</h1>
+        <p style="font-size:0.875rem;color:rgba(240,255,244,0.4);margin:4px 0 0;">{user_email}</p>
     </div>
     """, unsafe_allow_html=True)
     lang = st.session_state.get("lang", "es")
     L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
     stats_fav = len(st.session_state.get("favorites", []))
     stats_purch = len(st.session_state.get("purchases", []))
-    stats_comm = len(set(p.get("community_id") for p in st.session_state.get("purchases", []) if p.get("community_id")))
     st.markdown(f"""
-    <div style="display:flex;gap:0.5rem;margin:0.5rem 1rem 1rem;">
-        <div style="flex:1;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.8rem;">
-            <div style="font-size:1.25rem;font-weight:700;color:#00F5FF;">{stats_fav}</div>
-            <div style="font-size:0.6rem;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:1px;">{L("Favoritos","Favorites","Munay")}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 20px 24px;">
+        <div style="text-align:center;background:rgba(240,255,244,0.03);border:1px solid rgba(240,255,244,0.08);border-radius:16px;padding:16px;">
+            <div style="font-size:1.5rem;font-weight:700;color:#F0FFF4;font-family:'Space Grotesk',sans-serif;">{stats_fav}</div>
+            <div style="font-size:0.75rem;color:rgba(240,255,244,0.5);font-weight:500;margin-top:4px;">{L("Favoritos","Favorites","Munay")}</div>
         </div>
-        <div style="flex:1;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.8rem;">
-            <div style="font-size:1.25rem;font-weight:700;color:#00F5FF;">{stats_purch}</div>
-            <div style="font-size:0.6rem;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:1px;">{L("Compras","Purchases","Rantiy")}</div>
-        </div>
-        <div style="flex:1;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.8rem;">
-            <div style="font-size:1.25rem;font-weight:700;color:#00F5FF;">{stats_comm}</div>
-            <div style="font-size:0.6rem;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:1px;">{L("Visitas","Visits","Rikuy")}</div>
+        <div style="text-align:center;background:rgba(240,255,244,0.03);border:1px solid rgba(240,255,244,0.08);border-radius:16px;padding:16px;">
+            <div style="font-size:1.5rem;font-weight:700;color:#F0FFF4;font-family:'Space Grotesk',sans-serif;">{stats_purch}</div>
+            <div style="font-size:0.75rem;color:rgba(240,255,244,0.5);font-weight:500;margin-top:4px;">{L("Compras","Purchases","Rantiy")}</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -5289,30 +5267,38 @@ def render_profile():
                 eprof = _db_get_entrepreneur_profile(uid)
                 if eprof:
                     st.markdown(f"""
-                    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem;margin:0 1rem 0.75rem;">
-                        <div style="font-weight:700;font-size:0.8rem;color:#F0FFF4;margin-bottom:0.5rem;">🏪 {L("Mi Negocio","My Business","Negocioy")}</div>
+                    <div style="background:rgba(240,255,244,0.03);border:1px solid rgba(240,255,244,0.08);border-radius:16px;padding:16px;margin:0 20px 12px;">
+                        <div style="font-weight:700;font-size:0.8rem;color:#F0FFF4;margin-bottom:8px;">{L("Mi Negocio","My Business","Negocioy")}</div>
                         <div style="font-size:0.8rem;color:rgba(240,255,244,0.7);">{eprof.get('business_name','')}</div>
-                        <div style="font-size:0.7rem;color:rgba(240,255,244,0.4);margin-top:0.25rem;">📍 {eprof.get('location','')} · 📂 {eprof.get('sector','')}</div>
+                        <div style="font-size:0.7rem;color:rgba(240,255,244,0.4);margin-top:4px;">{eprof.get('location','')} · {eprof.get('sector','')}</div>
                     </div>
                     """, unsafe_allow_html=True)
         except Exception:
             pass
+    st.markdown(f'<div style="padding:0 20px 12px;font-size:0.75rem;font-weight:600;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:0.05em;">{L("Configuracion","Settings","Rurakuy")}</div>', unsafe_allow_html=True)
+    lc = st.columns(3)
+    for i, (code, label) in enumerate([("es","ES"),("en","EN"),("qw","QW")]):
+        with lc[i]:
+            if st.button(label, key=f"prof_lang_{code}", use_container_width=True, type="primary" if lang==code else "secondary"):
+                st.session_state["lang"] = code
+                st.rerun()
     if st.session_state.get("favorites"):
-        with st.expander(f"❤️ {L('Mis Favoritos','My Favorites','Huñunakuykun')}"):
+        with st.expander(f"{L('Mis Favoritos','My Favorites','Huñunakuykun')}"):
             ds = get_full_dataset()
             fav_ids = st.session_state.get("favorites", [])
             for ent in ds:
                 if ent.get("id") in fav_ids:
-                    st.markdown(f"**{ent['name']}** · 📍 {ent.get('location','')}")
+                    st.markdown(f"**{ent['name']}** · {ent.get('location','')}")
     if st.session_state.get("purchases"):
-        with st.expander(f"🛒 {L('Mis Compras','My Purchases','Rantishkakun')}"):
+        with st.expander(f"{L('Mis Compras','My Purchases','Rantishkakun')}"):
             for p in st.session_state["purchases"]:
                 st.markdown(f"**{p.get('product','')}** — S/ {p.get('price',0):.2f} · {p.get('community','')}")
     st.markdown('<div style="height:0.5rem;"></div>', unsafe_allow_html=True)
-    if st.button(f"🚪 {L('Cerrar sesión','Log out','Kutiy')}", use_container_width=True, type="secondary"):
+    if st.button(f"{L('Cerrar sesion','Log out','Kutiy')}", use_container_width=True, type="secondary"):
         for k in ["logged_in","user_id","user_name","user_email","user_role","onboarded"]:
             st.session_state.pop(k, None)
         st.rerun()
+
 
 # ========================================================================
 # EXPLORE PAGE
@@ -5321,49 +5307,72 @@ def render_explore():
     lang = st.session_state.get("lang", "es")
     L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
     user_name = st.session_state.get("user_name", "Visitor")
-    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;" />' if MASHI_LOGO_B64 else f'<div style="width:32px;height:32px;border-radius:50%;background:#042017;border:1.5px solid var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.7rem;">👤</div>'
+    initial = user_name[0].upper() if user_name else "U"
+    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />' if MASHI_LOGO_B64 else f'<span style="font-size:0.65rem;font-weight:700;color:#00F5FF;">{initial}</span>'
+    ds = get_full_dataset()
+    sectors = sorted(set(e.get("sector", "") for e in ds if e.get("sector")))
+    cat_keys = ["all"] + sectors
+    cat_labels = {"all": L("Todas","All","Tukuy")}
+    for s in sectors:
+        cat_labels[s] = s
+    if "explore_cat" not in st.session_state:
+        st.session_state["explore_cat"] = "all"
+    sel = st.session_state["explore_cat"]
     st.markdown(f"""
-    <div style="position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg),rgba(2,27,21,0.95) 80%,transparent);padding:0.8rem 1rem 1rem;pointer-events:none;">
-        <div style="display:flex;align-items:center;justify-content:space-between;pointer-events:auto;">
-            <div>
-                <h2 style="color:#F0FFF4!important;font-size:1.2rem;font-weight:700;margin:0;font-family:'Space Grotesk',sans-serif;">🧭 {L("Explorar","Explore","Rikuchiy")}</h2>
-                <p style="font-size:0.7rem;color:rgba(240,255,244,0.35);margin:0.15rem 0 0;">{L("Descubre comunidades y productos amazónicos","Discover Amazonian communities & products","Amazonía comunidadkunata rikuchiy")}</p>
+    <div style="position:sticky;top:0;z-index:20;background:rgba(2,27,21,0.95);backdrop-filter:blur(12px);border-bottom:1px solid rgba(240,255,244,0.08);padding:24px 16px 16px;">
+        <div style="max-width:512px;margin:0 auto;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+                <div>
+                    <h1 style="font-size:1.5rem;font-weight:700;color:#F0FFF4;margin:0;font-family:'Space Grotesk',sans-serif;">🧭 {L("Explorar","Explore","Rikuchiy")}</h1>
+                    <p style="font-size:0.75rem;color:rgba(240,255,244,0.4);margin:4px 0 0;">{L("Descubre comunidades y productos amazónicos","Discover Amazonian communities & products","Amazonía comunidadkunata rikuchiy")}</p>
+                </div>
+                <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(0,245,255,0.2),rgba(0,255,171,0.2));border:1.5px solid rgba(0,245,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">{avatar_html}</div>
             </div>
-            <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;">{avatar_html}</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
-    search = st.text_input("🔍", placeholder=L("Buscar comunidades, productos, sectores...","Search communities, products, sectors...","Buskay..."), label_visibility="collapsed", key="explore_search")
-    ds = get_full_dataset()
-    sectors = sorted(set(e.get("sector", "") for e in ds if e.get("sector")))
-    sel_sector = st.multiselect(L("Filtrar por sector","Filter by sector","Sector"), sectors, key="explore_sectors")
+    pill_html = '<div style="display:flex;gap:8px;overflow-x:auto;padding:0 16px 12px;max-width:512px;margin:0 auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;">'
+    for ck in cat_keys:
+        is_active = sel == ck
+        if is_active:
+            pill_html += f'<span style="display:inline-flex;align-items:center;gap:4px;padding:8px 16px;border-radius:20px;font-size:0.8rem;font-weight:500;background:linear-gradient(to right,#00F5FF,#00FFAB);color:#021B15;white-space:nowrap;flex-shrink:0;">{cat_labels.get(ck, ck)}</span>'
+        else:
+            pill_html += f'<span style="display:inline-flex;align-items:center;gap:4px;padding:8px 16px;border-radius:20px;font-size:0.8rem;font-weight:500;background:transparent;color:rgba(240,255,244,0.5);border:1px solid rgba(240,255,244,0.1);white-space:nowrap;flex-shrink:0;">{cat_labels.get(ck, ck)}</span>'
+    pill_html += '</div>'
+    st.markdown(pill_html, unsafe_allow_html=True)
+    pill_cols = st.columns(len(cat_keys))
+    for i, ck in enumerate(cat_keys):
+        with pill_cols[i]:
+            if st.button(cat_labels.get(ck, ck), key=f"cat_{ck}", use_container_width=True, type="primary" if sel == ck else "secondary"):
+                st.session_state["explore_cat"] = ck
+                st.rerun()
+    search = st.text_input("🔍", placeholder=L("Buscar comunidades, productos...","Search communities, products...","Buskay..."), label_visibility="collapsed", key="explore_search")
+    if sel != "all":
+        ds = [e for e in ds if e.get("sector") == sel]
     if search:
         sq = search.lower()
         ds = [e for e in ds if sq in e.get("name","").lower() or sq in e.get("description","").lower() or sq in " ".join(e.get("sector_keywords",[])).lower() or sq in e.get("sector","").lower()]
-    if sel_sector:
-        ds = [e for e in ds if e.get("sector") in sel_sector]
+    if not ds:
+        st.markdown(f'<div style="text-align:center;padding:3rem 1rem;color:rgba(240,255,244,0.3);font-size:0.85rem;">{L("No hay resultados","No results","Mana tiyan")}</div>', unsafe_allow_html=True)
+        return
     for ent in ds:
         ent_id = ent.get("id")
         n_reviews = len(ent.get("reviews", []))
         avg_stars = sum(r.get("stars", 0) for r in ent.get("reviews", [])) / max(n_reviews, 1)
         favs = st.session_state.get("favorites", [])
         is_fav = ent_id in favs
-        star_str = "⭐" * int(avg_stars) + f" ({n_reviews})"
         prods = ent.get("products", [])
-        prod_text = ", ".join(p.get("name", "") for p in prods[:2])
-        if len(prods) > 2:
-            prod_text += f" +{len(prods)-2}"
-        fav_icon = "💚" if is_fav else "🤍"
+        first_price = prods[0].get("price", 0) if prods else 0
         st.markdown(f"""
-        <div class="glass-card" style="margin-bottom:0.8rem;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-                <div style="flex:1;">
-                    <h3 style="color:#FFFFFF!important;font-size:0.9rem;font-weight:700;margin:0;">{ent.get('name','')}</h3>
-                    <p style="font-size:0.7rem;color:rgba(148,163,184,0.5)!important;margin:0.2rem 0;">📍 {ent.get('location','')} · 📂 {ent.get('sector','')}</p>
-                    <p style="font-size:0.7rem;color:#00F5FF!important;margin:0.2rem 0;">{star_str}</p>
-                    <p style="font-size:0.7rem;color:rgba(148,163,184,0.4)!important;margin:0;">{prod_text}</p>
+        <div style="width:100%;display:flex;gap:12px;padding:12px;border-radius:16px;background:rgba(240,255,244,0.03);border:1px solid rgba(240,255,244,0.08);margin-bottom:12px;transition:border-color 0.2s;cursor:pointer;" onclick="this.style.borderColor='rgba(240,255,244,0.15)'">
+            <div style="width:80px;height:80px;border-radius:12px;background:#042017;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.5rem;">{_sector_emoji(ent.get('sector',''))}</div>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;">
+                <div style="color:#F0FFF4;font-weight:600;font-size:0.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{ent.get('name','')}</div>
+                <div style="color:rgba(240,255,244,0.4);font-size:0.75rem;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{ent.get('location','')} · {ent.get('sector','')}</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+                    <span style="color:#00FFAB;font-size:0.75rem;font-weight:600;">{'⭐' * int(avg_stars)} ({n_reviews})</span>
+                    <span style="color:#00F5FF;font-size:0.75rem;font-weight:600;">S/ {first_price:.2f}</span>
                 </div>
-                <span style="font-size:1.5rem;">{fav_icon}</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -5375,7 +5384,7 @@ def render_explore():
                 st.session_state["_nav_rkey"] = "Ecoturista"
                 st.rerun()
         with fc2:
-            if st.button(f"{fav_icon}", key=f"exp_fav_{ent_id}"):
+            if st.button(f"{'💚' if is_fav else '🤍'}", key=f"exp_fav_{ent_id}"):
                 favs = st.session_state.get("favorites", [])
                 if ent_id in favs:
                     favs.remove(ent_id)
@@ -5385,7 +5394,7 @@ def render_explore():
                 st.rerun()
         with fc3:
             if prods:
-                if st.button(L("🛒","🛒","🛒"), key=f"exp_store_{ent_id}", use_container_width=True):
+                if st.button("🛒", key=f"exp_store_{ent_id}", use_container_width=True):
                     st.session_state["selected_ent_id"] = ent_id
                     st.session_state["_nav_rkey"] = "Tienda"
                     st.rerun()
@@ -5589,12 +5598,17 @@ def main():
 
     st.markdown(CSS, unsafe_allow_html=True)
 
-    # Header
-    lang_label = {"es":"ES","en":"EN","qw":"QW"}.get(st.session_state.lang,"ES")
-    subtitle_txt = _L("Mercado Amazónico · Loreto","Amazon Marketplace · Loreto","Amazónika Rantina · Loreto")
-    st.markdown(f'<div class="app-header"><div class="app-header-left"><div class="avatar mashi-avatar-img"></div><div><div class="title">MAPPED</div><div class="subtitle">{subtitle_txt}</div></div></div><span class="lang-badge">{lang_label}</span></div>', unsafe_allow_html=True)
+    # Navigation dispatch — pop _nav_rkey before any widgets render
+    nav_rkey = st.session_state.pop("_nav_rkey", "")
+    rkey = "Mapa"
+    if nav_rkey == "_demo":
+        st.session_state["demo_mode"] = True
+        st.session_state["demo_step"] = 0
+        rkey = "Mashi"
+    elif nav_rkey:
+        rkey = nav_rkey
 
-    # Sidebar
+    # Sidebar — hidden by CSS, kept for backward compatibility
     with st.sidebar:
         st.markdown(f'<div class="glass-card" style="text-align:center;padding:1.5rem 1rem;"><div style="width:64px;height:64px;border-radius:50%;margin:0 auto 0.8rem;background:rgba(0,245,255,0.1);border:2px solid rgba(0,245,255,0.3);overflow:hidden;box-shadow:0 0 30px rgba(0,245,255,0.08);" class="mashi-avatar-img"></div><h3 style="color:#FFFFFF!important;font-size:1.1rem;font-weight:700;margin:0;">{KICHWA["saludo"]}</h3><p style="color:rgba(148,163,184,0.4)!important;font-size:0.7rem;margin-top:0.3rem;">{st.session_state.user_name}</p></div>', unsafe_allow_html=True)
         dm_active = st.session_state.get("demo_mode", False)
@@ -5619,14 +5633,6 @@ def main():
         else:
             st.session_state["sounds_on"] = False
             st.components.v1.html('<script>window.parent._mashiMuted=true</script>', height=0)
-        nav_rkey = st.session_state.pop("_nav_rkey", "")
-        rkey = "Mapa"
-        if nav_rkey == "_demo":
-            st.session_state["demo_mode"] = True
-            st.session_state["demo_step"] = 0
-            rkey = "Mashi"
-        elif nav_rkey:
-            rkey = nav_rkey
         has_key = bool(_resolve_api_key()) or bool(_resolve_or_key())
         if has_key:
             st.markdown(f'<div style="background:rgba(0,245,255,0.06);border:1px solid rgba(0,245,255,0.1);border-radius:10px;padding:0.3rem 0.6rem;font-size:0.65rem;text-align:center;color:#00F5FF;">🟢 {_L("IA conectada","AI connected","IA tinkushka")}</div>', unsafe_allow_html=True)
@@ -5638,7 +5644,6 @@ def main():
         compras = st.session_state.get("purchases",[])
         if compras:
             st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.6rem 1rem;font-size:0.8rem;">🛒 <strong style="color:#00F5FF!important;">{len(compras)}</strong> {_L("compra(s)","purchase(s)","rantishka")}</div>', unsafe_allow_html=True)
-        # QR code for public access
         with st.expander("📡 " + _L("Compartir MAPPED","Share MAPPED","MAPPEDta rikuchiy"), expanded=False):
             if "ngrok_url" not in st.session_state:
                 try:
@@ -5670,7 +5675,6 @@ def main():
                         st.rerun()
                 except Exception:
                     st.caption(_L("Instala: pip install qrcode[pil]","Install: pip install qrcode[pil]","Churay: pip install qrcode[pil]"))
-        st.markdown(f'<div style="color:rgba(148,163,184,0.15)!important;font-size:0.6rem;text-align:center;padding-top:1.5rem;">© 2026 MAPPED · Loreto, {_L("Perú","Peru","Perú")}</div>', unsafe_allow_html=True)
         _inject_js()
 
     # Content — single view dispatched by _nav_rkey
