@@ -821,7 +821,7 @@ def _get_product_image(ent_or_community, prod=None, size="100%"):
         rings = ','.join(f'<circle cx="200" cy="100" r="{r*3}" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="3"/>' for r in range(5,40,6))
         deco = f'<g opacity="0.4">{rings}</g>'
     elif "medicina" in sector or "planta" in sector:
-        leaves = ','.join(f'<path d="M{cx},{cy} Q{cx-8},{cy-12} {cx},{cy-24} Q{cx+8},{cy-12} {cx},{cy}" fill="rgba(16,185,129,0.06)"/>' for cx in range(30,400,50) for cy in range(30,200,40))
+        leaves = ','.join(f'<path d="M{cx},{cy} Q{cx-8},{cy-12} {cx},{cy-24} Q{cx+8},{cy-12} {cx},{cy}" fill="rgba(0,245,255,0.06)"/>' for cx in range(30,400,50) for cy in range(30,200,40))
         deco = f'<g opacity="0.5">{leaves}</g>'
     elif "música" in sector or "instrumento" in sector:
         notes = ','.join(f'<text x="{cx}" y="{cy}" font-size="18" fill="rgba(255,255,255,0.05)">♪</text>' for cx in range(20,400,45) for cy in range(30,200,35))
@@ -830,7 +830,7 @@ def _get_product_image(ent_or_community, prod=None, size="100%"):
     # Accent stripe based on sector
     accent_color = f"hsl({hue2},50%,35%)"
     if "textil" in sector or "chambira" in sector:
-        accent_color = "#10b981"
+        accent_color = "#00F5FF"
     elif "cosmético" in sector:
         accent_color = "#ec4899"
     elif "miel" in sector or "alimento" in sector:
@@ -2422,49 +2422,49 @@ def _clean_mashi(text, lang):
 # ========================================================================
 CSS = """
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#040e0b;--bg2:#0a1f1a;--accent:#10b981;--accent2:#059669;--text:#e2e8f0;--text2:#94a3b8;--border:rgba(16,185,129,0.1);--card:rgba(10,31,26,0.6)}
-html,body,.stApp{background:var(--bg)!important;height:100%;font-family:'Inter',system-ui,sans-serif;color:var(--text)!important}
-h1,h2,h3,h4,h5,h6{font-weight:700;color:#fff!important;letter-spacing:-0.02em}
+:root{--bg:#021B15;--bg2:#042017;--accent:#00F5FF;--accent2:#00FFAB;--accent-grad:linear-gradient(to right,#00F5FF,#00FFAB);--text:#F0FFF4;--text2:rgba(240,255,244,0.40);--text3:rgba(240,255,244,0.50);--border:rgba(240,255,244,0.08);--card:rgba(240,255,244,0.03);--destructive:#EF4444;--destructive-bg:rgba(239,68,68,0.05)}
+html,body,.stApp{background:var(--bg)!important;height:100%;font-family:'Inter',ui-sans-serif,system-ui,sans-serif;color:var(--text)!important}
+h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif!important;font-weight:700;color:#F0FFF4!important;letter-spacing:-0.01em}
 .stApp>header,.stApp>footer,#MainMenu,.stDecoration{display:none!important}
-.main>.block-container{max-width:900px;padding:0!important;margin:0 auto!important;background:transparent!important}
+.main>.block-container{max-width:512px;padding:0!important;margin:0 auto!important;background:transparent!important}
 section[data-testid="stSidebar"]>div:first-child{background:var(--bg2)!important}
 section[data-testid="stSidebar"] .stMarkdown,section[data-testid="stSidebar"] label,section[data-testid="stSidebar"] p,section[data-testid="stSidebar"] span{color:var(--text)!important}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
 
 .app-header{background:var(--bg);padding:0.7rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
 .app-header-left{display:flex;align-items:center;gap:10px}
 .app-header .avatar{width:36px;height:36px;border-radius:50%;border:2px solid var(--accent);flex-shrink:0;overflow:hidden}
-.app-header .title{font-weight:800;font-size:1.1rem;color:#fff!important;letter-spacing:-0.02em}
+.app-header .title{font-family:'Space Grotesk',sans-serif;font-weight:800;font-size:1.1rem;color:#F0FFF4!important;letter-spacing:-0.02em}
 .app-header .subtitle{font-size:0.6rem;color:var(--accent)!important;text-transform:uppercase;letter-spacing:2px;font-weight:600}
-.app-header .lang-badge{background:rgba(16,185,129,0.08);border:1px solid var(--border);padding:0.2rem 0.6rem;border-radius:20px;font-size:0.65rem;font-weight:700;color:var(--accent)!important}
+.app-header .lang-badge{background:rgba(0,245,255,0.08);border:1px solid var(--border);padding:0.2rem 0.6rem;border-radius:20px;font-size:0.65rem;font-weight:700;color:var(--accent)!important}
 
-.stButton>button{background:var(--accent)!important;color:#040e0b!important;font-weight:700!important;border:none!important;border-radius:12px!important;padding:0.55rem 1.5rem!important;font-size:0.85rem!important;transition:all 0.15s!important;font-family:'Inter',sans-serif!important}
-.stButton>button:hover{background:var(--accent2)!important;transform:translateY(-1px);box-shadow:0 4px 16px rgba(16,185,129,0.3)!important}
-.stButton>button:active{transform:scale(0.98)!important}
-.stButton>button:disabled{opacity:0.4!important;transform:none!important;box-shadow:none!important}
-.stButton>button[kind="secondary"]{background:transparent!important;color:var(--accent)!important;border:1.5px solid var(--border)!important;box-shadow:none!important}
-.stButton>button[kind="secondary"]:hover{background:rgba(16,185,129,0.06)!important;border-color:var(--accent)!important}
+.stButton>button{background:var(--accent-grad)!important;color:#021B15!important;font-weight:600!important;border:none!important;border-radius:16px!important;padding:0.65rem 1.5rem!important;font-size:0.875rem!important;transition:all 0.2s cubic-bezier(0.4,0,0.2,1)!important;font-family:'Inter',sans-serif!important;box-shadow:0 10px 15px -3px rgba(0,245,255,0.2),0 4px 6px -4px rgba(0,245,255,0.2)!important}
+.stButton>button:hover{transform:translateY(-1px)!important;box-shadow:0 20px 25px -5px rgba(0,245,255,0.3),0 8px 10px -6px rgba(0,245,255,0.3)!important}
+.stButton>button:active{transform:scale(0.95)!important}
+.stButton>button:disabled{opacity:0.20!important;transform:none!important;box-shadow:none!important;background:rgba(240,255,244,0.05)!important;color:rgba(240,255,244,0.20)!important}
+.stButton>button[kind="secondary"]{background:rgba(240,255,244,0.05)!important;color:var(--text)!important;border:1px solid var(--border)!important;box-shadow:none!important}
+.stButton>button[kind="secondary"]:hover{background:rgba(240,255,244,0.08)!important;border-color:rgba(240,255,244,0.15)!important}
 
 .glass-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem;margin-bottom:0.8rem;transition:all 0.2s}
-.glass-card:hover{border-color:rgba(16,185,129,0.2);transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,0,0,0.15)}
-.glass-card h3{margin-top:0;color:#fff!important;font-weight:700}
+.glass-card:hover{border-color:rgba(240,255,244,0.15);transform:translateY(-1px)}
+.glass-card h3{margin-top:0;color:#F0FFF4!important;font-weight:700}
 
-.stTextInput>div>div,.stTextArea>div>div,.stNumberInput>div>div,.stSelectbox>div>div{background:var(--bg2)!important;border:1px solid var(--border)!important;border-radius:10px!important;color:var(--text)!important}
-.stTextInput>div>div:focus-within,.stTextArea>div>div:focus-within{border-color:var(--accent)!important;box-shadow:0 0 0 2px rgba(16,185,129,0.1)!important}
-input,textarea,select{color:var(--text)!important;background-color:var(--bg2)!important;font-family:'Inter',sans-serif!important}
-input::placeholder,textarea::placeholder{color:var(--text2)!important;opacity:1!important}
+.stTextInput>div>div,.stTextArea>div>div,.stNumberInput>div>div,.stSelectbox>div>div{background:rgba(240,255,244,0.05)!important;border:1px solid var(--border)!important;border-radius:16px!important;color:var(--text)!important}
+.stTextInput>div>div:focus-within,.stTextArea>div>div:focus-within{border-color:rgba(0,245,255,0.50)!important;box-shadow:none!important}
+input,textarea,select{color:var(--text)!important;background-color:rgba(240,255,244,0.05)!important;font-family:'Inter',sans-serif!important}
+input::placeholder,textarea::placeholder{color:rgba(240,255,244,0.25)!important;opacity:1!important}
 
-.stTabs [data-baseweb="tab-list"]{gap:0!important;background:var(--bg2)!important;border-radius:12px!important;padding:0.25rem!important;border:1px solid var(--border)!important}
-.stTabs [data-baseweb="tab"]{border-radius:10px!important;color:var(--text2)!important;font-weight:600!important;font-size:0.8rem!important}
-.stTabs [aria-selected="true"]{background:var(--accent)!important;color:#040e0b!important}
+.stTabs [data-baseweb="tab-list"]{gap:0!important;background:var(--bg2)!important;border-radius:16px!important;padding:0.25rem!important;border:1px solid var(--border)!important}
+.stTabs [data-baseweb="tab"]{border-radius:12px!important;color:var(--text2)!important;font-weight:600!important;font-size:0.8rem!important}
+.stTabs [aria-selected="true"]{background:var(--accent-grad)!important;color:#021B15!important}
 
-[data-testid="stForm"]{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem}
-.streamlit-expanderHeader{background:var(--bg2)!important;border:1px solid var(--border)!important;border-radius:12px!important;color:var(--accent)!important;font-weight:600!important;font-size:0.8rem!important}
-div[data-testid="stAlert"]{border-radius:10px!important;background:var(--bg2)!important;border-left:3px solid var(--accent)!important}
-.stDataFrame{border-radius:10px!important;overflow:hidden!important;border:1px solid var(--border)!important}
-.stFileUploader{background:var(--bg2)!important;border:1px dashed var(--border)!important;border-radius:12px!important}
+[data-testid="stForm"]{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.2rem}
+.streamlit-expanderHeader{background:rgba(240,255,244,0.05)!important;border:1px solid var(--border)!important;border-radius:16px!important;color:var(--accent)!important;font-weight:600!important;font-size:0.8rem!important}
+div[data-testid="stAlert"]{border-radius:12px!important;background:var(--bg2)!important;border-left:3px solid var(--accent)!important}
+.stDataFrame{border-radius:12px!important;overflow:hidden!important;border:1px solid var(--border)!important}
+.stFileUploader{background:var(--bg2)!important;border:1px dashed var(--border)!important;border-radius:16px!important}
 
 .stChatInputContainer{background:var(--bg2)!important;border:1px solid var(--border)!important;border-radius:24px!important;margin:0 0.8rem 0.8rem!important}
 div[data-testid="stChatInput"]{background:var(--bg2)!important;border:1px solid var(--border)!important;border-radius:24px!important}
@@ -2472,42 +2472,41 @@ div[data-testid="stChatInput"]*{background:var(--bg2)!important}
 div[data-testid="stBottom"],div[data-testid="stBottom"]*{background:var(--bg)!important}
 div[data-testid="stBottomBlockContainer"],div[data-testid="stBottomBlockContainer"]*{background:var(--bg)!important;border-top:1px solid var(--border)!important}
 
-.bnav-header{text-align:center;font-size:0.5rem;color:rgba(148,163,184,0.2)!important;text-transform:uppercase;letter-spacing:2px;margin:1.5rem 0 0.5rem;font-weight:600}
-.bnav-btn{display:flex!important;flex-direction:column!important;align-items:center!important;gap:2px!important;font-size:0.55rem!important;padding:6px 2px!important;border-radius:10px!important;background:transparent!important;border:none!important;font-weight:600!important;transition:all 0.15s!important;position:relative!important;font-family:'Inter',sans-serif!important;color:var(--text2)!important}
+.bnav-header{text-align:center;font-size:0.5rem;color:rgba(240,255,244,0.15)!important;text-transform:uppercase;letter-spacing:2px;margin:1.5rem 0 0.5rem;font-weight:600}
+.bnav-btn{display:flex!important;flex-direction:column!important;align-items:center!important;gap:2px!important;font-size:0.55rem!important;padding:6px 2px!important;border-radius:12px!important;background:transparent!important;border:none!important;font-weight:600!important;transition:all 0.2s!important;position:relative!important;font-family:'Inter',sans-serif!important;color:rgba(240,255,244,0.35)!important}
 .bnav-btn .bnav-icon{font-size:1.2rem;display:block}
-.bnav-btn.active{color:var(--accent)!important;background:rgba(16,185,129,0.08)!important}
+.bnav-btn.active{color:var(--accent)!important;background:rgba(0,245,255,0.08)!important}
 .bnav-btn.active::after{content:'';position:absolute;bottom:2px;left:50%;width:16px;height:2px;background:var(--accent);border-radius:2px;transform:translateX(-50%)}
 .bnav-btn.inactive:hover{color:var(--accent)!important;opacity:0.7}
-.bnav-btn.inactive{border:1px solid transparent!important}
 
 .mashi-avatar-img{background-image:url('data:image/jpeg;base64,{B64}')!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
 
 .onboarding-container{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:90vh;padding:2rem;text-align:center}
 .onboarding-logo{width:80px;height:80px;border-radius:50%;border:2px solid var(--accent);margin-bottom:1.5rem;overflow:hidden}
-.onboarding-title{font-size:1.8rem;font-weight:800;color:#fff!important;margin-bottom:0.3rem}
+.onboarding-title{font-size:1.8rem;font-weight:800;color:#F0FFF4!important;margin-bottom:0.3rem}
 .onboarding-sub{font-size:0.85rem;color:var(--text2)!important;margin-bottom:2rem}
 .onboarding-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem;max-width:380px;margin:0 auto}
 
-.section-title{font-weight:700;font-size:1.2rem;color:#fff!important;display:inline-block}
+.section-title{font-weight:700;font-size:1.2rem;color:#F0FFF4!important;display:inline-block}
 .section-title::after{content:'';display:block;width:32px;height:3px;background:var(--accent);border-radius:2px;margin-top:4px}
 .section-subtitle{font-size:0.75rem;color:var(--text2)!important;margin-top:0.2rem}
-.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:0.8rem;text-align:center;transition:all 0.2s}
-.kpi-card:hover{border-color:rgba(16,185,129,0.2);transform:translateY(-1px)}
-.kpi-value{font-size:1.4rem;font-weight:800;letter-spacing:-0.02em}
+.kpi-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.8rem;text-align:center;transition:all 0.2s}
+.kpi-card:hover{border-color:rgba(0,245,255,0.15);transform:translateY(-1px)}
+.kpi-value{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:800;letter-spacing:-0.01em}
 .kpi-label{font-size:0.55rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2)!important;margin-top:2px}
 
-.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child{position:fixed!important;bottom:0;left:0;right:0;height:64px;z-index:1001;background:var(--bg)!important;gap:0;padding:0 1rem;max-width:600px;margin:0 auto!important;border-top:1px solid var(--border)}
+.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child{position:fixed!important;bottom:0;left:0;right:0;height:64px;z-index:1001;background:var(--bg)!important;gap:0;padding:0 1rem;max-width:512px;margin:0 auto!important;border-top:1px solid var(--border)}
 .main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child>div{padding:0!important;flex:1;display:flex;align-items:center;justify-content:center}
 .main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton{width:100%}
 .main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button{opacity:0;width:100%;height:64px;min-height:64px;border:none;background:transparent;cursor:pointer;padding:0;border-radius:0;box-shadow:none}
 .main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button:hover{opacity:0.1;background:var(--accent)}
 .main>.block-container{padding-bottom:72px!important}
 
-.main>.block-container{animation:pageIn 0.25s ease}
-@keyframes pageIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.main>.block-container{animation:pageIn 0.3s ease-out}
+@keyframes pageIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 html{scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
-button,a,[role="button"],.stButton,.stDownloadButton,input,select,textarea{touch-action:m manipulation}
-::selection{background:rgba(16,185,129,0.3);color:#fff}
+button,a,[role="button"],.stButton,.stDownloadButton,input,select,textarea{touch-action:manipulation}
+::selection{background:rgba(0,245,255,0.2);color:#F0FFF4}
 body{overscroll-behavior:none;background:var(--bg)!important}
 *{-webkit-tap-highlight-color:transparent}
 img{background:var(--bg2);transition:opacity 0.3s ease}
@@ -2519,13 +2518,13 @@ iframe[title="st.components.v1.html"],iframe[title="streamlit.components.v1.html
 .stApp,.main,.block-container,section[data-testid="stSidebar"],section[data-testid="stSidebar"]>div:first-child,div[data-testid="stVerticalBlock"],div[data-testid="stHorizontalBlock"],div[data-testid="stColumns"],.element-container,.stMarkdown,.stAlert,div[data-testid="stStatusWidget"],div[data-testid="stToolbar"]{background:transparent!important}
 
 @media(max-width:768px){.main>.block-container{max-width:100%!important;padding:0!important}.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child{height:60px}.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button{height:60px;min-height:60px}}
-@media(min-width:769px){.main>.block-container{max-width:900px!important;padding:0 1.5rem!important}}
+@media(min-width:769px){.main>.block-container{max-width:512px!important;padding:0 1rem!important}}
 
 .stSelectbox>div[data-baseweb="select"]{background:var(--bg2)!important}
-div[data-testid="stSelectboxDropdown"],div[data-baseweb="popover"],ul[role="listbox"]{background:var(--bg2)!important;border:1px solid var(--border)!important;border-radius:12px!important;backdrop-filter:blur(20px)!important}
+div[data-testid="stSelectboxDropdown"],div[data-baseweb="popover"],ul[role="listbox"]{background:var(--bg2)!important;border:1px solid var(--border)!important;border-radius:16px!important;backdrop-filter:blur(20px)!important}
 div[data-testid="stSelectboxDropdown"] li,ul[role="listbox"] li,li[role="option"]{color:var(--text)!important;background:var(--bg2)!important}
-div[data-testid="stSelectboxDropdown"] li:hover,ul[role="listbox"] li:hover,li[role="option"]:hover{background:rgba(16,185,129,0.1)!important}
-div[data-testid="stSelectboxDropdown"] li[aria-selected="true"],ul[role="listbox"] li[aria-selected="true"]{background:rgba(16,185,129,0.2)!important;color:var(--accent)!important}
+div[data-testid="stSelectboxDropdown"] li:hover,ul[role="listbox"] li:hover,li[role="option"]:hover{background:rgba(0,245,255,0.1)!important}
+div[data-testid="stSelectboxDropdown"] li[aria-selected="true"],ul[role="listbox"] li[aria-selected="true"]{background:rgba(0,245,255,0.2)!important;color:var(--accent)!important}
 [data-baseweb="popover"]*,[role="listbox"]*,[role="option"]*,[data-baseweb="menu"]*{background:transparent!important;color:var(--text)!important}
 div[data-baseweb="select"]{background:var(--bg2)!important}
 li[role="option"] div,li[role="option"] span,li[role="option"] p{color:var(--text)!important;background:transparent!important}
@@ -2538,7 +2537,7 @@ input:-webkit-autofill,textarea:-webkit-autofill,select:-webkit-autofill{-webkit
 MASHI_JS = """<script>
 (function(){
 var PD=window.parent.document,PW=window.parent;
-(function(){function f(){var e=PD.querySelector('[data-testid="stChatInput"]');if(e){e.style.background='#0a1f1a';var t=e.querySelector('textarea');if(t){t.style.background='#0a1f1a';t.style.color='#e2e8f0'}var b=PD.querySelector('[data-testid="stBottom"]');if(b){b.style.background='#040e0b';b.style.border='none'}var c=PD.querySelector('[data-testid="stBottomBlockContainer"]');if(c){c.style.background='#040e0b';c.style.borderTop='1px solid rgba(16,185,129,0.06)'}return true}return false}if(!f()){new MutationObserver(function(m,o){if(f())o.disconnect()}).observe(PD.body,{childList:true,subtree:true})}
+(function(){function f(){var e=PD.querySelector('[data-testid="stChatInput"]');if(e){e.style.background='#042017';var t=e.querySelector('textarea');if(t){t.style.background='#042017';t.style.color='#e2e8f0'}var b=PD.querySelector('[data-testid="stBottom"]');if(b){b.style.background='#021B15';b.style.border='none'}var c=PD.querySelector('[data-testid="stBottomBlockContainer"]');if(c){c.style.background='#021B15';c.style.borderTop='1px solid rgba(0,245,255,0.06)'}return true}return false}if(!f()){new MutationObserver(function(m,o){if(f())o.disconnect()}).observe(PD.body,{childList:true,subtree:true})}
 })();
 var _audioCtx=null;
 function _getCtx(){if(!_audioCtx)_audioCtx=new(window.AudioContext||window.webkitAudioContext)();return _audioCtx}
@@ -2600,7 +2599,32 @@ obs.observe(PD.body,{childList:true,subtree:true});
 </script>"""
 
 
-def _inject_js():
+def _render_mashi_fab():
+    rkey = st.session_state.get("_nav_rkey", "Mapa")
+    if rkey in ("Mashi", "Ecoturista"):
+        return
+    fab_html = f"""<div id="mashi-fab-wrap" style="position:fixed;bottom:80px;right:24px;z-index:9999;">
+        <form method="post" id="mashi-fab-form">
+            <input type="hidden" name="mashi_fab" value="1"/>
+            <button type="submit" id="mashi-fab" style="
+                width:60px;height:60px;border-radius:50%;border:none;cursor:pointer;
+                background:linear-gradient(135deg,#00F5FF,#00FFAB);
+                box-shadow:0 8px 24px rgba(0,245,255,0.35);display:flex;align-items:center;justify-content:center;
+                transition:transform 0.2s;position:relative;
+            ">
+                <span style="font-size:1.6rem;">🤖</span>
+            </button>
+        </form>
+    </div>
+    <style>
+    #mashi-fab-wrap{{position:fixed!important;bottom:80px!important;right:24px!important;z-index:9999!important;}}
+    #mashi-fab{{transition:transform 0.2s cubic-bezier(.4,0,.2,1)!important;}}
+    #mashi-fab:hover{{transform:scale(1.1)!important;box-shadow:0 12px 32px rgba(0,245,255,0.5)!important;}}
+    #mashi-fab:active{{transform:scale(0.95)!important;}}
+    @keyframes fabPulse{{0%,100%{{box-shadow:0 8px 24px rgba(0,245,255,0.35);}}50%{{box-shadow:0 8px 24px rgba(0,245,255,0.55),0 0 0 8px rgba(0,245,255,0.1);}}}}
+    #mashi-fab{{animation:fabPulse 3s infinite ease-in-out;}}
+    </style>"""
+    st.components.v1.html(fab_html, height=0, scrolling=False)
     st.components.v1.html(MASHI_JS, height=1, scrolling=False)
 
 # ========================================================================
@@ -2784,7 +2808,7 @@ def _trend_badge(prod, ent):
     if n_reviews >= 2:
         return "📈", "Popular", "#f59e0b"
     if ratio <= 0.85:
-        return "💚", "Precio justo", "#10b981"
+        return "💚", "Precio justo", "#00F5FF"
     return None, None, None
 
 def _render_product_detail(prod, ent, idx):
@@ -2799,7 +2823,7 @@ def _render_product_detail(prod, ent, idx):
     reviews_html = ""
     for r in ent.get("reviews", [])[:3]:
         filled = "★" * r["stars"] + "☆" * (5 - r["stars"])
-        reviews_html += f'<div style="padding:0.3rem 0;border-bottom:1px solid rgba(16,185,129,0.06);"><span style="color:#fbbf24;font-size:0.75rem;">{filled}</span> <span style="font-size:0.65rem;color:rgba(148,163,184,0.6);">{r["user"]}</span><div style="font-size:0.7rem;color:rgba(148,163,184,0.4);">{r["text"][:80]}</div></div>'
+        reviews_html += f'<div style="padding:0.3rem 0;border-bottom:1px solid rgba(0,245,255,0.06);"><span style="color:#fbbf24;font-size:0.75rem;">{filled}</span> <span style="font-size:0.65rem;color:rgba(148,163,184,0.6);">{r["user"]}</span><div style="font-size:0.7rem;color:rgba(148,163,184,0.4);">{r["text"][:80]}</div></div>'
 
     # Price comparison
     similar_prods = []
@@ -2808,7 +2832,7 @@ def _render_product_detail(prod, ent, idx):
             for p2 in e2.get("products", []):
                 similar_prods.append(p2["price"])
     avg_market = sum(similar_prods) / len(similar_prods) if similar_prods else prod["price"]
-    badge_color = "#10b981" if prod["price"] <= avg_market else "#f59e0b"
+    badge_color = "#00F5FF" if prod["price"] <= avg_market else "#f59e0b"
 
     story = ent.get("description", prod.get("description", ""))
     materials = ent.get("materials", "")
@@ -2827,8 +2851,8 @@ def _render_product_detail(prod, ent, idx):
 
     impact_calc = f"""
     <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:0.5rem 0 0.8rem;">
-      <div style="text-align:center;background:rgba(16,185,129,0.06);border-radius:14px;padding:0.4rem;">
-        <div style="font-size:0.9rem;font-weight:800;color:#10b981;">{families_supported}</div>
+      <div style="text-align:center;background:rgba(0,245,255,0.06);border-radius:14px;padding:0.4rem;">
+        <div style="font-size:0.9rem;font-weight:800;color:#00F5FF;">{families_supported}</div>
         <div style="font-size:0.45rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:0.5px;">{_L("Familias","Families","Ayllu")}</div>
       </div>
       <div style="text-align:center;background:rgba(139,92,246,0.06);border-radius:10px;padding:0.4rem;">
@@ -2858,22 +2882,22 @@ def _render_product_detail(prod, ent, idx):
             u.onend = function() {{ t.style.display='none'; this.innerText='🔊 {_L('Escuchar historia','Hear story','Willayta uyariy')}'; }};
             window.speechSynthesis.cancel(); window.speechSynthesis.speak(u);
           }}
-        }}" style="flex:1;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);border-radius:10px;color:#e2e8f0;padding:0.4rem 0.6rem;font-size:0.75rem;cursor:pointer;">🔊 {_L("Escuchar historia","Hear story","Willayta uyariy")}</button>
+        }}" style="flex:1;background:rgba(0,245,255,0.1);border:1px solid rgba(0,245,255,0.2);border-radius:10px;color:#e2e8f0;padding:0.4rem 0.6rem;font-size:0.75rem;cursor:pointer;">🔊 {_L("Escuchar historia","Hear story","Willayta uyariy")}</button>
       <div style="display:none;text-align:center;font-size:0.65rem;color:rgba(148,163,184,0.4);padding:0.3rem;">🎵 {_L("Reproduciendo...","Playing...","Uyariy...")}</div>
     </div>
     """
 
     return f"""
-    <div style="background:linear-gradient(135deg,#0a2b1f,#0d3526);border:1px solid rgba(16,185,129,0.2);border-radius:28px;padding:1.2rem;margin-bottom:1rem;box-shadow:0 4px 24px rgba(0,0,0,0.15),0 0 0 1px rgba(16,185,129,0.03);backdrop-filter:blur(4px);">
+    <div style="background:linear-gradient(135deg,#031a14,#042017);border:1px solid rgba(0,245,255,0.2);border-radius:28px;padding:1.2rem;margin-bottom:1rem;box-shadow:0 4px 24px rgba(0,0,0,0.15),0 0 0 1px rgba(0,245,255,0.03);backdrop-filter:blur(4px);">
       {img_html}
       <div style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:0.2rem;">{prod['name']}</div>
       <div style="font-size:0.7rem;color:rgba(148,163,184,0.5);margin-bottom:0.5rem;">📍 {community_name} · {ent.get("sector","")} · {years} {_L("años","years","watakuna")}</div>
       <div style="display:flex;gap:8px;margin-bottom:0.5rem;">
-        <span style="background:rgba(16,185,129,0.1);color:#10b981;font-size:0.9rem;font-weight:700;padding:0.2rem 0.8rem;border-radius:20px;">S/ {prod['price']:.2f}</span>
+        <span style="background:rgba(0,245,255,0.1);color:#00F5FF;font-size:0.9rem;font-weight:700;padding:0.2rem 0.8rem;border-radius:20px;">S/ {prod['price']:.2f}</span>
         <span style="background:{badge_color}22;color:{badge_color};font-size:0.65rem;padding:0.2rem 0.6rem;border-radius:20px;">📊 Mercado: S/ {avg_market:.2f}</span>
       </div>
       {impact_calc}
-      <div style="font-size:0.8rem;color:rgba(148,163,184,0.7);margin-bottom:0.5rem;padding:0.5rem;background:rgba(16,185,129,0.04);border-radius:12px;">{story[:200]}</div>
+      <div style="font-size:0.8rem;color:rgba(148,163,184,0.7);margin-bottom:0.5rem;padding:0.5rem;background:rgba(0,245,255,0.04);border-radius:12px;">{story[:200]}</div>
       {'<div style="font-size:0.65rem;color:rgba(148,163,184,0.4);margin-bottom:0.5rem;">🧵 ' + materials + '</div>' if materials else ""}
       {sound_btn}
       <div style="margin-bottom:0.8rem;">
@@ -2893,15 +2917,15 @@ def render_ecotourist():
     # Impact metrics banner
     tc, tp, tr, ty, rev, fam = _impact_metrics()
     st.markdown(f"""
-    <div style="background:linear-gradient(135deg,#0a2b1f,#0d3526);border:1px solid rgba(16,185,129,0.15);border-radius:28px;padding:1rem;margin-bottom:1rem;box-shadow:0 4px 24px rgba(0,0,0,0.12),0 0 0 1px rgba(16,185,129,0.03);backdrop-filter:blur(4px);">
+    <div style="background:linear-gradient(135deg,#031a14,#042017);border:1px solid rgba(0,245,255,0.15);border-radius:28px;padding:1rem;margin-bottom:1rem;box-shadow:0 4px 24px rgba(0,0,0,0.12),0 0 0 1px rgba(0,245,255,0.03);backdrop-filter:blur(4px);">
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;text-align:center;">
-        <div><div style="font-size:1.1rem;font-weight:800;color:#10b981;">{tc}</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:1px;">{_L("Comunidades","Communities","Llaktakuna")}</div></div>
+        <div><div style="font-size:1.1rem;font-weight:800;color:#00F5FF;">{tc}</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:1px;">{_L("Comunidades","Communities","Llaktakuna")}</div></div>
         <div><div style="font-size:1.1rem;font-weight:800;color:#fbbf24;">{tp}</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:1px;">{_L("Productos","Products","Rurakuna")}</div></div>
         <div><div style="font-size:1.1rem;font-weight:800;color:#8B5CF6;">S/{rev//1000}k</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:1px;">{_L("Impacto","Impact","Atipay")}</div></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;text-align:center;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(16,185,129,0.08);">
-        <div><div style="font-size:0.9rem;font-weight:700;color:#10b981;">{fam}</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:1px;">{_L("Familias","Families","Ayllukuna")}</div></div>
-        <div><div style="font-size:0.9rem;font-weight:700;color:#10b981;">{tr}</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:1px;">{_L("Reseñas","Reviews","Willaykuna")}</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;text-align:center;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(0,245,255,0.08);">
+        <div><div style="font-size:0.9rem;font-weight:700;color:#00F5FF;">{fam}</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:1px;">{_L("Familias","Families","Ayllukuna")}</div></div>
+        <div><div style="font-size:0.9rem;font-weight:700;color:#00F5FF;">{tr}</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.4);text-transform:uppercase;letter-spacing:1px;">{_L("Reseñas","Reviews","Willaykuna")}</div></div>
       </div>
     </div>
     """, unsafe_allow_html=True)
@@ -2919,24 +2943,24 @@ def render_ecotourist():
     .bubble-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:2px;animation:bubbleIn 0.4s cubic-bezier(0.21,1.02,0.73,1)}
     .bubble-row.mashi{justify-content:flex-start}
     .bubble-row.user{justify-content:flex-end}
-    .chat-bubble-mashi{background:linear-gradient(135deg,#0a1f1a,#0d261f);border:1px solid rgba(16,185,129,0.12);border-radius:16px 16px 16px 4px;padding:14px 18px;max-width:75%;color:#e2e8f0;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:500;line-height:1.7;letter-spacing:0;box-shadow:0 4px 16px rgba(0,0,0,0.2),0 0 40px rgba(16,185,129,0.03);position:relative}
-    .chat-bubble-user{background:linear-gradient(135deg,#0d3b2c,#0f4a34);border:1px solid rgba(16,185,129,0.15);border-radius:16px 16px 4px 16px;padding:14px 18px;max-width:75%;color:#e2e8f0;font-size:0.85rem;font-family:'Nunito',sans-serif;font-weight:500;line-height:1.65;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+    .chat-bubble-mashi{background:linear-gradient(135deg,#042017,#0d261f);border:1px solid rgba(0,245,255,0.12);border-radius:16px 16px 16px 4px;padding:14px 18px;max-width:75%;color:#e2e8f0;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:500;line-height:1.7;letter-spacing:0;box-shadow:0 4px 16px rgba(0,0,0,0.2),0 0 40px rgba(0,245,255,0.03);position:relative}
+    .chat-bubble-user{background:linear-gradient(135deg,#0d3b2c,#0f4a34);border:1px solid rgba(0,245,255,0.15);border-radius:16px 16px 4px 16px;padding:14px 18px;max-width:75%;color:#e2e8f0;font-size:0.85rem;font-family:'Nunito',sans-serif;font-weight:500;line-height:1.65;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
     .bubble-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;overflow:hidden;transition:transform 0.3s cubic-bezier(0.34,1.56,0.64,1)}
     .bubble-row:hover .bubble-avatar{transform:scale(1.08)}
-    .bubble-avatar.user{background:rgba(16,185,129,0.15);font-size:1.2rem;border:1.5px solid rgba(16,185,129,0.2)}
-    .mashi-avatar-img{background:url('data:image/jpeg;base64,{B64}') center/cover no-repeat;width:32px;height:32px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(16,185,129,0.3);box-shadow:0 0 12px rgba(16,185,129,0.1)}
+    .bubble-avatar.user{background:rgba(0,245,255,0.15);font-size:1.2rem;border:1.5px solid rgba(0,245,255,0.2)}
+    .mashi-avatar-img{background:url('data:image/jpeg;base64,{B64}') center/cover no-repeat;width:32px;height:32px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(0,245,255,0.3);box-shadow:0 0 12px rgba(0,245,255,0.1)}
     .speaker-btn{background:none;border:none;cursor:pointer;font-size:0.85rem;padding:4px;opacity:0.35;transition:all 0.25s;border-radius:8px;flex-shrink:0;line-height:1;margin-left:2px;transform:scale(1)}
-    .speaker-btn:hover{opacity:1!important;background:rgba(16,185,129,0.12);transform:scale(1.1)}
-    .typing-bubble{background:linear-gradient(135deg,#0a1f1a,#0d261f);border:1px solid rgba(16,185,129,0.1);border-radius:16px;padding:14px 20px;display:flex;gap:5px;align-items:center;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
-    .typing-dot{width:7px;height:7px;background:#10b981;border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out;box-shadow:0 0 6px rgba(16,185,129,0.3)}
+    .speaker-btn:hover{opacity:1!important;background:rgba(0,245,255,0.12);transform:scale(1.1)}
+    .typing-bubble{background:linear-gradient(135deg,#042017,#0d261f);border:1px solid rgba(0,245,255,0.1);border-radius:16px;padding:14px 20px;display:flex;gap:5px;align-items:center;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+    .typing-dot{width:7px;height:7px;background:#00F5FF;border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out;box-shadow:0 0 6px rgba(0,245,255,0.3)}
     .typing-dot:nth-child(2){animation-delay:0.2s}
     .typing-dot:nth-child(3){animation-delay:0.4s}
     @keyframes bubbleIn{from{opacity:0;transform:translateY(12px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
     @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:0.35}30%{transform:translateY(-6px);opacity:1}}
     ::-webkit-scrollbar{width:3px}
     ::-webkit-scrollbar-track{background:transparent}
-    ::-webkit-scrollbar-thumb{background:rgba(16,185,129,0.2);border-radius:4px}
-    ::-webkit-scrollbar-thumb:hover{background:rgba(16,185,129,0.35)}
+    ::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:4px}
+    ::-webkit-scrollbar-thumb:hover{background:rgba(0,245,255,0.35)}
     '''
     def _md2html(t):
         return re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', t)
@@ -3034,7 +3058,7 @@ def render_ecotourist():
                             st.rerun()
         # ── Route planner ──
         planner_ids = st.session_state.get("planner_ids", [])
-        st.markdown(f'<div style="margin:0.5rem 0;"><span style="font-size:0.8rem;font-weight:600;color:rgba(16,185,129,0.7);">🗺️ {_L("Planificador de ruta","Route planner","Ñan allichak")}</span></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="margin:0.5rem 0;"><span style="font-size:0.8rem;font-weight:600;color:rgba(0,245,255,0.7);">🗺️ {_L("Planificador de ruta","Route planner","Ñan allichak")}</span></div>', unsafe_allow_html=True)
         all_names = [(e["id"], f'{e["name"][:45]} — {e["location"][:20]}') for e in ds]
         selected_names = st.multiselect(
             _L("Selecciona comunidades para visitar","Select communities to visit","Llaktakunata akllay"),
@@ -3069,17 +3093,17 @@ def render_ecotourist():
                 if best:
                     rec_products += f'<span style="font-size:0.65rem;color:rgba(148,163,184,0.4);margin-right:4px;">📍 {e["name"][:18]}: <b>{best["name"][:22]}</b> S/ {best["price"]:.0f}</span><br>'
 
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid rgba(16,185,129,0.15);border-radius:20px;padding:0.8rem 1rem;font-size:0.8rem;box-shadow:0 4px 20px rgba(0,0,0,0.1),0 0 0 1px rgba(16,185,129,0.02);">', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid rgba(0,245,255,0.15);border-radius:20px;padding:0.8rem 1rem;font-size:0.8rem;box-shadow:0 4px 20px rgba(0,0,0,0.1),0 0 0 1px rgba(0,245,255,0.02);">', unsafe_allow_html=True)
             for idx, e in enumerate(ordered):
                 prev = (-3.7491, -73.2442) if idx == 0 else (ordered[idx-1]["lat"], ordered[idx-1]["lng"])
                 d = _haversine(prev[0], prev[1], e["lat"], e["lng"])
-                st.markdown(f'<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="background:#10b98122;color:#10b981;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;">{idx+1}</span> <b>{e["name"][:40]}</b> <span style="color:rgba(148,163,184,0.4);font-size:0.7rem;">{_format_distance(d)}</span></div>', unsafe_allow_html=True)
-            st.markdown(f'<div style="border-top:1px solid rgba(16,185,129,0.15);margin-top:4px;padding-top:4px;font-size:0.75rem;color:rgba(148,163,184,0.6);">🚗 {_L("Total aprox.","Approx. total","Tukuy")} {_format_distance(total_km)} · {len(ordered)} {_L("comunidades","communities","llaktakuna")}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="display:flex;align-items:center;gap:6px;padding:2px 0;"><span style="background:#00F5FF22;color:#00F5FF;border-radius:50%;width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;">{idx+1}</span> <b>{e["name"][:40]}</b> <span style="color:rgba(148,163,184,0.4);font-size:0.7rem;">{_format_distance(d)}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="border-top:1px solid rgba(0,245,255,0.15);margin-top:4px;padding-top:4px;font-size:0.75rem;color:rgba(148,163,184,0.6);">🚗 {_L("Total aprox.","Approx. total","Tukuy")} {_format_distance(total_km)} · {len(ordered)} {_L("comunidades","communities","llaktakuna")}</div>', unsafe_allow_html=True)
             # Budget summary
             st.markdown(f'''
             <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin:6px 0 4px;">
-              <div style="text-align:center;background:rgba(16,185,129,0.06);border-radius:8px;padding:0.3rem;">
-                <div style="font-size:0.7rem;font-weight:700;color:#10b981;">S/ {transport_cost:.0f}</div>
+              <div style="text-align:center;background:rgba(0,245,255,0.06);border-radius:8px;padding:0.3rem;">
+                <div style="font-size:0.7rem;font-weight:700;color:#00F5FF;">S/ {transport_cost:.0f}</div>
                 <div style="font-size:0.45rem;color:rgba(148,163,184,0.4);">{_L("Transporte","Transport","Purina")}</div>
               </div>
               <div style="text-align:center;background:rgba(251,191,36,0.06);border-radius:8px;padding:0.3rem;">
@@ -3091,7 +3115,7 @@ def render_ecotourist():
                 <div style="font-size:0.45rem;color:rgba(148,163,184,0.4);">{_L("Compras","Shopping","Rantiy")}</div>
               </div>
             </div>
-            <div style="text-align:center;font-size:0.75rem;font-weight:700;color:#10b981;padding:2px 0 6px;">{_L("Presupuesto estimado","Estimated budget","Tukuy qullqi")}: S/ {total_budget:.0f}</div>
+            <div style="text-align:center;font-size:0.75rem;font-weight:700;color:#00F5FF;padding:2px 0 6px;">{_L("Presupuesto estimado","Estimated budget","Tukuy qullqi")}: S/ {total_budget:.0f}</div>
             ''', unsafe_allow_html=True)
             # Recommended products
             if rec_products:
@@ -3099,13 +3123,13 @@ def render_ecotourist():
             # Download HTML itinerary
             itinerary_html = f"""<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Itinerario MAPPED</title>
             <style>body{{font-family:'Segoe UI',sans-serif;background:#021B15;color:#e2e8f0;max-width:600px;margin:auto;padding:1rem}}
-            h1{{color:#10b981;font-size:1.2rem}}table{{width:100%;border-collapse:collapse;margin:1rem 0}}
-            th,td{{padding:8px;text-align:left;border-bottom:1px solid rgba(16,185,129,0.12);font-size:0.8rem}}
-            th{{color:#10b981;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px}}
-            .total{{font-weight:700;color:#10b981;font-size:1rem;text-align:center;padding:1rem}}
+            h1{{color:#00F5FF;font-size:1.2rem}}table{{width:100%;border-collapse:collapse;margin:1rem 0}}
+            th,td{{padding:8px;text-align:left;border-bottom:1px solid rgba(0,245,255,0.12);font-size:0.8rem}}
+            th{{color:#00F5FF;font-size:0.7rem;text-transform:uppercase;letter-spacing:1px}}
+            .total{{font-weight:700;color:#00F5FF;font-size:1rem;text-align:center;padding:1rem}}
             .budget{{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center;margin:1rem 0}}
-            .budget-box{{background:rgba(16,185,129,0.06);border-radius:10px;padding:0.5rem}}
-            .budget-val{{font-size:1rem;font-weight:700;color:#10b981}}</style></head><body>
+            .budget-box{{background:rgba(0,245,255,0.06);border-radius:10px;padding:0.5rem}}
+            .budget-val{{font-size:1rem;font-weight:700;color:#00F5FF}}</style></head><body>
             <h1>🗺️ {_L("Itinerario","Itinerary","Ñan")} MAPPED</h1>
             <p style="color:rgba(148,163,184,0.5);font-size:0.7rem;">{_L("Salida desde Iquitos","Departure from Iquitos","Iquitospa lluqsiy")}</p>
             <table><tr><th>#</th><th>{_L("Comunidad","Community","Llakta")}</th><th>{_L("Distancia","Distance","Karuy")}</th></tr>"""
@@ -3124,7 +3148,7 @@ def render_ecotourist():
               <div class="budget-box"><div class="budget-val">S/ {food_per_day:.0f}</div><div style="font-size:0.6rem;color:rgba(148,163,184,0.4);">{_L("Comida","Food","Mikuna")}</div></div>
               <div class="budget-box"><div class="budget-val">S/ {shopping_est:.0f}</div><div style="font-size:0.6rem;color:rgba(148,163,184,0.4);">{_L("Compras","Shopping","Rantiy")}</div></div>
             </div>
-            <div style="text-align:center;font-size:1rem;font-weight:700;color:#10b981;padding:0.5rem;">{_L("Presupuesto total","Total budget","Tukuy qullqi")}: S/ {total_budget:.0f}</div>
+            <div style="text-align:center;font-size:1rem;font-weight:700;color:#00F5FF;padding:0.5rem;">{_L("Presupuesto total","Total budget","Tukuy qullqi")}: S/ {total_budget:.0f}</div>
             <p style="font-size:0.6rem;color:rgba(148,163,184,0.3);text-align:center;">{_L("Generado por MAPPED · Amazonía Sostenible","Generated by MAPPED · Sustainable Amazon","MAPPED rurashka · Amazonía")}</p>
             </body></html>"""
             st.download_button(
@@ -3167,7 +3191,7 @@ def render_ecotourist():
             # ── Nearby communities ──
             nearby = _get_nearby_communities(ent, get_full_dataset())
             if nearby:
-                st.markdown(f'<div style="margin:0.5rem 0.2rem 0;"><span style="font-size:0.7rem;font-weight:600;color:rgba(16,185,129,0.6);text-transform:uppercase;letter-spacing:1px;">📍 {_L("Cerca de aquí","Nearby","Kaymanta")}</span></div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="margin:0.5rem 0.2rem 0;"><span style="font-size:0.7rem;font-weight:600;color:rgba(0,245,255,0.6);text-transform:uppercase;letter-spacing:1px;">📍 {_L("Cerca de aquí","Nearby","Kaymanta")}</span></div>', unsafe_allow_html=True)
                 sector_icons = {"artesanía":"🎭","textiles":"🧣","alimentos":"🍲","madera":"🪵","joyería":"💍",
                                 "cerámica":"🏺","cestería":"🧺","bordados":"🪡","tallado":"🗿"}
                 max_cols = 3
@@ -3183,13 +3207,13 @@ def render_ecotourist():
                                 break
                         prod_str = ", ".join(p["name"][:18] for p in ne.get("products", [])[:2])
                         with cols_near[ci]:
-                            st.markdown(f'<div class="nearby-card" style="background:#0a1f1a;border:1px solid rgba(16,185,129,0.12);border-radius:12px;padding:0.45rem;text-align:center;font-size:0.68rem;transition:all 0.2s;cursor:pointer;">'
+                            st.markdown(f'<div class="nearby-card" style="background:#042017;border:1px solid rgba(0,245,255,0.12);border-radius:12px;padding:0.45rem;text-align:center;font-size:0.68rem;transition:all 0.2s;cursor:pointer;">'
                                 f'<div style="font-size:1.2rem;margin-bottom:2px;">{icon}</div>'
                                 f'<div style="font-weight:700;color:#e2e8f0;font-size:0.72rem;line-height:1.2;">{ne["name"][:22]}</div>'
                                 f'<div style="color:rgba(148,163,184,0.5);margin-top:3px;font-size:0.65rem;">🚗 {_format_distance(d)} · <span style="color:rgba(148,163,184,0.4);">{ne["location"][:15]}</span></div>'
-                                f'<div style="color:rgba(16,185,129,0.35);font-size:0.6rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{prod_str}</div>'
+                                f'<div style="color:rgba(0,245,255,0.35);font-size:0.6rem;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{prod_str}</div>'
                                 f'<div style="margin-top:4px;">'
-                                f'<span style="background:rgba(16,185,129,0.08);color:rgba(16,185,129,0.5);border-radius:12px;padding:0.08rem 0.5rem;font-size:0.58rem;">{len(ne.get("products",[]))} {_L("prod.","prod.","rur.")} · ★ {round(sum(r["stars"] for r in ne.get("reviews",[]))/len(ne["reviews"]),1) if ne.get("reviews") else "—"}</span>'
+                                f'<span style="background:rgba(0,245,255,0.08);color:rgba(0,245,255,0.5);border-radius:12px;padding:0.08rem 0.5rem;font-size:0.58rem;">{len(ne.get("products",[]))} {_L("prod.","prod.","rur.")} · ★ {round(sum(r["stars"] for r in ne.get("reviews",[]))/len(ne["reviews"]),1) if ne.get("reviews") else "—"}</span>'
                                 f'</div></div>', unsafe_allow_html=True)
                             if st.button("", key=f"near_{ne['id']}", help=_L("Explorar","Explore","Rikuy"), label_visibility="collapsed"):
                                 st.session_state["selected_ent_id"] = ne["id"]
@@ -3230,7 +3254,7 @@ def _confirm_product(pending):
     success_msg = _L(f'"{pname}" ya está disponible en MAPPED.',
                      f'"{pname}" is now available on MAPPED.',
                      f'"{pname}" MAPPEDpi tiyan.')
-    st.markdown(f'<div style="background:#0a1f1a;border:1px solid rgba(16,185,129,0.2);border-radius:16px;padding:1.5rem;text-align:center;margin-top:1rem;"><span style="font-size:2.5rem;">🌟</span><h3 style="color:#10b981!important;margin:0.5rem 0;font-weight:700;">{KICHWA["gracias"]}, mashi!</h3><p style="color:rgba(148,163,184,0.7)!important;font-size:0.9rem;">{success_msg} 🦥🌿</p></div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="background:#042017;border:1px solid rgba(0,245,255,0.2);border-radius:16px;padding:1.5rem;text-align:center;margin-top:1rem;"><span style="font-size:2.5rem;">🌟</span><h3 style="color:#00F5FF!important;margin:0.5rem 0;font-weight:700;">{KICHWA["gracias"]}, mashi!</h3><p style="color:rgba(148,163,184,0.7)!important;font-size:0.9rem;">{success_msg} 🦥🌿</p></div>', unsafe_allow_html=True)
     add_btn = _L("➕ Publicar otro producto","➕ Add another product","➕ Shuk rurata churay")
     if st.button(add_btn, use_container_width=True):
         st.session_state["modifying_price"] = False
@@ -3257,17 +3281,17 @@ def render_emprendedor():
     initial = (user_name[0] if user_name else "👤").upper()
     avatar_html = initial if user_name else "🌿"
     st.markdown(f"""
-    <div style="background:linear-gradient(135deg,#0a2b1f,#0d3526);border:1px solid rgba(16,185,129,0.2);
+    <div style="background:linear-gradient(135deg,#031a14,#042017);border:1px solid rgba(0,245,255,0.2);
          border-radius:20px;padding:1.5rem;margin-bottom:1rem;display:flex;align-items:center;gap:1rem;">
-      <div style="width:64px;height:64px;border-radius:50%;background:rgba(16,185,129,0.15);
-           border:2px solid rgba(16,185,129,0.3);overflow:hidden;flex-shrink:0;
-           display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#10b981;font-weight:700;">{avatar_html}</div>
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(0,245,255,0.15);
+           border:2px solid rgba(0,245,255,0.3);overflow:hidden;flex-shrink:0;
+           display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:#00F5FF;font-weight:700;">{avatar_html}</div>
       <div style="flex:1;">
         <div style="font-size:1.1rem;font-weight:700;color:#fff;">{user_name or _L("Emprendedor","Entrepreneur","Ruraq")}</div>
         <div style="font-size:0.75rem;color:rgba(148,163,184,0.5);">{_L("Miembro MAPPED","MAPPED Member","MAPPEDpi kan")}</div>
       </div>
       <div style="display:flex;gap:1.2rem;text-align:center;">
-        <div><div style="font-size:1.3rem;font-weight:700;color:#10b981;">{total_prods}</div><div style="font-size:0.6rem;color:rgba(148,163,184,0.4);text-transform:uppercase;">{_L("Productos","Products","Rurakuna")}</div></div>
+        <div><div style="font-size:1.3rem;font-weight:700;color:#00F5FF;">{total_prods}</div><div style="font-size:0.6rem;color:rgba(148,163,184,0.4);text-transform:uppercase;">{_L("Productos","Products","Rurakuna")}</div></div>
         <div><div style="font-size:1.3rem;font-weight:700;color:#F59E0B;">{veces_guardado}</div><div style="font-size:0.6rem;color:rgba(148,163,184,0.4);text-transform:uppercase;">{_L("Guardados","Saved","Allichashka")}</div></div>
         <div><div style="font-size:1.3rem;font-weight:700;color:#8B5CF6;">{len(prod_names) * 15 + veces_guardado * 5 + 12}</div><div style="font-size:0.6rem;color:rgba(148,163,184,0.4);text-transform:uppercase;">{_L("Impacto","Impact","Atipay")}</div></div>
       </div>
@@ -3390,7 +3414,7 @@ def render_emprendedor():
                 }[demand_level])
                 + f"\n\n📱 ¿Sabías que puedes compartir tu producto por WhatsApp? Actívalo y recibe pedidos directos de turistas. 🦥✨")
 
-        st.markdown(f'<div class="glass-card" style="background:#0a1f1a!important;border-color:rgba(16,185,129,0.2)!important;">{mashi_advice}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="glass-card" style="background:#042017!important;border-color:rgba(0,245,255,0.2)!important;">{mashi_advice}</div>', unsafe_allow_html=True)
         advice_tts_text = _L(
             f"Mashi recomienda un precio de {final_suggest:.2f} soles. "
             f"El precio promedio del mercado es {avg_market:.2f} soles. "
@@ -3446,7 +3470,7 @@ def render_emprendedor():
 
     # ── Empty state ──
     if total_prods == 0 and not pending:
-        st.markdown(f'<div style="background:rgba(16,185,129,0.04);border:1px dashed rgba(16,185,129,0.15);border-radius:16px;padding:2rem 1.5rem;text-align:center;margin:1rem 0;">'
+        st.markdown(f'<div style="background:rgba(0,245,255,0.04);border:1px dashed rgba(0,245,255,0.15);border-radius:16px;padding:2rem 1.5rem;text-align:center;margin:1rem 0;">'
             f'<div style="font-size:2rem;margin-bottom:0.5rem;">🦥🌿</div>'
             f'<div style="font-size:1rem;font-weight:700;color:#e2e8f0;margin-bottom:0.3rem;">{_L("¡Publica tu primer producto!","Publish your first product!","Kay rurakuna rikuchiy!")}</div>'
             f'<div style="font-size:0.8rem;color:rgba(148,163,184,0.5);">{_L("Usa el formulario de arriba para compartir tu artesanía, cosméticos o alimentos con el mundo.","Use the form above to share your crafts, cosmetics or food with the world.","Kay formulariota apay rurakunata turiskunawan rikuchinkapa.")}</div>'
@@ -3467,7 +3491,7 @@ def render_emprendedor():
             _existing_img = img_map.get(pname_edit)
             if _existing_img:
                 _b64 = base64.b64encode(_existing_img).decode()
-                st.markdown(f'<div style="text-align:center;margin-bottom:0.5rem;"><img src="data:image/png;base64,{_b64}" style="width:150px;height:100px;object-fit:cover;border-radius:12px;border:1px solid rgba(16,185,129,0.15);"></div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="text-align:center;margin-bottom:0.5rem;"><img src="data:image/png;base64,{_b64}" style="width:150px;height:100px;object-fit:cover;border-radius:12px;border:1px solid rgba(0,245,255,0.15);"></div>', unsafe_allow_html=True)
             with st.form(f"edit_prod_{edit_idx}"):
                 ename = st.text_input(_L("Nombre","Name","Suti"), value=pname_edit)
                 eprice = st.number_input(_L("Precio (S/)","Price (S/)","Masna (S/)"), min_value=0.5, value=pd0.get("price", 0), step=0.5, format="%.2f")
@@ -3518,11 +3542,11 @@ def render_emprendedor():
                     b64 = base64.b64encode(pimg_bytes).decode()
                     img_html = f'<img src="data:image/png;base64,{b64}" style="width:100%;height:120px;object-fit:cover;border-radius:12px;margin-bottom:0.5rem;">'
                 st.markdown(f"""
-                <div style="background:#0a1f1a;border:1px solid rgba(16,185,129,0.12);border-radius:16px;padding:0.8rem;margin-bottom:0.6rem;">
+                <div style="background:#042017;border:1px solid rgba(0,245,255,0.12);border-radius:16px;padding:0.8rem;margin-bottom:0.6rem;">
                   {img_html}
                   <div style="display:flex;justify-content:space-between;align-items:start;">
                     <div style="font-weight:600;color:#e2e8f0;font-size:0.85rem;">{pname[:40]}</div>
-                    <span style="background:rgba(16,185,129,0.1);color:#10b981;font-size:0.7rem;font-weight:600;padding:0.1rem 0.5rem;border-radius:20px;">S/ {pprice:.2f}</span>
+                    <span style="background:rgba(0,245,255,0.1);color:#00F5FF;font-size:0.7rem;font-weight:600;padding:0.1rem 0.5rem;border-radius:20px;">S/ {pprice:.2f}</span>
                   </div>
                   <div style="font-size:0.7rem;color:rgba(148,163,184,0.4);margin-top:0.3rem;">{sector_ico} {psector}</div>
                 </div>
@@ -3564,10 +3588,10 @@ def render_emprendedor():
         st.markdown(f'<div style="margin:1.5rem 0 0.8rem;"><span style="font-size:1rem;font-weight:700;color:#e2e8f0;">⭐ {_L("Reseñas recibidas","Reviews received","Chaskishka riviskuna")}</span></div>', unsafe_allow_html=True)
         for rv in all_reviews:
             stars = "★" * rv.get("stars", 5) + "☆" * (5 - rv.get("stars", 5))
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid rgba(16,185,129,0.08);border-radius:12px;padding:0.6rem 0.8rem;margin-bottom:0.4rem;"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:600;color:#e2e8f0;font-size:0.8rem;">{rv.get("user","")}</span><span style="color:#eab308;font-size:0.8rem;">{stars}</span></div><div style="color:rgba(148,163,184,0.6);font-size:0.75rem;margin-top:0.2rem;">{rv.get("text","")}</div><div style="color:rgba(148,163,184,0.3);font-size:0.6rem;margin-top:0.15rem;">{_L("Producto","Product","Rura")}: {rv["product"]}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid rgba(0,245,255,0.08);border-radius:12px;padding:0.6rem 0.8rem;margin-bottom:0.4rem;"><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-weight:600;color:#e2e8f0;font-size:0.8rem;">{rv.get("user","")}</span><span style="color:#eab308;font-size:0.8rem;">{stars}</span></div><div style="color:rgba(148,163,184,0.6);font-size:0.75rem;margin-top:0.2rem;">{rv.get("text","")}</div><div style="color:rgba(148,163,184,0.3);font-size:0.6rem;margin-top:0.15rem;">{_L("Producto","Product","Rura")}: {rv["product"]}</div></div>', unsafe_allow_html=True)
     else:
         st.markdown(f'<div style="margin:1.5rem 0 0.5rem;"><span style="font-size:1rem;font-weight:700;color:#e2e8f0;">⭐ {_L("Reseñas recibidas","Reviews received","Chaskishka riviskuna")}</span></div>', unsafe_allow_html=True)
-        st.markdown(f'<div style="background:rgba(16,185,129,0.04);border:1px dashed rgba(16,185,129,0.15);border-radius:12px;padding:1rem;text-align:center;"><div style="font-size:0.8rem;color:rgba(148,163,184,0.4);">{_L("Aún no tienes reseñas. Cuando los turistas valoren tus productos, aparecerán aquí.","No reviews yet. When tourists rate your products, they will appear here.","Manara riviskuna. Turiskuna rurakunata valorangaj, kaypi rikurinka.")} 🦥</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="background:rgba(0,245,255,0.04);border:1px dashed rgba(0,245,255,0.15);border-radius:12px;padding:1rem;text-align:center;"><div style="font-size:0.8rem;color:rgba(148,163,184,0.4);">{_L("Aún no tienes reseñas. Cuando los turistas valoren tus productos, aparecerán aquí.","No reviews yet. When tourists rate your products, they will appear here.","Manara riviskuna. Turiskuna rurakunata valorangaj, kaypi rikurinka.")} 🦥</div></div>', unsafe_allow_html=True)
 
     # ── Analytics: proyección de demanda ──
     if total_prods > 0:
@@ -3584,7 +3608,7 @@ def render_emprendedor():
         try:
             import plotly.graph_objects as go
             fig = go.Figure()
-            colors = ["#10b981","#8B5CF6","#F59E0B","#ec4899","#06b6d4"]
+            colors = ["#00F5FF","#8B5CF6","#F59E0B","#ec4899","#06b6d4"]
             for i, fd in enumerate(fig_data):
                 fig.add_trace(go.Scatter(x=month_labels, y=fd["vals"], mode="lines+markers", name=fd["name"], line=dict(color=colors[i % len(colors)])))
             fig.update_layout(height=200, margin=dict(l=10,r=10,t=10,b=20), paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font=dict(color="rgba(148,163,184,0.6)", size=10), legend=dict(orientation="h", y=1.1, x=0))
@@ -3609,7 +3633,7 @@ def render_emprendedor():
         q = gal_search.lower().strip()
         filtered = [p for p in filtered if q in p["name"].lower() or q in p.get("community","").lower() or q in p.get("sector","").lower()]
     if not filtered:
-        st.markdown(f'<div style="background:rgba(16,185,129,0.04);border:1px dashed rgba(16,185,129,0.15);border-radius:16px;padding:2rem;text-align:center;margin:1rem 0;"><div style="font-size:2rem;margin-bottom:0.5rem;">🦥</div><div style="font-size:0.85rem;color:rgba(148,163,184,0.5);">{_L("No hay productos con ese filtro","No products match your filter","Kay filtruwan mana rurakuna tiyan")}</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="background:rgba(0,245,255,0.04);border:1px dashed rgba(0,245,255,0.15);border-radius:16px;padding:2rem;text-align:center;margin:1rem 0;"><div style="font-size:2rem;margin-bottom:0.5rem;">🦥</div><div style="font-size:0.85rem;color:rgba(148,163,184,0.5);">{_L("No hay productos con ese filtro","No products match your filter","Kay filtruwan mana rurakuna tiyan")}</div></div>', unsafe_allow_html=True)
     else:
         cols = st.columns(2)
         for idx, prod in enumerate(filtered[:20]):
@@ -3617,11 +3641,11 @@ def render_emprendedor():
                 comm_name = prod.get("community", "")
                 img_gal = _get_product_image(comm_name, prod, "100px")
                 st.markdown(f"""
-                <div style="background:#0a1f1a;border:1px solid rgba(16,185,129,0.1);border-radius:16px;padding:0.8rem;margin-bottom:0.6rem;">
+                <div style="background:#042017;border:1px solid rgba(0,245,255,0.1);border-radius:16px;padding:0.8rem;margin-bottom:0.6rem;">
                   {img_gal}
                   <div style="font-weight:600;color:#e2e8f0;font-size:0.8rem;text-align:center;">{prod["name"][:45]}</div>
                   <div style="text-align:center;margin:0.2rem 0;">
-                    <span style="background:rgba(16,185,129,0.1);color:#10b981;font-size:0.7rem;font-weight:600;padding:0.1rem 0.5rem;border-radius:20px;">S/ {prod["price"]:.2f}</span>
+                    <span style="background:rgba(0,245,255,0.1);color:#00F5FF;font-size:0.7rem;font-weight:600;padding:0.1rem 0.5rem;border-radius:20px;">S/ {prod["price"]:.2f}</span>
                   </div>
                   <div style="font-size:0.65rem;color:rgba(148,163,184,0.4);text-align:center;">{prod["community"][:35]}</div>
                 </div>
@@ -3669,19 +3693,19 @@ def render_emprendedor():
     .bubble-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:2px;animation:bubbleIn 0.4s cubic-bezier(0.21,1.02,0.73,1)}
     .bubble-row.mashi{justify-content:flex-start}
     .bubble-row.user{justify-content:flex-end}
-    .chat-bubble-mashi{background:linear-gradient(135deg,#0a1f1a,#0d261f);border:1px solid rgba(16,185,129,0.12);border-radius:16px 16px 16px 4px;padding:14px 18px;max-width:75%;color:#e2e8f0;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:500;line-height:1.7;letter-spacing:0;box-shadow:0 4px 16px rgba(0,0,0,0.2),0 0 40px rgba(16,185,129,0.03)}
-    .chat-bubble-user{background:linear-gradient(135deg,#0d3b2c,#0f4a34);border:1px solid rgba(16,185,129,0.15);border-radius:16px 16px 4px 16px;padding:14px 18px;max-width:75%;color:#e2e8f0;font-size:0.85rem;font-family:'Nunito',sans-serif;font-weight:500;line-height:1.65;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
+    .chat-bubble-mashi{background:linear-gradient(135deg,#042017,#0d261f);border:1px solid rgba(0,245,255,0.12);border-radius:16px 16px 16px 4px;padding:14px 18px;max-width:75%;color:#e2e8f0;font-size:0.9rem;font-family:'Nunito',sans-serif;font-weight:500;line-height:1.7;letter-spacing:0;box-shadow:0 4px 16px rgba(0,0,0,0.2),0 0 40px rgba(0,245,255,0.03)}
+    .chat-bubble-user{background:linear-gradient(135deg,#0d3b2c,#0f4a34);border:1px solid rgba(0,245,255,0.15);border-radius:16px 16px 4px 16px;padding:14px 18px;max-width:75%;color:#e2e8f0;font-size:0.85rem;font-family:'Nunito',sans-serif;font-weight:500;line-height:1.65;box-shadow:0 4px 16px rgba(0,0,0,0.15)}
     .bubble-avatar{width:32px;height:32px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1rem;overflow:hidden}
-    .mashi-avatar-img{background:url('data:image/jpeg;base64,{B64}') center/cover no-repeat;width:32px;height:32px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(16,185,129,0.3)}
-    .typing-bubble{background:linear-gradient(135deg,#0a1f1a,#0d261f);border:1px solid rgba(16,185,129,0.1);border-radius:16px;padding:14px 20px;display:flex;gap:5px;align-items:center}
-    .typing-dot{width:7px;height:7px;background:#10b981;border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out}
+    .mashi-avatar-img{background:url('data:image/jpeg;base64,{B64}') center/cover no-repeat;width:32px;height:32px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(0,245,255,0.3)}
+    .typing-bubble{background:linear-gradient(135deg,#042017,#0d261f);border:1px solid rgba(0,245,255,0.1);border-radius:16px;padding:14px 20px;display:flex;gap:5px;align-items:center}
+    .typing-dot{width:7px;height:7px;background:#00F5FF;border-radius:50%;animation:typingBounce 1.4s infinite ease-in-out}
     .typing-dot:nth-child(2){animation-delay:0.2s}
     .typing-dot:nth-child(3){animation-delay:0.4s}
     @keyframes bubbleIn{from{opacity:0;transform:translateY(12px) scale(0.95)}to{opacity:1;transform:translateY(0) scale(1)}}
     @keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:0.35}30%{transform:translateY(-6px);opacity:1}}
     ::-webkit-scrollbar{width:3px}
     ::-webkit-scrollbar-track{background:transparent}
-    ::-webkit-scrollbar-thumb{background:rgba(16,185,129,0.2);border-radius:4px}
+    ::-webkit-scrollbar-thumb{background:rgba(0,245,255,0.2);border-radius:4px}
     '''
     def _md2html(t):
         return re.sub(r'\*\*(.+?)\*\*', r'<b>\1</b>', t)
@@ -3798,7 +3822,7 @@ def render_inversionista():
             st.balloons()
     if st.session_state.get("verified", False):
         se = st.session_state.get("verified_sector", se)
-        st.markdown(f'<div style="display:flex;gap:6px;align-items:center;margin:0.5rem 0;padding:0.3rem 0.8rem;background:rgba(16,185,129,0.04);border:1px solid rgba(16,185,129,0.1);border-radius:10px;"><span style="font-size:0.6rem;color:#10b981;">📊</span><span style="font-size:0.6rem;color:rgba(148,163,184,0.4);">{_L("Datos de comunidades registradas en MAPPED · Loreto, Perú","Data from communities registered in MAPPED · Loreto, Peru","MAPPEDpi llaktakuna · Loreto, Perú")}</span></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="display:flex;gap:6px;align-items:center;margin:0.5rem 0;padding:0.3rem 0.8rem;background:rgba(0,245,255,0.04);border:1px solid rgba(0,245,255,0.1);border-radius:10px;"><span style="font-size:0.6rem;color:#00F5FF;">📊</span><span style="font-size:0.6rem;color:rgba(148,163,184,0.4);">{_L("Datos de comunidades registradas en MAPPED · Loreto, Perú","Data from communities registered in MAPPED · Loreto, Peru","MAPPEDpi llaktakuna · Loreto, Perú")}</span></div>', unsafe_allow_html=True)
 
         # ── Mini Folium Map ──
         if st.button("🗺️ " + _L("Ver mapa de comunidades","View community map","Llaktakuna mapapi"), key="toggle_inv_map", use_container_width=True):
@@ -3830,8 +3854,8 @@ def render_inversionista():
                     fill_color=color).add_to(m)
             from branca.element import Element
             m.get_root().header.add_child(Element(
-                '<style>body,html,#map{background:#040e0b!important;margin:0;padding:0;}'
-                '.leaflet-container{background:#040e0b!important;}'
+                '<style>body,html,#map{background:#021B15!important;margin:0;padding:0;}'
+                '.leaflet-container{background:#021B15!important;}'
                 '.leaflet-control-zoom a{background:#0A2B1F!important;color:#e2e8f0!important;}</style>'))
             st_folium(m, height=350, key="inv_mini_map", returned_objects=[])
         # ── Dark HTML table ──
@@ -3847,16 +3871,16 @@ def render_inversionista():
             avg = round(sum(r["stars"] for r in e["reviews"])/len(e["reviews"]),1) if e["reviews"] else "—"
             prods = "<br>".join([f"• {p['name']}: {p['currency']}{p['price']:.2f}" for p in e["products"]])
             em = _sector_emoji(e["sector"])
-            tbl_rows += f'''<tr style="background:#0a1f1a;border-bottom:1px solid rgba(19,56,47,0.4);">
+            tbl_rows += f'''<tr style="background:#042017;border-bottom:1px solid rgba(19,56,47,0.4);">
                 <td style="padding:0.6rem 0.5rem;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:0.9rem;">{em}</span><span style="color:#e2e8f0;font-size:0.7rem;font-weight:500;">{e["name"][:30]}</span></div></td>
                 <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.6);">{e["sector"][:18]}</td>
-                <td style="padding:0.6rem 0.5rem;font-size:0.65rem;"><a href="{_gmaps_url(e["location"])}" target="_blank" style="color:#10b981;text-decoration:none;font-size:0.65rem;">📍 {e["location"]}</a></td>
+                <td style="padding:0.6rem 0.5rem;font-size:0.65rem;"><a href="{_gmaps_url(e["location"])}" target="_blank" style="color:#00F5FF;text-decoration:none;font-size:0.65rem;">📍 {e["location"]}</a></td>
                 <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.5);">{e["years_selling"]}</td>
-                <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:#10b981;font-weight:600;">★ {avg}/5</td>
+                <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:#00F5FF;font-weight:600;">★ {avg}/5</td>
                 <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.5);">{prods[:60]}...</td>
                 <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.4);">{e.get("logistics_notes","")[:30]}</td>
             </tr>'''
-        st.markdown(f'<div style="background:#05110e;border:1px solid #13382f;border-radius:14px;overflow:hidden;margin:1rem 0;"><div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;min-width:700px;"><thead><tr style="background:#0a1f1a;border-bottom:2px solid #13382f;"><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{table_header}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{table_header2}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{table_header3}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{table_header4}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{table_header5}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{table_header6}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{table_header7}</th></tr></thead><tbody>{tbl_rows}</tbody></table></div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="background:#021B15;border:1px solid #003d30;border-radius:14px;overflow:hidden;margin:1rem 0;"><div style="overflow-x:auto;"><table style="width:100%;border-collapse:collapse;min-width:700px;"><thead><tr style="background:#042017;border-bottom:2px solid #003d30;"><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{table_header}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{table_header2}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{table_header3}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{table_header4}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{table_header5}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{table_header6}</th><th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{table_header7}</th></tr></thead><tbody>{tbl_rows}</tbody></table></div></div>', unsafe_allow_html=True)
         # ── Dashboard ──
         sl = se.lower().strip() if se else ""
         try:
@@ -3893,19 +3917,19 @@ def render_inversionista():
         match_pct = min(100, max(15, round(len(matched) / len(ds) * 150)))
         col1, col2, col3, col4 = st.columns(4)
         with col1:
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.8rem;text-align:center;"><div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">💰<span>{_L("VALOR MERCADO ANUAL","ANNUAL MARKET VALUE","QOLQE WATA")}</span></div><div style="font-size:1.2rem;font-weight:800;color:#10b981;">S/ {total_mkt_val if total_mkt_val else 0:,.0f}</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("proyectado 12 meses","projected 12 months","12 killa yupay")}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.8rem;text-align:center;"><div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">💰<span>{_L("VALOR MERCADO ANUAL","ANNUAL MARKET VALUE","QOLQE WATA")}</span></div><div style="font-size:1.2rem;font-weight:800;color:#00F5FF;">S/ {total_mkt_val if total_mkt_val else 0:,.0f}</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("proyectado 12 meses","projected 12 months","12 killa yupay")}</div></div>', unsafe_allow_html=True)
         with col2:
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.8rem;text-align:center;"><div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">📈<span>{_L("CRECIMIENTO","GROWTH","WIÑAY")}</span></div><div style="font-size:1.2rem;font-weight:800;color:{"#10b981" if growth_val > 30 else "#eab308"};">{growth_val}%</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("potencial anual","annual potential","wata atina")}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.8rem;text-align:center;"><div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">📈<span>{_L("CRECIMIENTO","GROWTH","WIÑAY")}</span></div><div style="font-size:1.2rem;font-weight:800;color:{"#00F5FF" if growth_val > 30 else "#eab308"};">{growth_val}%</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("potencial anual","annual potential","wata atina")}</div></div>', unsafe_allow_html=True)
         with col3:
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.8rem;text-align:center;"><div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">🎯<span>{_L("COBERTURA MATCH","MATCH COVERAGE","TINKUY")}</span></div><div style="font-size:1.2rem;font-weight:800;color:#10b981;">{match_pct}%</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("comunidades afines","matching communities","tinkuq llakta")}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.8rem;text-align:center;"><div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">🎯<span>{_L("COBERTURA MATCH","MATCH COVERAGE","TINKUY")}</span></div><div style="font-size:1.2rem;font-weight:800;color:#00F5FF;">{match_pct}%</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("comunidades afines","matching communities","tinkuq llakta")}</div></div>', unsafe_allow_html=True)
         with col4:
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.8rem;text-align:center;"><div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">⭐<span>{_L("SATISFACCIÓN PROMEDIO","AVERAGE SATISFACTION","KUSIY")}</span></div><div style="font-size:1.2rem;font-weight:800;color:{"#10b981" if avg_rating > 4 else "#eab308"};">★ {avg_rating}/5</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("en {n} reseñas","in {n} reviews","{n} rivispi").format(n=total_reviews)}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.8rem;text-align:center;"><div style="display:flex;align-items:center;justify-content:center;gap:6px;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">⭐<span>{_L("SATISFACCIÓN PROMEDIO","AVERAGE SATISFACTION","KUSIY")}</span></div><div style="font-size:1.2rem;font-weight:800;color:{"#00F5FF" if avg_rating > 4 else "#eab308"};">★ {avg_rating}/5</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("en {n} reseñas","in {n} reviews","{n} rivispi").format(n=total_reviews)}</div></div>', unsafe_allow_html=True)
         # ── Stacked area chart ──
         pivot = df_proj.pivot_table(index="month", columns="sector", values="value", aggfunc="sum").fillna(0)
         month_order = months_short
         pivot = pivot.reindex(month_order).fillna(0)
         fig = go.Figure()
-        colors = ["#10b981","#00d4aa","#34d399","#6ee7b7","#a7f3d0","#059669","#047857","#065f46"]
+        colors = ["#00F5FF","#00d4aa","#34d399","#6ee7b7","#a7f3d0","#00FFAB","#047857","#065f46"]
         for j, col in enumerate(pivot.columns):
             fig.add_trace(go.Scatter(name=col[:15], x=pivot.index, y=pivot[col], mode="lines", stackgroup="one", line=dict(width=0.5, color=colors[j % len(colors)]), fillcolor=colors[j % len(colors)]))
         fig.update_layout(margin=dict(l=0,r=0,t=30,b=0), height=260, paper_bgcolor="rgba(0,0,0,0)", plot_bgcolor="rgba(0,0,0,0)", font=dict(color="rgba(148,163,184,0.6)", size=9), hovermode="x unified", legend=dict(orientation="h", y=1.15, font=dict(size=9)), xaxis=dict(showgrid=False, showline=False), yaxis=dict(showgrid=False, showticklabels=False))
@@ -3920,17 +3944,17 @@ def render_inversionista():
         payback_m = max(6, min(24, payback_m))
         annual_share = round(inv_amount * 12 / max(payback_m, 1), 0)
         roi_pct = round(annual_share / max(inv_amount, 1) * 100, 1)
-        payback_color = "#10b981" if payback_m <= 12 else ("#eab308" if payback_m <= 18 else "#f97316")
+        payback_color = "#00F5FF" if payback_m <= 12 else ("#eab308" if payback_m <= 18 else "#f97316")
         payback_badge = "🟢" if payback_m <= 12 else ("🟡" if payback_m <= 18 else "🟠")
         payback_note = _L("dentro del plazo recomendado (≤24 meses)","within recommended term (≤24 months)","allin pachapi (≤24 killa)") if payback_m <= 24 else _L("excede el plazo recomendado de 2 años","exceeds recommended 2-year term","2 wata pachata llallin")
         c1, c2, c3 = st.columns(3)
         with c1:
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:1rem;text-align:center;"><div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">{_L("INGRESO PROYECTADO","PROJECTED REVENUE","QOLQE WIÑAY")}</div><div style="font-size:1.3rem;font-weight:800;color:#10b981;">S/ {annual_share:,.0f}</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("primer año","first year","ñawpa wata")}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:1rem;text-align:center;"><div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">{_L("INGRESO PROYECTADO","PROJECTED REVENUE","QOLQE WIÑAY")}</div><div style="font-size:1.3rem;font-weight:800;color:#00F5FF;">S/ {annual_share:,.0f}</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("primer año","first year","ñawpa wata")}</div></div>', unsafe_allow_html=True)
         with c2:
             badge = "🟢" if roi_pct > 30 else ("🟡" if roi_pct > 15 else "🔴")
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:1rem;text-align:center;"><div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">{_L("ROI ESTIMADO","ESTIMATED ROI","ROI YUPAY")}</div><div style="font-size:1.3rem;font-weight:800;color:{"#10b981" if roi_pct > 20 else "#eab308"};">{badge} {roi_pct:.1f}%</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("retorno sobre inversión","return on investment","qolqe kutimuy")}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:1rem;text-align:center;"><div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">{_L("ROI ESTIMADO","ESTIMATED ROI","ROI YUPAY")}</div><div style="font-size:1.3rem;font-weight:800;color:{"#00F5FF" if roi_pct > 20 else "#eab308"};">{badge} {roi_pct:.1f}%</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("retorno sobre inversión","return on investment","qolqe kutimuy")}</div></div>', unsafe_allow_html=True)
         with c3:
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:1rem;text-align:center;"><div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">{_L("PAYBACK","PAYBACK","KUTIMUY")}</div><div style="font-size:1.3rem;font-weight:800;color:{payback_color};">{payback_badge} {payback_m} {_L("meses","months","killa")}</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("recuperación de inversión","investment recovery","qolqe kutichiy")}</div><div style="font-size:0.5rem;color:{payback_color};margin-top:2px;">{payback_note}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:1rem;text-align:center;"><div style="font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);margin-bottom:4px;">{_L("PAYBACK","PAYBACK","KUTIMUY")}</div><div style="font-size:1.3rem;font-weight:800;color:{payback_color};">{payback_badge} {payback_m} {_L("meses","months","killa")}</div><div style="font-size:0.55rem;color:rgba(148,163,184,0.3);margin-top:4px;">{_L("recuperación de inversión","investment recovery","qolqe kutichiy")}</div><div style="font-size:0.5rem;color:{payback_color};margin-top:2px;">{payback_note}</div></div>', unsafe_allow_html=True)
         # ── Top communities by demand ──
         max_score = 0
         demand_rows = []
@@ -3951,27 +3975,27 @@ def render_inversionista():
         reviews_h = _L("Reseñas","Reviews","Riviskuna")
         tbl_rows2 = ""
         for i, r in enumerate(top6):
-            bg = "#0a1f1a" if i % 2 == 0 else "#05110e"
+            bg = "#042017" if i % 2 == 0 else "#021B15"
             em = _sector_emoji(r["sector"])
-            bar_color = "#10b981" if r["_score"] >= 70 else ("#eab308" if r["_score"] >= 40 else "#ef4444")
+            bar_color = "#00F5FF" if r["_score"] >= 70 else ("#eab308" if r["_score"] >= 40 else "#ef4444")
             ap = sum(p["price"] for p in r["products"]) / max(len(r["products"]), 1)
             tbl_rows2 += f'''<tr style="background:{bg};border-bottom:1px solid rgba(19,56,47,0.4);">
                 <td style="padding:0.6rem 0.5rem;"><div style="display:flex;align-items:center;gap:6px;"><span style="font-size:0.9rem;">{em}</span><span style="color:#e2e8f0;font-size:0.7rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;">{r["name"][:35]}</span></div></td>
                 <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.6);">{r["sector"][:18]}</td>
-                <td style="padding:0.6rem 0.5rem;"><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:#13382f;border-radius:3px;overflow:hidden;min-width:60px;"><div style="width:{r["_score"]}%;height:100%;background:{bar_color};border-radius:3px;transition:width 0.3s;"></div></div><span style="font-size:0.65rem;font-weight:700;color:{bar_color};min-width:28px;text-align:right;">{r["_score"]}%</span></div></td>
-                <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:#10b981;font-weight:600;text-align:right;">S/ {ap:.0f}</td>
+                <td style="padding:0.6rem 0.5rem;"><div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:6px;background:#003d30;border-radius:3px;overflow:hidden;min-width:60px;"><div style="width:{r["_score"]}%;height:100%;background:{bar_color};border-radius:3px;transition:width 0.3s;"></div></div><span style="font-size:0.65rem;font-weight:700;color:{bar_color};min-width:28px;text-align:right;">{r["_score"]}%</span></div></td>
+                <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:#00F5FF;font-weight:600;text-align:right;">S/ {ap:.0f}</td>
                 <td style="padding:0.6rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.5);text-align:center;">{len(r["reviews"])}</td>
             </tr>'''
         st.markdown(f'<div style="margin-top:1.2rem;font-size:0.85rem;font-weight:700;color:#e2e8f0;display:flex;align-items:center;gap:8px;"><span>🔥</span><span>{tbl_title}</span></div>', unsafe_allow_html=True)
-        st.markdown(f'''<div style="background:#05110e;border:1px solid #13382f;border-radius:14px;overflow:hidden;margin:0.5rem 0;">
+        st.markdown(f'''<div style="background:#021B15;border:1px solid #003d30;border-radius:14px;overflow:hidden;margin:0.5rem 0;">
             <div style="overflow-x:auto;">
             <table style="width:100%;border-collapse:collapse;min-width:550px;">
-                <thead><tr style="background:#0a1f1a;border-bottom:2px solid #13382f;">
-                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{comm_h}</th>
-                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{sector_h2}</th>
-                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{demand_h}</th>
-                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:right;">{price_h}</th>
-                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:center;">📝</th>
+                <thead><tr style="background:#042017;border-bottom:2px solid #003d30;">
+                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{comm_h}</th>
+                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{sector_h2}</th>
+                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{demand_h}</th>
+                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:right;">{price_h}</th>
+                    <th style="padding:0.6rem 0.5rem;font-size:0.6rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:center;">📝</th>
                 </tr></thead>
                 <tbody>{tbl_rows2}</tbody>
             </table>
@@ -4040,10 +4064,10 @@ def render_inversionista():
         if ai_analysis:
             col_a, col_b = st.columns([6,1])
             with col_a:
-                st.markdown(f'''<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:16px;padding:1.2rem;margin-top:0.8rem;">
+                st.markdown(f'''<div style="background:#042017;border:1px solid #003d30;border-radius:16px;padding:1.2rem;margin-top:0.8rem;">
                     <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.6rem;">
                         <span style="font-size:1.2rem;">🦥</span>
-                        <span style="font-weight:700;color:#10b981;font-size:0.85rem;">{_L("Análisis IA","AI Analysis","Yuyay")}</span>
+                        <span style="font-weight:700;color:#00F5FF;font-size:0.85rem;">{_L("Análisis IA","AI Analysis","Yuyay")}</span>
                     </div>
                     <div style="font-size:0.8rem;color:#e2e8f0;line-height:1.7;">{ai_analysis}</div>
                 </div>''', unsafe_allow_html=True)
@@ -4076,38 +4100,38 @@ def render_inversionista():
             pf_roi = round(pf_annual / max(pf_inv, 1) * 100, 1) if pf_inv > 0 else 0
             c1_pf, c2_pf, c3_pf, c4_pf = st.columns(4)
             with c1_pf:
-                st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.7rem;text-align:center;"><div style="font-size:0.5rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);">{_L("COMUNIDADES","COMMUNITIES","LLACTA")}</div><div style="font-size:1.2rem;font-weight:800;color:#10b981;">{len(pf_communities)}</div></div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.7rem;text-align:center;"><div style="font-size:0.5rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);">{_L("COMUNIDADES","COMMUNITIES","LLACTA")}</div><div style="font-size:1.2rem;font-weight:800;color:#00F5FF;">{len(pf_communities)}</div></div>', unsafe_allow_html=True)
             with c2_pf:
-                st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.7rem;text-align:center;"><div style="font-size:0.5rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);">{_L("PROD. TOTALES","TOTAL PRODUCTS","LLAPA RURA")}</div><div style="font-size:1.2rem;font-weight:800;color:#10b981;">{pf_total_prods}</div></div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.7rem;text-align:center;"><div style="font-size:0.5rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);">{_L("PROD. TOTALES","TOTAL PRODUCTS","LLAPA RURA")}</div><div style="font-size:1.2rem;font-weight:800;color:#00F5FF;">{pf_total_prods}</div></div>', unsafe_allow_html=True)
             with c3_pf:
-                st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.7rem;text-align:center;"><div style="font-size:0.5rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);">{_L("INGRESO ANUAL","ANNUAL REVENUE","WATA QOLQE")}</div><div style="font-size:1rem;font-weight:800;color:#10b981;">S/ {pf_annual:,.0f}</div></div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.7rem;text-align:center;"><div style="font-size:0.5rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);">{_L("INGRESO ANUAL","ANNUAL REVENUE","WATA QOLQE")}</div><div style="font-size:1rem;font-weight:800;color:#00F5FF;">S/ {pf_annual:,.0f}</div></div>', unsafe_allow_html=True)
             with c4_pf:
                 badge = "🟢" if pf_roi > 25 else ("🟡" if pf_roi > 12 else "🔴")
-                st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.7rem;text-align:center;"><div style="font-size:0.5rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);">{_L("ROI ESTIMADO","ESTIMATED ROI","ROI")}</div><div style="font-size:1rem;font-weight:800;color:#10b981;">{badge} {pf_roi}%</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.3);">{_L("payback ~{n} meses","payback ~{n} months","{n} killata").format(n=pf_payback)}</div></div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.7rem;text-align:center;"><div style="font-size:0.5rem;text-transform:uppercase;letter-spacing:1px;color:rgba(148,163,184,0.4);">{_L("ROI ESTIMADO","ESTIMATED ROI","ROI")}</div><div style="font-size:1rem;font-weight:800;color:#00F5FF;">{badge} {pf_roi}%</div><div style="font-size:0.5rem;color:rgba(148,163,184,0.3);">{_L("payback ~{n} meses","payback ~{n} months","{n} killata").format(n=pf_payback)}</div></div>', unsafe_allow_html=True)
             # Portfolio mini-table
             pf_rows = ""
             for e in pf_communities:
                 em = _sector_emoji(e["sector"])
                 avg = round(sum(r["stars"] for r in e["reviews"])/len(e["reviews"]),1) if e["reviews"] else "—"
-                pf_rows += f'<tr style="background:#0a1f1a;border-bottom:1px solid rgba(19,56,47,0.4);">'
+                pf_rows += f'<tr style="background:#042017;border-bottom:1px solid rgba(19,56,47,0.4);">'
                 pf_rows += f'<td style="padding:0.4rem 0.5rem;"><span style="font-size:0.9rem;">{em}</span> <span style="color:#e2e8f0;font-size:0.7rem;">{e["name"][:25]}</span></td>'
                 pf_rows += f'<td style="padding:0.4rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.5);">{e["sector"][:14]}</td>'
-                pf_rows += f'<td style="padding:0.4rem 0.5rem;font-size:0.65rem;color:#10b981;">★ {avg}</td>'
+                pf_rows += f'<td style="padding:0.4rem 0.5rem;font-size:0.65rem;color:#00F5FF;">★ {avg}</td>'
                 pf_rows += f'<td style="padding:0.4rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.5);">{len(e["products"])}</td>'
                 pf_rows += f'<td style="padding:0.4rem 0.5rem;font-size:0.65rem;color:rgba(148,163,184,0.4);">{e["years_selling"]}</td></tr>'
-            st.markdown(f'<div style="background:#05110e;border:1px solid #13382f;border-radius:12px;overflow:hidden;margin-top:0.3rem;"><table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#0a1f1a;border-bottom:1px solid #13382f;"><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{_L("Comunidad","Community","Llacta")}</th><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{_L("Sector","Sector","Sector")}</th><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{_L("Rating","Rating","Yupay")}</th><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{_L("Prod.","Prod.","Rura")}</th><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#10b981;text-align:left;">{_L("Años","Years","Wata")}</th></tr></thead><tbody>{pf_rows}</tbody></table></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#021B15;border:1px solid #003d30;border-radius:12px;overflow:hidden;margin-top:0.3rem;"><table style="width:100%;border-collapse:collapse;"><thead><tr style="background:#042017;border-bottom:1px solid #003d30;"><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{_L("Comunidad","Community","Llacta")}</th><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{_L("Sector","Sector","Sector")}</th><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{_L("Rating","Rating","Yupay")}</th><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{_L("Prod.","Prod.","Rura")}</th><th style="padding:0.4rem 0.5rem;font-size:0.55rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#00F5FF;text-align:left;">{_L("Años","Years","Wata")}</th></tr></thead><tbody>{pf_rows}</tbody></table></div>', unsafe_allow_html=True)
 
         # ── Download Report ──
         report_ts = time.strftime("%Y-%m-%d %H:%M")
         report_html = f"""<html><head><meta charset="utf-8"><style>
 body{{font-family:Arial,sans-serif;background:#f5f5f5;color:#333;max-width:800px;margin:auto;padding:20px}}
-h1{{color:#10b981;border-bottom:2px solid #10b981;padding-bottom:8px}}
-h2{{color:#059669;margin-top:24px}}
+h1{{color:#00F5FF;border-bottom:2px solid #00F5FF;padding-bottom:8px}}
+h2{{color:#00FFAB;margin-top:24px}}
 table{{width:100%;border-collapse:collapse;margin:10px 0}}
-th{{background:#10b981;color:#fff;padding:8px;text-align:left;font-size:13px}}
+th{{background:#00F5FF;color:#fff;padding:8px;text-align:left;font-size:13px}}
 td{{padding:8px;border-bottom:1px solid #ddd;font-size:13px}}
 .kpi{{display:inline-block;background:#e8f5e9;padding:10px 18px;margin:6px;border-radius:10px;text-align:center;min-width:140px}}
-.kpi .val{{font-size:22px;font-weight:700;color:#10b981}}
+.kpi .val{{font-size:22px;font-weight:700;color:#00F5FF}}
 .kpi .lbl{{font-size:11px;color:#666}}
 .footer{{margin-top:30px;font-size:11px;color:#999;text-align:center}}
 </style></head><body>
@@ -4182,36 +4206,36 @@ td{{padding:8px;border-bottom:1px solid #ddd;font-size:13px}}
         rec_thanks = _L("Gracias por interesarte en las comunidades de Loreto.","Thank you for your interest in Loreto's communities.","Añay Loreto llaktakunamanta.")
         years_lbl = _L("años","years","wata")
         rtext = random.choice(rec["reviews"]) if rec["reviews"] else None
-        review_html = f'<div style="margin-top:0.6rem;padding:0.6rem;background:rgba(16,185,129,0.04);border-left:2px solid rgba(16,185,129,0.2);border-radius:8px;"><div style="font-size:0.75rem;font-style:italic;color:rgba(148,163,184,0.6);">"{rtext["text"]}"</div><div style="font-size:0.65rem;color:rgba(16,185,129,0.5);margin-top:0.2rem;">— {rtext["user"]} {"★"*rtext["stars"]}</div></div>' if rtext else ""
+        review_html = f'<div style="margin-top:0.6rem;padding:0.6rem;background:rgba(0,245,255,0.04);border-left:2px solid rgba(0,245,255,0.2);border-radius:8px;"><div style="font-size:0.75rem;font-style:italic;color:rgba(148,163,184,0.6);">"{rtext["text"]}"</div><div style="font-size:0.65rem;color:rgba(0,245,255,0.5);margin-top:0.2rem;">— {rtext["user"]} {"★"*rtext["stars"]}</div></div>' if rtext else ""
         gmap_url = _gmaps_url(rec["location"])
         _loc_q = re.sub(r'[^\w\s,]', '', rec["location"]).strip()
         gmap_embed = f"https://www.google.com/maps?q={_loc_q.replace(' ','+')}&output=embed"
-        st.markdown(f'''<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:16px;overflow:hidden;margin-top:1rem;">
-            <div style="padding:1rem 1.2rem;background:linear-gradient(135deg,#0a1f1a,#13382f);border-bottom:1px solid #13382f;">
-                <div style="font-size:0.7rem;color:rgba(16,185,129,0.6);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;">🦥 {rec_title}</div>
+        st.markdown(f'''<div style="background:#042017;border:1px solid #003d30;border-radius:16px;overflow:hidden;margin-top:1rem;">
+            <div style="padding:1rem 1.2rem;background:linear-gradient(135deg,#042017,#003d30);border-bottom:1px solid #003d30;">
+                <div style="font-size:0.7rem;color:rgba(0,245,255,0.6);font-weight:600;text-transform:uppercase;letter-spacing:1.5px;">🦥 {rec_title}</div>
             </div>
             <div style="display:flex;flex-wrap:wrap;">
                 <div style="flex:1;min-width:240px;padding:1rem 1.2rem;">
                     <div style="display:flex;align-items:center;gap:12px;margin-bottom:0.8rem;">
-                        <div style="width:44px;height:44px;border-radius:12px;background:rgba(16,185,129,0.1);border:1.5px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">{_sector_emoji(rec["sector"])}</div>
+                        <div style="width:44px;height:44px;border-radius:12px;background:rgba(0,245,255,0.1);border:1.5px solid rgba(0,245,255,0.25);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">{_sector_emoji(rec["sector"])}</div>
                         <div><div style="font-weight:700;color:#fff;font-size:0.9rem;">{rec["name"]}</div><div style="font-size:0.7rem;color:rgba(148,163,184,0.5);">{rec["sector"]}</div></div>
                     </div>
                     <div style="font-size:0.8rem;color:rgba(148,163,184,0.7);margin-bottom:0.6rem;">{rec["description"][:120]}{"..." if len(rec["description"])>120 else ""}</div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.4rem;font-size:0.75rem;">
                         <div><span style="color:rgba(148,163,184,0.4);">{rec_exp_lbl}:</span> <span style="color:#e2e8f0;">{rec["years_selling"]} {years_lbl}</span></div>
-                        <div><span style="color:rgba(148,163,184,0.4);">{rec_rating_lbl}:</span> <span style="color:#10b981;">★ {ravg}/5</span> <span style="color:rgba(148,163,184,0.3);">({len(rec["reviews"])} {rec_reviews_lbl})</span></div>
+                        <div><span style="color:rgba(148,163,184,0.4);">{rec_rating_lbl}:</span> <span style="color:#00F5FF;">★ {ravg}/5</span> <span style="color:rgba(148,163,184,0.3);">({len(rec["reviews"])} {rec_reviews_lbl})</span></div>
                         <div style="grid-column:span 2;"><span style="color:rgba(148,163,184,0.4);">{rec_logistics_lbl}:</span> <span style="color:rgba(148,163,184,0.6);font-size:0.7rem;">{rec.get("logistics_notes","")}</span></div>
                     </div>
                     {review_html}
                     <div style="margin-top:0.8rem;display:flex;gap:8px;flex-wrap:wrap;">
-                        <a href="{gmap_url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(16,185,129,0.1);color:#10b981;padding:0.4rem 0.8rem;border-radius:8px;text-decoration:none;font-size:0.75rem;border:1px solid rgba(16,185,129,0.2);">🗺️ {_L("Ver en mapa","View on map","Mapapi rikuy")}</a>
+                        <a href="{gmap_url}" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(0,245,255,0.1);color:#00F5FF;padding:0.4rem 0.8rem;border-radius:8px;text-decoration:none;font-size:0.75rem;border:1px solid rgba(0,245,255,0.2);">🗺️ {_L("Ver en mapa","View on map","Mapapi rikuy")}</a>
                         <a href="https://www.youtube.com/results?search_query={rec['name'].replace(' ','+')}+Loreto+artesanía" target="_blank" style="display:inline-flex;align-items:center;gap:6px;background:rgba(239,68,68,0.1);color:#ef4444;padding:0.4rem 0.8rem;border-radius:8px;text-decoration:none;font-size:0.75rem;border:1px solid rgba(239,68,68,0.2);">▶️ {_L("Ver video","Watch video","Rikuy video")}</a>
                     </div>
                     <div style="margin-top:0.8rem;font-size:0.7rem;color:rgba(148,163,184,0.4);">{KICHWA["gracias"]} {rec_thanks} 🦥🌿</div>
                 </div>
                 <div style="flex:1;min-width:280px;padding:0.8rem;">
                     <iframe width="100%" height="280" style="border:0;border-radius:12px;" loading="lazy" src="{gmap_embed}" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    <div style="text-align:center;margin-top:0.4rem;"><a href="{gmap_url}" target="_blank" style="font-size:0.65rem;color:rgba(16,185,129,0.5);text-decoration:none;">{_L("Abrir en Google Maps →","Open in Google Maps →","Google Mapspi rikuchiy →")}</a></div>
+                    <div style="text-align:center;margin-top:0.4rem;"><a href="{gmap_url}" target="_blank" style="font-size:0.65rem;color:rgba(0,245,255,0.5);text-decoration:none;">{_L("Abrir en Google Maps →","Open in Google Maps →","Google Mapspi rikuchiy →")}</a></div>
                 </div>
             </div>
         </div>''', unsafe_allow_html=True)
@@ -4306,14 +4330,14 @@ def render_camera():
         d = st.session_state.identified; from_vision = d.get("from_vision", False); vision = d.get("vision")
         if from_vision and vision:
             quality_ico = {"alta":"✨","media":"📊","baja":"🌱"}.get(vision.get("quality","media"),"📊")
-            st.markdown(f'<div class="glass-card"><span style="display:inline-block;background:rgba(16,185,129,0.1);color:#10b981!important;font-size:0.6rem;font-weight:600;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:20px;">{_L("Producto identificado","Product identified","Rura rikushka")}</span><span style="background:rgba(139,92,246,0.1);color:#a78bfa;font-size:0.6rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:20px;margin-left:0.3rem;">📸 {_L("Visión IA","AI Vision","Rikuna IA")}</span><div style="font-size:1.1rem;font-weight:700;color:#FFFFFF!important;margin:0.6rem 0;">{vision["detected_type"]}</div><div style="font-size:0.8rem;"><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Calidad:","Quality:","Allin kay:")}</span><span style="color:#e2e8f0!important;">{quality_ico} {vision.get("quality","media").capitalize()}</span></div><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Precio estimado:","Est. price:","Masna:")}</span><span style="color:#10b981!important;"><strong>S/ {vision["visual_price"]:.2f}</strong></span></div></div><div style="padding:0.5rem 0 0;color:rgba(148,163,184,0.4);font-size:0.7rem;border-top:1px solid rgba(139,92,246,0.1);margin-top:0.3rem;">{vision.get("reason","")}</div></div>', unsafe_allow_html=True)
+            st.markdown(f'<div class="glass-card"><span style="display:inline-block;background:rgba(0,245,255,0.1);color:#00F5FF!important;font-size:0.6rem;font-weight:600;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:20px;">{_L("Producto identificado","Product identified","Rura rikushka")}</span><span style="background:rgba(139,92,246,0.1);color:#a78bfa;font-size:0.6rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:20px;margin-left:0.3rem;">📸 {_L("Visión IA","AI Vision","Rikuna IA")}</span><div style="font-size:1.1rem;font-weight:700;color:#FFFFFF!important;margin:0.6rem 0;">{vision["detected_type"]}</div><div style="font-size:0.8rem;"><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Calidad:","Quality:","Allin kay:")}</span><span style="color:#e2e8f0!important;">{quality_ico} {vision.get("quality","media").capitalize()}</span></div><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Precio estimado:","Est. price:","Masna:")}</span><span style="color:#00F5FF!important;"><strong>S/ {vision["visual_price"]:.2f}</strong></span></div></div><div style="padding:0.5rem 0 0;color:rgba(148,163,184,0.4);font-size:0.7rem;border-top:1px solid rgba(139,92,246,0.1);margin-top:0.3rem;">{vision.get("reason","")}</div></div>', unsafe_allow_html=True)
         else:
             offline = d.get("offline", False)
             if offline:
                 st.info(_L("No se pudo conectar con la IA. Explora el catálogo en la sección Emprendedor Local.","Could not connect to AI. Browse the catalog in the Local Entrepreneur section.","IA mana atin. Rikunaykipaq maskay Emprendedor Localpi."))
             else:
                 ent, prod, avg = d["ent"], d["prod"], d["avg"]
-                st.markdown(f'<div class="glass-card"><span style="display:inline-block;background:rgba(16,185,129,0.1);color:#10b981!important;font-size:0.6rem;font-weight:600;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:20px;">{_L("Producto identificado","Product identified","Rura rikushka")}</span><span style="background:rgba(148,163,184,0.1);color:rgba(148,163,184,0.4);font-size:0.6rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:20px;margin-left:0.3rem;">{_L("Sin conexión IA","AI offline","IA mana")}</span><div style="font-size:1.1rem;font-weight:700;color:#FFFFFF!important;margin:0.6rem 0;">{prod["name"]}</div><div style="font-size:0.8rem;"><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Artesano","Artisan","Ruraq")}</span><span style="color:#e2e8f0!important;">{ent["name"]}</span></div><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Precio","Price","Masna")}</span><span style="color:#e2e8f0!important;">{prod["currency"]}{prod["price"]:.2f}</span></div><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Reseñas","Reviews","Rivis")}</span><span style="color:#e2e8f0!important;">★ {avg}/5 · {len(ent["reviews"])} {_L("opiniones","reviews","rivis")}</span></div><div style="display:flex;justify-content:space-between;padding:0.35rem 0;"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Ubicación","Location","Maypi")}</span><span style="color:#e2e8f0!important;">{ent["location"]}</span></div></div></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="glass-card"><span style="display:inline-block;background:rgba(0,245,255,0.1);color:#00F5FF!important;font-size:0.6rem;font-weight:600;text-transform:uppercase;padding:0.2rem 0.6rem;border-radius:20px;">{_L("Producto identificado","Product identified","Rura rikushka")}</span><span style="background:rgba(148,163,184,0.1);color:rgba(148,163,184,0.4);font-size:0.6rem;font-weight:600;padding:0.15rem 0.5rem;border-radius:20px;margin-left:0.3rem;">{_L("Sin conexión IA","AI offline","IA mana")}</span><div style="font-size:1.1rem;font-weight:700;color:#FFFFFF!important;margin:0.6rem 0;">{prod["name"]}</div><div style="font-size:0.8rem;"><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Artesano","Artisan","Ruraq")}</span><span style="color:#e2e8f0!important;">{ent["name"]}</span></div><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Precio","Price","Masna")}</span><span style="color:#e2e8f0!important;">{prod["currency"]}{prod["price"]:.2f}</span></div><div style="display:flex;justify-content:space-between;padding:0.35rem 0;border-bottom:1px solid rgba(19,56,47,0.5);"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Reseñas","Reviews","Rivis")}</span><span style="color:#e2e8f0!important;">★ {avg}/5 · {len(ent["reviews"])} {_L("opiniones","reviews","rivis")}</span></div><div style="display:flex;justify-content:space-between;padding:0.35rem 0;"><span style="color:rgba(148,163,184,0.5)!important;">{_L("Ubicación","Location","Maypi")}</span><span style="color:#e2e8f0!important;">{ent["location"]}</span></div></div></div>', unsafe_allow_html=True)
         if from_vision and vision:
             vision_text = _L(
                 f"Mashi ha identificado {vision.get('detected_type','un producto')}. "
@@ -4430,8 +4454,8 @@ def _render_mini_map(ent, ds):
                 icon=folium.Icon(color="green", icon="ok-sign", icon_size=(10,10))).add_to(m)
     from branca.element import Element
     m.get_root().header.add_child(Element(
-        '<style>body,html,#map{background:#040e0b!important;margin:0;padding:0;}'
-        '.leaflet-container{background:#040e0b!important;}'
+        '<style>body,html,#map{background:#021B15!important;margin:0;padding:0;}'
+        '.leaflet-container{background:#021B15!important;}'
         '.leaflet-control-zoom a{background:#0A2B1F!important;color:#e2e8f0!important;}</style>'
     ))
     st_folium(m, height=300, key="mini_map", returned_objects=[])
@@ -4579,11 +4603,11 @@ def render_map_view():
 
     from branca.element import Element
     m.get_root().header.add_child(Element(
-        '<style>body,html,#map{background:#040e0b!important;margin:0;padding:0;}'
-        '.leaflet-container{background:#040e0b!important;}'
+        '<style>body,html,#map{background:#021B15!important;margin:0;padding:0;}'
+        '.leaflet-container{background:#021B15!important;}'
         '.leaflet-control-zoom a{background:#0A2B1F!important;color:#e2e8f0!important;}</style>'
     ))
-    st.markdown('<div style="background:#040e0b;border-radius:12px;overflow:hidden;border:1px solid #13382f;padding:0;margin:0;">', unsafe_allow_html=True)
+    st.markdown('<div style="background:#021B15;border-radius:12px;overflow:hidden;border:1px solid #003d30;padding:0;margin:0;">', unsafe_allow_html=True)
     st_folium(m, height=460, key="mapet_map", returned_objects=[])
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -4651,7 +4675,7 @@ def _generate_qr_base64(data, size=3):
     qr = qrcode.QRCode(box_size=size, border=0)
     qr.add_data(data)
     qr.make(fit=True)
-    img = qr.make_image(fill_color="#10b981", back_color="#0a1f1a")
+    img = qr.make_image(fill_color="#00F5FF", back_color="#042017")
     buf = io.BytesIO()
     img.save(buf, format="PNG")
     return "data:image/png;base64," + base64.b64encode(buf.getvalue()).decode()
@@ -4667,7 +4691,7 @@ def render_store_view():
     if online and sync_queue:
         st.session_state["_sync_queue"] = []
         st.success(f'🔄 {_L("Sincronizado","Synced","Allichashka")} — {len(sync_queue)} {_L("pendientes enviados","pending sent","kachashka")}')
-    status_color = "#10b981" if online else "#f59e0b"
+    status_color = "#00F5FF" if online else "#f59e0b"
     status_text = _L("En línea · sincronizado","Online · synced","Kaypi · allichashka") if online else _L("Sin conexión · cola local","Offline · local queue","Mana kaypi · kaymanta")
     st.markdown(f'<div style="padding:1rem 1rem 0.5rem"><h2 class="section-title">🛍️ {_L("Tienda MAPPED","MAPPED Store","MAPPED Rantina")}{title_suffix} <span style="font-size:0.6rem;color:{status_color};">● {status_text}</span></h2></div>', unsafe_allow_html=True)
     ds = get_full_dataset()
@@ -4714,7 +4738,7 @@ def render_store_view():
                     wimg = _get_product_image(wp.get("community", ""), wp, "70px")
                     st.markdown(f'<div style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.15);border-radius:12px;padding:0.5rem;margin-bottom:0.4rem;">{wimg}<div style="font-size:0.7rem;color:#e2e8f0;text-align:center;">{wp["name"][:35]}</div><div style="text-align:center;font-size:0.6rem;color:#fbbf24;">S/ {wp["price"]:.2f}</div></div>', unsafe_allow_html=True)
     if not filtered:
-        st.markdown(f'<div style="background:rgba(16,185,129,0.04);border:1px dashed rgba(16,185,129,0.15);border-radius:16px;padding:2rem;text-align:center;margin:1rem 0;"><div style="font-size:2rem;margin-bottom:0.5rem;">🔍</div><div style="font-size:0.85rem;color:rgba(148,163,184,0.5);">{_L("No se encontraron productos","No products found","Rurakuna mana tiyan")}</div></div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="background:rgba(0,245,255,0.04);border:1px dashed rgba(0,245,255,0.15);border-radius:16px;padding:2rem;text-align:center;margin:1rem 0;"><div style="font-size:2rem;margin-bottom:0.5rem;">🔍</div><div style="font-size:0.85rem;color:rgba(148,163,184,0.5);">{_L("No se encontraron productos","No products found","Rurakuna mana tiyan")}</div></div>', unsafe_allow_html=True)
         return
     detail_pk = st.session_state.setdefault("_detail_show", None)
     cols = st.columns(2)
@@ -4732,11 +4756,11 @@ def render_store_view():
             gallery_img = img_gal or f'<div style="font-size:2rem;text-align:center;padding:0.5rem 0;">{emoji}</div>'
             star_icon = "⭐" if is_fav else "☆"
             st.markdown(f"""
-            <div style="background:#0a1f1a;border:1px solid rgba(16,185,129,0.1);border-radius:20px;padding:0.8rem;margin-bottom:0.6rem;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);" onmouseover="this.style.transform='translateY(-1px)';this.style.borderColor='rgba(16,185,129,0.2)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(16,185,129,0.1)';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)'">
+            <div style="background:#042017;border:1px solid rgba(0,245,255,0.1);border-radius:20px;padding:0.8rem;margin-bottom:0.6rem;box-shadow:0 2px 12px rgba(0,0,0,0.06);transition:all 0.2s cubic-bezier(0.4,0,0.2,1);" onmouseover="this.style.transform='translateY(-1px)';this.style.borderColor='rgba(0,245,255,0.2)';this.style.boxShadow='0 6px 20px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='';this.style.borderColor='rgba(0,245,255,0.1)';this.style.boxShadow='0 2px 12px rgba(0,0,0,0.06)'">
               {gallery_img}
               <div style="font-weight:600;color:#e2e8f0;font-size:0.8rem;text-align:center;">{prod["name"][:35]}{badge_html}</div>
               <div style="text-align:center;margin:0.2rem 0;">
-                <span style="background:rgba(16,185,129,0.1);color:#10b981;font-size:0.7rem;font-weight:600;padding:0.1rem 0.5rem;border-radius:20px;">S/ {prod["price"]:.2f}</span>
+                <span style="background:rgba(0,245,255,0.1);color:#00F5FF;font-size:0.7rem;font-weight:600;padding:0.1rem 0.5rem;border-radius:20px;">S/ {prod["price"]:.2f}</span>
               </div>
               <div style="font-size:0.65rem;color:rgba(148,163,184,0.4);text-align:center;">{community_name[:35]}</div>
             </div>
@@ -4793,9 +4817,9 @@ def render_store_view():
         _bp_price = _bp.get("price",0)
         _bp_comm = _bp.get("community","")
         _bp_phone = _bp.get("phone","+51999999999")
-        st.markdown(f"""<div style="text-align:center;padding:1rem;background:linear-gradient(135deg,#0a1f1a,#0d261f);border:1px solid rgba(16,185,129,0.15);border-radius:20px;margin:0.5rem 0;">
+        st.markdown(f"""<div style="text-align:center;padding:1rem;background:linear-gradient(135deg,#042017,#0d261f);border:1px solid rgba(0,245,255,0.15);border-radius:20px;margin:0.5rem 0;">
             <div style="font-size:0.9rem;font-weight:700;color:#FFFFFF;margin-bottom:0.3rem;">🛍️ {_L("Comprar","Buy","Rantiy")}</div>
-            <div style="font-size:0.8rem;color:#10b981;margin-bottom:0.8rem;">{_bp_name} — S/ {_bp_price:.2f}</div>
+            <div style="font-size:0.8rem;color:#00F5FF;margin-bottom:0.8rem;">{_bp_name} — S/ {_bp_price:.2f}</div>
             <div style="font-size:0.7rem;color:rgba(148,163,184,0.5);margin-bottom:0.6rem;">{_bp_comm}</div>
         </div>""", unsafe_allow_html=True)
         pc1, pc2, pc3 = st.columns(3)
@@ -4808,7 +4832,7 @@ def render_store_view():
             yape_qr = _generate_qr_base64(yape_text)
             st.markdown(f'<div style="text-align:center;cursor:pointer;" onclick="this.querySelector(\'img\').style.display=this.querySelector(\'img\').style.display===\'none\'?\'block\':\'none\'"><div style="background:rgba(139,92,246,0.15);color:#8b5cf6;font-weight:700;padding:0.5rem;border-radius:12px;font-size:0.75rem;">💳 Yape</div><img src="{yape_qr}" style="width:100px;height:100px;border-radius:8px;margin-top:0.3rem;display:none;border:2px solid rgba(139,92,246,0.2);"/></div>', unsafe_allow_html=True)
         with pc3:
-            st.markdown(f'<div style="background:rgba(16,185,129,0.15);color:#10b981;font-weight:700;padding:0.5rem;border-radius:12px;font-size:0.75rem;text-align:center;">🏦 Plin<br><span style="font-size:0.6rem;color:rgba(148,163,184,0.5);">{_bp_phone}</span></div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:rgba(0,245,255,0.15);color:#00F5FF;font-weight:700;padding:0.5rem;border-radius:12px;font-size:0.75rem;text-align:center;">🏦 Plin<br><span style="font-size:0.6rem;color:rgba(148,163,184,0.5);">{_bp_phone}</span></div>', unsafe_allow_html=True)
         if st.button(_L("✅ Confirmar pago","✅ Confirm payment","✅ Rantiy"), key="confirm_pay", use_container_width=True):
             st.session_state.pop("_buy_pending", None)
             st.session_state.setdefault("purchases",[]).append({"user":st.session_state.get("user_name","Visitor"),"product":_bp_name,"price":_bp_price,"ent_name":_bp_comm})
@@ -4822,8 +4846,7 @@ def render_store_view():
         st.markdown(f'<div style="text-align:center;font-size:0.75rem;color:rgba(148,163,184,0.3);padding:0.5rem;">{_L("Mostrando 24 de","Showing 24 of","Rikuchin 24")} {len(filtered)}</div>', unsafe_allow_html=True)
 
 def render_bottom_nav(active):
-    tabs = [("🧭",_L("Explorar","Explore","Maskay"),"Ecoturista"),("🗺️",_L("Mapa","Map","Mapa"),"Mapa"),("🛒",_L("Tienda","Store","Rantina"),"Tienda"),("👤",_L("Perfil","Profile","Perfil"),"Perfil"),("🤖",_L("Mashi","Mashi","Mashi"),"_demo")]
-    st.markdown('<div class="bnav-header">— ' + _L("Navegar","Navigate","Rina") + ' —</div>', unsafe_allow_html=True)
+    tabs = [("🗺️",_L("Mapa","Map","Mapa"),"Mapa"),("🧭",_L("Explorar","Explore","Maskay"),"Explorar"),("🛒",_L("Tienda","Store","Rantina"),"Tienda"),("👤",_L("Perfil","Profile","Perfil"),"Perfil")]
     cols = st.columns(len(tabs))
     current_idx = next((i for i, t in enumerate(tabs) if t[2] == active), 0)
     for i, (icon, label, key) in enumerate(tabs):
@@ -4831,11 +4854,7 @@ def render_bottom_nav(active):
             is_active = current_idx == i
             if st.button(f"{icon}\n{label}", key=f"nv_{key}", use_container_width=True, type="primary" if is_active else "secondary"):
                 if not is_active:
-                    if key == "_demo":
-                        st.session_state["demo_mode"] = True
-                        st.session_state["demo_step"] = 0
-                    else:
-                        st.session_state["_nav_rkey"] = key
+                    st.session_state["_nav_rkey"] = key
                     st.rerun()
 
 # ========================================================================
@@ -5000,15 +5019,15 @@ def render_demo_tour():
     L = _L
     st.markdown(f"""
     <div style="max-width:680px;margin:1rem auto;padding:1.5rem;
-         background:linear-gradient(135deg,#0a2b1f 0%,#0d3526 100%);
-         border:1px solid rgba(16,185,129,0.2);border-radius:20px;
+         background:linear-gradient(135deg,#031a14 0%,#042017 100%);
+         border:1px solid rgba(0,245,255,0.2);border-radius:20px;
          box-shadow:0 8px 40px rgba(0,0,0,0.3);">
       <div style="font-size:2.5rem;text-align:center;margin-bottom:0.5rem;">{icon}</div>
-      <div style="text-align:center;font-size:0.7rem;color:rgba(16,185,129,0.5);margin-bottom:0.3rem;">
+      <div style="text-align:center;font-size:0.7rem;color:rgba(0,245,255,0.5);margin-bottom:0.3rem;">
         {L("Paso","Step","Paso")} {step+1}/{total}
       </div>
       <div style="text-align:center;margin-bottom:1rem;">
-        {"".join(f'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 3px;background:{"#10b981" if i <= step else "#13382f"};"></span>' for i in range(total))}
+        {"".join(f'<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 3px;background:{"#00F5FF" if i <= step else "#003d30"};"></span>' for i in range(total))}
       </div>
       <h2 style="color:#fff;text-align:center;font-size:1.3rem;margin:0 0 0.8rem;">{title}</h2>
       <p style="color:rgba(148,163,184,0.8);font-size:0.85rem;line-height:1.5;text-align:center;">{desc}</p>
@@ -5036,7 +5055,7 @@ def render_demo_tour():
     # Quick action card
     st.markdown(f"""
     <div style="max-width:680px;margin:0.5rem auto;padding:1rem;
-         background:rgba(10,43,31,0.6);border:1px solid rgba(16,185,129,0.1);
+         background:rgba(10,43,31,0.6);border:1px solid rgba(0,245,255,0.1);
          border-radius:16px;text-align:center;">
       <span style="font-size:0.7rem;color:rgba(148,163,184,0.4);">
         {L("Consejo","Tip","Willay")}:
@@ -5055,22 +5074,20 @@ def render_welcome():
     _inject_js()
     lang = st.session_state.get("lang", "es")
     L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
-    logo_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:72px;height:72px;border-radius:50%;border:2px solid #10b981;margin-bottom:1.2rem;" />' if MASHI_LOGO_B64 else '<div style="width:72px;height:72px;border-radius:50%;border:2px solid #10b981;margin-bottom:1.2rem;background:#0a1f1a;"></div>'
+    logo_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:160px;height:160px;object-fit:contain;margin-bottom:2rem;" />' if MASHI_LOGO_B64 else '<div style="width:160px;height:160px;border-radius:50%;border:2px solid #00F5FF;margin-bottom:2rem;background:#042017;"></div>'
     st.markdown(f"""
-    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;">
-        {logo_html}
-        <h1 style="font-size:1.8rem;font-weight:800;color:#fff;margin:0;">MAPPED</h1>
-        <p style="font-size:0.6rem;color:#10b981;text-transform:uppercase;letter-spacing:2.5px;margin:0.4rem 0 1.5rem;font-weight:600;">Amazonía · Loreto · Perú</p>
-        <p style="font-size:0.85rem;color:rgba(148,163,184,0.7);max-width:400px;line-height:1.6;margin-bottom:2rem;">
-            {L("Conectamos artesanos amazónicos con el mundo. Comercio justo, turismo consciente.",
-               "We connect Amazonian artisans with the world. Fair trade, conscious tourism.",
-               "Tantapak chiqap Amazónia rurakunata watukushpa. Rikchiriy chiqapllata.")}
-        </p>
+    <div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;position:relative;overflow:hidden;">
+        <div style="position:absolute;top:-60px;left:-60px;width:280px;height:280px;background:radial-gradient(circle,rgba(0,245,255,0.10),transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div style="position:absolute;bottom:-60px;right:-60px;width:260px;height:260px;background:radial-gradient(circle,rgba(0,255,171,0.10),transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div style="text-align:center;max-width:320px;position:relative;z-index:1;">
+            {logo_html}
+            <h1 style="font-size:1.875rem;font-weight:800;color:#F0FFF4;margin:0;letter-spacing:-0.02em;font-family:'Space Grotesk',sans-serif;">{L("Bienvenido a MAPPED","Welcome to MAPPED","MAPPEDpi allin shamuy")}</h1>
+            <p style="font-size:0.875rem;color:rgba(240,255,244,0.4);margin-top:0.75rem;font-weight:300;line-height:1.6;">{L("Descubre, conecta y explora los emprendimientos de Loreto","Discover, connect and explore local businesses in Loreto","Loreto llakta ruwaqkunata maskay rikuy")}</p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
-    tab1, tab2, tab3 = st.tabs([f"🔑 {L('Iniciar sesión','Login','Yapay')}", f"📝 {L('Registrarse','Register','Rikchikuy')}", f"🌐 {L('Idioma','Language','Shimi')}", ])
+    tab1, tab2 = st.tabs([f"🔑 {L('Iniciar sesión','Login','Yapay')}", f"📝 {L('Registrarse','Register','Rikchikuy')}"])
     with tab1:
-        st.markdown(f"<p style='color:#FFFFFF;font-weight:600;font-size:0.9rem;margin-bottom:1rem;'>{L('Bienvenido de vuelta','Welcome back','Allianllachu')}</p>", unsafe_allow_html=True)
         email = st.text_input("Email", placeholder="tu@email.com", key="login_email")
         pw = st.text_input(L("Contraseña","Password","Yupay"), type="password", key="login_pw")
         if st.button(L("Entrar","Log in","Yapay"), use_container_width=True, type="primary"):
@@ -5091,8 +5108,14 @@ def render_welcome():
                     st.error(f"Error: {e}")
             else:
                 st.warning(L("Completa todos los campos","Fill in all fields","Tukuchikypi mayllak"))
+        st.markdown('<div style="text-align:center;margin:1rem 0;"><span style="color:rgba(240,255,244,0.25);font-size:0.75rem;">— o —</span></div>', unsafe_allow_html=True)
+        if st.button("🌐 " + L("Entrar como visitante","Continue as visitor","Watukuq"), use_container_width=True, type="secondary"):
+            st.session_state["logged_in"] = False
+            st.session_state["onboarded"] = True
+            st.session_state["user_name"] = _L("Visitante","Visitor","Watukuq")
+            st.session_state["user_role"] = "tourist"
+            st.rerun()
     with tab2:
-        st.markdown(f"<p style='color:#FFFFFF;font-weight:600;font-size:0.9rem;margin-bottom:1rem;'>{L('Crea tu cuenta','Create account','Cuenta musuk')}</p>", unsafe_allow_html=True)
         rname = st.text_input(L("Nombre completo","Full name","Sapa mikun"), key="reg_name")
         remail = st.text_input("Email", placeholder="tu@email.com", key="reg_email")
         rpw = st.text_input(L("Contraseña","Password","Yupay"), type="password", key="reg_pw")
@@ -5103,7 +5126,6 @@ def render_welcome():
                     st.error(L("Las contraseñas no coinciden","Passwords don't match","Contraseña mayllanapaqchu"))
                 else:
                     try:
-                        import database as _db
                         user = _db_create_user(rname, remail, rpw)
                         if user:
                             st.session_state["logged_in"] = True
@@ -5119,21 +5141,14 @@ def render_welcome():
                         st.error(f"Error: {e}")
             else:
                 st.warning(L("Completa todos los campos","Fill in all fields","Tukuchikypi mayllak"))
-    with tab3:
-        st.markdown(f"<p style='color:#FFFFFF;font-weight:600;font-size:0.9rem;margin-bottom:1rem;'>{L('Elige tu idioma','Choose language','Shimi akllay')} 🌐</p>", unsafe_allow_html=True)
-        lc = st.columns(3)
-        for i, (code, label) in enumerate([("es","🇪🇸 Español"),("en","🇬🇧 English"),("qw","🇰🇮 Kichwa")]):
-            with lc[i]:
-                if st.button(label, key=f"wlang_{code}", use_container_width=True, type="primary" if st.session_state.get("lang","es")==code else "secondary"):
-                    st.session_state["lang"] = code
-                    st.rerun()
-    st.markdown(f"""
-    <div style="text-align:center;margin-top:1rem;padding:0.8rem;background:rgba(10,43,31,0.4);border-radius:16px;border:1px solid rgba(16,185,129,0.06);">
-        <p style="font-size:0.65rem;color:rgba(148,163,184,0.35)!important;margin:0;">
-            © 2026 MAPPED · Loreto, Perú · {L('Hecho con 💚 para la Amazonía','Made with 💚 for the Amazon','Rurashka Amazonía')};
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown('<div style="display:flex;justify-content:center;gap:0.5rem;margin-top:1.5rem;">', unsafe_allow_html=True)
+    lc = st.columns(3)
+    for i, (code, label) in enumerate([("es","🇪🇸"),("en","🇬🇧"),("qw","🌿")]):
+        with lc[i]:
+            if st.button(label, key=f"wlang_{code}", use_container_width=True, type="primary" if st.session_state.get("lang","es")==code else "secondary"):
+                st.session_state["lang"] = code
+                st.rerun()
+    st.markdown(f'<div style="text-align:center;color:rgba(240,255,244,0.15);font-size:0.6rem;margin-top:1rem;">© 2026 MAPPED · Loreto, Perú</div>', unsafe_allow_html=True)
 
 # ========================================================================
 # USER TYPE SELECTOR
@@ -5144,88 +5159,98 @@ def render_user_type():
     lang = st.session_state.get("lang", "es")
     L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
     st.markdown(f"""
-    <div style="text-align:center;padding:2rem 1rem 1rem;">
-        <h2 style="color:#FFFFFF!important;font-size:1.5rem;font-weight:700;">{L("¿Cómo quieres usar MAPPED?","How do you want to use MAPPED?","MAPPEDta imaynata ruranki")}</h2>
-        <p style="font-size:0.85rem;color:rgba(148,163,184,0.6)!important;">{L("Elige tu perfil para personalizar la experiencia","Choose your profile to personalize the experience","Akllichi profileta")}</p>
+    <div style="min-height:60vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;position:relative;">
+        <div style="position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(0,255,171,0.05),transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div style="position:absolute;bottom:-40px;left:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(0,245,255,0.05),transparent 70%);border-radius:50%;pointer-events:none;"></div>
+        <div style="text-align:center;margin-bottom:2.5rem;position:relative;z-index:1;">
+            <h1 style="font-size:1.5rem;font-weight:700;color:#F0FFF4;font-family:'Space Grotesk',sans-serif;">{L("¿Cómo quieres usar MAPPED?","How do you want to use MAPPED?","MAPPEDta imaynata ruranki")}</h1>
+            <p style="font-size:0.875rem;color:rgba(240,255,244,0.4);margin-top:0.5rem;font-weight:300;">{L("Elige tu perfil para personalizar la experiencia","Choose your profile to personalize the experience","Akllichi profileta")}</p>
+        </div>
     </div>
     """, unsafe_allow_html=True)
-    c1, c2 = st.columns(2)
-    with c1:
+    options = [
+        ("🧭", L("Turista en Loreto","Tourist in Loreto","Turista"), L("Explora y descubre Loreto","Discover and explore Loreto","Loreto maskay"), "tourist", "Mapa"),
+        ("🏪", L("Emprendedor","Entrepreneur","Emprendedor"), L("Promociona tu negocio local","Promote your local business","Negocioyta rikchikuy"), "entrepreneur", "Emprendedor Local"),
+        ("🏢", L("Compañía","Company","Compañía"), L("Gestiona tu empresa en la plataforma","Manage your company on the platform","Empresa ruray"), "company", "Panel Compañía"),
+    ]
+    for icon, title, desc, role, nav_key in options:
         st.markdown(f"""
-        <div style="background:linear-gradient(135deg,#0a1f1a,#0d261f);border:1px solid rgba(16,185,129,0.12);border-radius:24px;padding:2rem 1.2rem;text-align:center;">
-            <div style="font-size:2.5rem;margin-bottom:0.8rem;">🌿</div>
-            <h3 style="color:#FFFFFF!important;font-size:1rem;font-weight:700;margin:0;">{L("Ecoturista","Ecotourist","Ekoturista")}</h3>
-            <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;margin:0.5rem 0 0;">{L("Explora, compra artesanía y conecta con comunidades","Explore, buy crafts & connect with communities","Kutiyta, artesanía rantiyta ñanallananki")}</p>
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem 1.2rem;display:flex;align-items:center;gap:1rem;margin-bottom:0.75rem;transition:all 0.2s;cursor:pointer;">
+            <div style="width:48px;height:48px;border-radius:12px;background:rgba(240,255,244,0.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                <span style="font-size:1.5rem;">{icon}</span>
+            </div>
+            <div>
+                <div style="font-weight:600;font-size:0.9rem;color:#F0FFF4;">{title}</div>
+                <div style="font-size:0.8rem;color:rgba(240,255,244,0.4);margin-top:0.125rem;">{desc}</div>
+            </div>
         </div>
         """, unsafe_allow_html=True)
-        if st.button(L("🌿 Soy Ecoturista","🌿 I'm an Ecotourist","🌿 Ekoturista kani"), use_container_width=True, type="primary", key="utype_eco"):
-            import database as _db
-            _db_update_user_role(st.session_state.get("user_id", 0), "tourist")
-            st.session_state["user_role"] = "tourist"
+        if st.button(f"{icon} {title}", key=f"utype_{role}", use_container_width=True, type="primary" if role == "tourist" else "secondary"):
+            _db_update_user_role(st.session_state.get("user_id", 0), role)
+            st.session_state["user_role"] = role
+            if role == "entrepreneur":
+                st.session_state["_nav_rkey"] = nav_key
+            elif role == "company":
+                st.session_state["_nav_rkey"] = nav_key
             st.rerun()
-    with c2:
-        st.markdown(f"""
-        <div style="background:linear-gradient(135deg,#0a1f1a,#1a1a0a);border:1px solid rgba(245,158,11,0.12);border-radius:24px;padding:2rem 1.2rem;text-align:center;">
-            <div style="font-size:2.5rem;margin-bottom:0.8rem;">🏪</div>
-            <h3 style="color:#FFFFFF!important;font-size:1rem;font-weight:700;margin:0;">{L("Emprendedor","Entrepreneur","Emprendedor")}</h3>
-            <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;margin:0.5rem 0 0;">{L("Registra tu negocio, vende y gestiona tus productos","Register your business, sell & manage products","Negocioyta rikchikuy, rantiyta yuyayta")}</p>
-        </div>
-        """, unsafe_allow_html=True)
-        if st.button(L("🏪 Soy Emprendedor","🏪 I'm an Entrepreneur","🏪 Emprendedor kani"), use_container_width=True, type="secondary", key="utype_emp"):
-            import database as _db
-            _db_update_user_role(st.session_state.get("user_id", 0), "entrepreneur")
-            st.session_state["user_role"] = "entrepreneur"
-            st.rerun()
-    if st.button(L("Saltar por ahora","Skip for now","Ñakarikuy"), key="skip_utype", use_container_width=True):
-        st.session_state["user_role"] = "tourist"
-        st.rerun()
 
 # ========================================================================
 # PROFILE PAGE
 # ========================================================================
 def render_profile():
+    user_name = st.session_state.get('user_name','')
+    user_email = st.session_state.get('user_email','')
+    user_role = st.session_state.get('user_role','tourist')
+    avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:80px;height:80px;border-radius:50%;object-fit:cover;" />' if MASHI_LOGO_B64 else '<div style="width:80px;height:80px;border-radius:50%;background:#042017;"></div>'
     st.markdown(f"""
-    <div style="text-align:center;padding:1rem;">
-        <div style="width:80px;height:80px;border-radius:50%;background:rgba(16,185,129,0.1);border:2px solid rgba(16,185,129,0.3);margin:0 auto 1rem;overflow:hidden;" class="mashi-avatar-img"></div>
-        <h2 style="color:#FFFFFF!important;font-size:1.3rem;font-weight:700;margin:0;">{st.session_state.get('user_name','')}</h2>
-        <p style="font-size:0.75rem;color:rgba(148,163,184,0.5)!important;margin:0.3rem 0;">{st.session_state.get('user_email','')}</p>
-        <span style="display:inline-block;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);padding:0.2rem 0.8rem;border-radius:20px;font-size:0.7rem;color:#10b981;font-weight:600;">{st.session_state.get('user_role','tourist').upper()}</span>
+    <div style="text-align:center;padding:1.5rem 1rem 1rem;">
+        <div style="width:88px;height:88px;border-radius:50%;padding:3px;background:linear-gradient(135deg,#00F5FF,#00FFAB);margin:0 auto 1rem;display:inline-block;">
+            <div style="width:100%;height:100%;border-radius:50%;background:#021B15;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+                {avatar_html}
+            </div>
+        </div>
+        <h2 style="color:#F0FFF4!important;font-size:1.2rem;font-weight:700;margin:0;font-family:'Space Grotesk',sans-serif;">{user_name}</h2>
+        <p style="font-size:0.75rem;color:rgba(240,255,244,0.4);margin:0.25rem 0 0.6rem;">{user_email}</p>
+        <span style="display:inline-block;background:rgba(0,245,255,0.08);border:1px solid rgba(0,245,255,0.2);padding:0.2rem 0.8rem;border-radius:20px;font-size:0.65rem;color:#00F5FF;font-weight:600;text-transform:uppercase;letter-spacing:1px;">{user_role}</span>
     </div>
     """, unsafe_allow_html=True)
     lang = st.session_state.get("lang", "es")
     L = lambda es, en, qw: {"es": es, "en": en, "qw": qw}.get(lang, es)
+    stats_fav = len(st.session_state.get("favorites", []))
+    stats_purch = len(st.session_state.get("purchases", []))
+    stats_comm = len(set(p.get("community_id") for p in st.session_state.get("purchases", []) if p.get("community_id")))
+    st.markdown(f"""
+    <div style="display:flex;gap:0.5rem;margin:0.5rem 1rem 1rem;">
+        <div style="flex:1;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.8rem;">
+            <div style="font-size:1.25rem;font-weight:700;color:#00F5FF;">{stats_fav}</div>
+            <div style="font-size:0.6rem;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:1px;">{L("Favoritos","Favorites","Munay")}</div>
+        </div>
+        <div style="flex:1;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.8rem;">
+            <div style="font-size:1.25rem;font-weight:700;color:#00F5FF;">{stats_purch}</div>
+            <div style="font-size:0.6rem;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:1px;">{L("Compras","Purchases","Rantiy")}</div>
+        </div>
+        <div style="flex:1;text-align:center;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.8rem;">
+            <div style="font-size:1.25rem;font-weight:700;color:#00F5FF;">{stats_comm}</div>
+            <div style="font-size:0.6rem;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:1px;">{L("Visitas","Visits","Rikuy")}</div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     uid = st.session_state.get("user_id")
     if uid:
         try:
-            import database as _db
             user = _db_get_user(uid)
             if user and user.get("role") == "entrepreneur":
                 eprof = _db_get_entrepreneur_profile(uid)
                 if eprof:
                     st.markdown(f"""
-                    <div class="glass-card">
-                        <h3 style="color:#FFFFFF!important;font-size:0.9rem;margin:0 0 0.5rem;">🏪 {L("Mi Negocio","My Business","Negocioy")}</h3>
-                        <p style="font-size:0.8rem;color:#e2e8f0;">{eprof.get('business_name','')}</p>
-                        <p style="font-size:0.7rem;color:rgba(148,163,184,0.5);">📍 {eprof.get('location','')} · 📂 {eprof.get('sector','')}</p>
+                    <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem;margin:0 1rem 0.75rem;">
+                        <div style="font-weight:700;font-size:0.8rem;color:#F0FFF4;margin-bottom:0.5rem;">🏪 {L("Mi Negocio","My Business","Negocioy")}</div>
+                        <div style="font-size:0.8rem;color:rgba(240,255,244,0.7);">{eprof.get('business_name','')}</div>
+                        <div style="font-size:0.7rem;color:rgba(240,255,244,0.4);margin-top:0.25rem;">📍 {eprof.get('location','')} · 📂 {eprof.get('sector','')}</div>
                     </div>
                     """, unsafe_allow_html=True)
         except Exception:
             pass
-    stats = {
-        L("Favoritos","Favorites","Huñunakuy"): len(st.session_state.get("favorites", [])),
-        L("Compras","Purchases","Rantishka"): len(st.session_state.get("purchases", [])),
-        L("Comunidades visitadas","Communities visited","Comunidad rikchana"): len(set(p.get("community_id") for p in st.session_state.get("purchases", []) if p.get("community_id"))),
-    }
-    cols = st.columns(len(stats))
-    for col, (label, val) in zip(cols, stats.items()):
-        with col:
-            st.markdown(f"""
-            <div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:1rem;">
-                <div style="font-size:1.5rem;font-weight:700;color:#10b981;">{val}</div>
-                <div style="font-size:0.65rem;color:rgba(148,163,184,0.5);">{label}</div>
-            </div>
-            """, unsafe_allow_html=True)
-    st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
     if st.session_state.get("favorites"):
         with st.expander(f"❤️ {L('Mis Favoritos','My Favorites','Huñunakuykun')}"):
             ds = get_full_dataset()
@@ -5237,7 +5262,7 @@ def render_profile():
         with st.expander(f"🛒 {L('Mis Compras','My Purchases','Rantishkakun')}"):
             for p in st.session_state["purchases"]:
                 st.markdown(f"**{p.get('product','')}** — S/ {p.get('price',0):.2f} · {p.get('community','')}")
-    st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
+    st.markdown('<div style="height:0.5rem;"></div>', unsafe_allow_html=True)
     if st.button(f"🚪 {L('Cerrar sesión','Log out','Kutiy')}", use_container_width=True, type="secondary"):
         for k in ["logged_in","user_id","user_name","user_email","user_role","onboarded"]:
             st.session_state.pop(k, None)
@@ -5282,7 +5307,7 @@ def render_explore():
                 <div style="flex:1;">
                     <h3 style="color:#FFFFFF!important;font-size:0.9rem;font-weight:700;margin:0;">{ent.get('name','')}</h3>
                     <p style="font-size:0.7rem;color:rgba(148,163,184,0.5)!important;margin:0.2rem 0;">📍 {ent.get('location','')} · 📂 {ent.get('sector','')}</p>
-                    <p style="font-size:0.7rem;color:#10b981!important;margin:0.2rem 0;">{star_str}</p>
+                    <p style="font-size:0.7rem;color:#00F5FF!important;margin:0.2rem 0;">{star_str}</p>
                     <p style="font-size:0.7rem;color:rgba(148,163,184,0.4)!important;margin:0;">{prod_text}</p>
                 </div>
                 <span style="font-size:1.5rem;">{fav_icon}</span>
@@ -5408,18 +5433,18 @@ def render_panel_compania():
     total_revenue = sum(p.get("price", 0) for p in my_sales)
     kcols = st.columns(3)
     with kcols[0]:
-        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:1rem;">
-            <div style="font-size:1.5rem;font-weight:700;color:#10b981;">{len(my_sales)}</div>
+        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(0,245,255,0.08);border-radius:16px;padding:1rem;">
+            <div style="font-size:1.5rem;font-weight:700;color:#00F5FF;">{len(my_sales)}</div>
             <div style="font-size:0.65rem;color:rgba(148,163,184,0.5);">{L("Ventas","Sales","Rantishka")}</div>
         </div>""", unsafe_allow_html=True)
     with kcols[1]:
-        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:1rem;">
-            <div style="font-size:1.5rem;font-weight:700;color:#10b981;">S/ {total_revenue:.0f}</div>
+        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(0,245,255,0.08);border-radius:16px;padding:1rem;">
+            <div style="font-size:1.5rem;font-weight:700;color:#00F5FF;">S/ {total_revenue:.0f}</div>
             <div style="font-size:0.65rem;color:rgba(148,163,184,0.5);">{L("Ingresos","Revenue","Yanapay")}</div>
         </div>""", unsafe_allow_html=True)
     with kcols[2]:
-        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(16,185,129,0.08);border-radius:16px;padding:1rem;">
-            <div style="font-size:1.5rem;font-weight:700;color:#10b981;">4.8 ⭐</div>
+        st.markdown(f"""<div style="text-align:center;background:rgba(10,43,31,0.5);border:1px solid rgba(0,245,255,0.08);border-radius:16px;padding:1rem;">
+            <div style="font-size:1.5rem;font-weight:700;color:#00F5FF;">4.8 ⭐</div>
             <div style="font-size:0.65rem;color:rgba(148,163,184,0.5);">{L("Calificación","Rating","Valoración")}</div>
         </div>""", unsafe_allow_html=True)
     st.markdown("<div style='height:1rem;'></div>", unsafe_allow_html=True)
@@ -5517,7 +5542,7 @@ def main():
 
     # Sidebar
     with st.sidebar:
-        st.markdown(f'<div class="glass-card" style="text-align:center;padding:1.5rem 1rem;"><div style="width:64px;height:64px;border-radius:50%;margin:0 auto 0.8rem;background:rgba(16,185,129,0.1);border:2px solid rgba(16,185,129,0.3);overflow:hidden;box-shadow:0 0 30px rgba(16,185,129,0.08);" class="mashi-avatar-img"></div><h3 style="color:#FFFFFF!important;font-size:1.1rem;font-weight:700;margin:0;">{KICHWA["saludo"]}</h3><p style="color:rgba(148,163,184,0.4)!important;font-size:0.7rem;margin-top:0.3rem;">{st.session_state.user_name}</p></div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="glass-card" style="text-align:center;padding:1.5rem 1rem;"><div style="width:64px;height:64px;border-radius:50%;margin:0 auto 0.8rem;background:rgba(0,245,255,0.1);border:2px solid rgba(0,245,255,0.3);overflow:hidden;box-shadow:0 0 30px rgba(0,245,255,0.08);" class="mashi-avatar-img"></div><h3 style="color:#FFFFFF!important;font-size:1.1rem;font-weight:700;margin:0;">{KICHWA["saludo"]}</h3><p style="color:rgba(148,163,184,0.4)!important;font-size:0.7rem;margin-top:0.3rem;">{st.session_state.user_name}</p></div>', unsafe_allow_html=True)
         dm_active = st.session_state.get("demo_mode", False)
         demo_btn = "🤖 " + _L("Tour MAPPED","MAPPED Tour","MAPPED Rikuchiy") if not dm_active else "⏹ " + _L("Salir tour","Exit tour","Rikuchiyta tukuchiy")
         if st.button(demo_btn, key="demo_toggle", use_container_width=True, type="secondary"):
@@ -5550,15 +5575,15 @@ def main():
             rkey = nav_rkey
         has_key = bool(_resolve_api_key()) or bool(_resolve_or_key())
         if has_key:
-            st.markdown(f'<div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.1);border-radius:10px;padding:0.3rem 0.6rem;font-size:0.65rem;text-align:center;color:#10b981;">🟢 {_L("IA conectada","AI connected","IA tinkushka")}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:rgba(0,245,255,0.06);border:1px solid rgba(0,245,255,0.1);border-radius:10px;padding:0.3rem 0.6rem;font-size:0.65rem;text-align:center;color:#00F5FF;">🟢 {_L("IA conectada","AI connected","IA tinkushka")}</div>', unsafe_allow_html=True)
         else:
             st.markdown(f'<div style="background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.1);border-radius:10px;padding:0.3rem 0.6rem;font-size:0.65rem;text-align:center;color:rgba(245,158,11,0.8);">🟡 {_L("Modo offline · datos locales","Offline · local data","Offline · kaymanta")}</div>', unsafe_allow_html=True)
         nuevos = st.session_state.get("new_entrepreneurs",[])
         if nuevos:
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.6rem 1rem;font-size:0.8rem;margin-top:0.5rem;">📦 <strong style="color:#10b981!important;">{len(nuevos)}</strong> {_L("producto(s) nuevo(s)","new product(s)","musuq rurakuna")}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.6rem 1rem;font-size:0.8rem;margin-top:0.5rem;">📦 <strong style="color:#00F5FF!important;">{len(nuevos)}</strong> {_L("producto(s) nuevo(s)","new product(s)","musuq rurakuna")}</div>', unsafe_allow_html=True)
         compras = st.session_state.get("purchases",[])
         if compras:
-            st.markdown(f'<div style="background:#0a1f1a;border:1px solid #13382f;border-radius:12px;padding:0.6rem 1rem;font-size:0.8rem;">🛒 <strong style="color:#10b981!important;">{len(compras)}</strong> {_L("compra(s)","purchase(s)","rantishka")}</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="background:#042017;border:1px solid #003d30;border-radius:12px;padding:0.6rem 1rem;font-size:0.8rem;">🛒 <strong style="color:#00F5FF!important;">{len(compras)}</strong> {_L("compra(s)","purchase(s)","rantishka")}</div>', unsafe_allow_html=True)
         # QR code for public access
         with st.expander("📡 " + _L("Compartir MAPPED","Share MAPPED","MAPPEDta rikuchiy"), expanded=False):
             if "ngrok_url" not in st.session_state:
@@ -5618,6 +5643,7 @@ def main():
 
     nav_active = "_demo" if st.session_state.get("demo_mode", False) else rkey
     render_bottom_nav(nav_active)
+    _render_mashi_fab()
 
 if __name__ == "__main__":
     main()
