@@ -12,6 +12,7 @@ python -m streamlit run app.py
 import os, json, random, time, requests, re, math, base64
 import pandas as pd
 import streamlit as st
+import database as _db
 
 # ─── Auto-backup on startup ──────────────────────────────────────────
 try:
@@ -5176,7 +5177,6 @@ def render_welcome():
         if st.button(L("Entrar","Log in","Yapay"), use_container_width=True, type="primary"):
             if email and pw:
                 try:
-                    import database as _db
                     user = _db.login_user(email, pw)
                     if user:
                         st.session_state["logged_in"] = True
