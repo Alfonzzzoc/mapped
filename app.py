@@ -2625,6 +2625,8 @@ def _render_mashi_fab():
     #mashi-fab{{animation:fabPulse 3s infinite ease-in-out;}}
     </style>"""
     st.components.v1.html(fab_html, height=0, scrolling=False)
+
+def _inject_js():
     st.components.v1.html(MASHI_JS, height=1, scrolling=False)
 
 # ========================================================================
