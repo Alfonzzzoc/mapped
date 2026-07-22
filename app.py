@@ -4990,7 +4990,7 @@ def render_store_view():
         st.markdown(f'<div style="text-align:center;font-size:0.75rem;color:rgba(148,163,184,0.3);padding:0.5rem;">{_L("Mostrando 24 de","Showing 24 of","Rikuchin 24")} {len(filtered)}</div>', unsafe_allow_html=True)
 
 def render_bottom_nav(active):
-    tabs = [("🧭",_L("Explorar","Explore","Maskay"),"Ecoturista"),("🗺️",_L("Mapa","Map","Mapa"),"Mapa"),("🛒",_L("Tienda","Store","Rantina"),"Tienda"),("👤",_L("Perfil","Profile","Perfil"),"Perfil"),("🎬",_L("Demo","Demo","Demo"),"_demo")]
+    tabs = [("🧭",_L("Explorar","Explore","Maskay"),"Ecoturista"),("🗺️",_L("Mapa","Map","Mapa"),"Mapa"),("🛒",_L("Tienda","Store","Rantina"),"Tienda"),("👤",_L("Perfil","Profile","Perfil"),"Perfil"),("🤖",_L("Mashi","Mashi","Mashi"),"_demo")]
     st.markdown('<div class="bnav-header">— ' + _L("Navegar","Navigate","Rina") + ' —</div>', unsafe_allow_html=True)
     cols = st.columns(len(tabs))
     current_idx = next((i for i, t in enumerate(tabs) if t[2] == active), 0)
@@ -5686,7 +5686,7 @@ def main():
     with st.sidebar:
         st.markdown(f'<div class="glass-card" style="text-align:center;padding:1.5rem 1rem;"><div style="width:64px;height:64px;border-radius:50%;margin:0 auto 0.8rem;background:rgba(16,185,129,0.1);border:2px solid rgba(16,185,129,0.3);overflow:hidden;box-shadow:0 0 30px rgba(16,185,129,0.08);" class="mashi-avatar-img"></div><h3 style="color:#FFFFFF!important;font-size:1.1rem;font-weight:700;margin:0;">{KICHWA["saludo"]}</h3><p style="color:rgba(148,163,184,0.4)!important;font-size:0.7rem;margin-top:0.3rem;">{st.session_state.user_name}</p></div>', unsafe_allow_html=True)
         dm_active = st.session_state.get("demo_mode", False)
-        demo_btn = "🎬 " + _L("Demo guiada","Guided tour","Rikuchiy") if not dm_active else "⏹ " + _L("Salir demo","Exit demo","Rikuchiyta tukuchiy")
+        demo_btn = "🤖 " + _L("Tour MAPPED","MAPPED Tour","MAPPED Rikuchiy") if not dm_active else "⏹ " + _L("Salir tour","Exit tour","Rikuchiyta tukuchiy")
         if st.button(demo_btn, key="demo_toggle", use_container_width=True, type="secondary"):
             if dm_active:
                 st.session_state["demo_mode"] = False
