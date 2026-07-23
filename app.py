@@ -2473,11 +2473,23 @@ div[data-testid="stBottom"],div[data-testid="stBottom"]*{background:var(--bg)!im
 div[data-testid="stBottomBlockContainer"],div[data-testid="stBottomBlockContainer"]*{background:var(--bg)!important;border-top:1px solid var(--border)!important}
 
 .bnav-header{text-align:center;font-size:0.5rem;color:rgba(240,255,244,0.15)!important;text-transform:uppercase;letter-spacing:2px;margin:1.5rem 0 0.5rem;font-weight:600}
-.bnav-btn{display:flex!important;flex-direction:column!important;align-items:center!important;gap:2px!important;font-size:0.55rem!important;padding:6px 2px!important;border-radius:12px!important;background:transparent!important;border:none!important;font-weight:600!important;transition:all 0.2s!important;position:relative!important;font-family:'Inter',sans-serif!important;color:rgba(240,255,244,0.35)!important}
-.bnav-btn .bnav-icon{font-size:1.2rem;display:block}
-.bnav-btn.active{color:var(--accent)!important;background:rgba(0,245,255,0.08)!important}
-.bnav-btn.active::after{content:'';position:absolute;bottom:2px;left:50%;width:16px;height:2px;background:var(--accent);border-radius:2px;transform:translateX(-50%)}
-.bnav-btn.inactive:hover{color:var(--accent)!important;opacity:0.7}
+/* Bottom nav buttons */
+div[data-testid="stHorizontalBlock"]>:last-child .stButton>button{
+    background:transparent!important;border:none!important;color:rgba(240,255,244,0.35)!important;
+    font-size:0.7rem!important;font-weight:600!important;padding:6px 0!important;
+    border-radius:12px!important;transition:all 0.2s!important;min-height:48px!important;
+    display:flex!important;align-items:center!important;justify-content:center!important;
+}
+div[data-testid="stHorizontalBlock"]>:last-child .stButton>button:hover{
+    color:rgba(0,245,255,0.7)!important;background:rgba(0,245,255,0.05)!important;
+}
+div[data-testid="stHorizontalBlock"]>:last-child .stButton>button[kind="primary"]{
+    color:#00F5FF!important;background:rgba(0,245,255,0.08)!important;
+    box-shadow:none!important;border-bottom:2px solid #00F5FF!important;
+}
+div[data-testid="stHorizontalBlock"]>:last-child .stButton>button[kind="secondary"]{
+    border:none!important;box-shadow:none!important;
+}
 
 .mashi-avatar-img{background-image:url('data:image/jpeg;base64,{B64}')!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
 
@@ -2613,12 +2625,24 @@ def _render_mashi_fab():
     rkey = st.session_state.get("_nav_rkey", "Mapa")
     if rkey in ("Mashi", "Ecoturista"):
         return
-    st.markdown('<div style="position:relative;height:0;">', unsafe_allow_html=True)
-    fc1, fc2 = st.columns([6,1])
-    with fc2:
-        if st.button("🤖", key="mashi_fab_btn", help="Mashi AI", use_container_width=True):
-            st.session_state["_nav_rkey"] = "Mashi"
-            st.rerun()
+    st.markdown("""<style>
+    .mashi-fab-wrap{position:relative;height:0;overflow:visible;}
+    .mashi-fab-wrap .stButton{position:fixed;bottom:80px;right:20px;z-index:9999;}
+    .mashi-fab-wrap .stButton>button{
+        width:56px!important;height:56px!important;border-radius:50%!important;padding:0!important;
+        background:linear-gradient(135deg,#00F5FF,#00FFAB)!important;color:#021B15!important;
+        box-shadow:0 10px 15px -3px rgba(0,245,255,0.3),0 4px 6px -4px rgba(0,245,255,0.3)!important;
+        font-size:1.2rem!important;display:flex!important;align-items:center!important;justify-content:center!important;
+        min-height:56px!important;border:none!important;
+    }
+    .mashi-fab-wrap .stButton>button:active{transform:scale(0.95)!important;}
+    @keyframes fabPulse{0%,100%{box-shadow:0 10px 15px -3px rgba(0,245,255,0.3),0 4px 6px -4px rgba(0,245,255,0.3);}50%{box-shadow:0 10px 15px -3px rgba(0,245,255,0.5),0 4px 6px -4px rgba(0,245,255,0.5),0 0 0 8px rgba(0,245,255,0.1);}}
+    .mashi-fab-wrap .stButton>button{animation:fabPulse 3s infinite ease-in-out;}
+    </style>""", unsafe_allow_html=True)
+    st.markdown('<div class="mashi-fab-wrap">', unsafe_allow_html=True)
+    if st.button("🤖", key="mashi_fab_btn", help="Mashi AI"):
+        st.session_state["_nav_rkey"] = "Mashi"
+        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
 def _inject_viewport():
@@ -4877,13 +4901,18 @@ def render_store_view():
         st.markdown(f'<div style="text-align:center;font-size:0.75rem;color:rgba(148,163,184,0.3);padding:0.5rem;">{_L("Mostrando 24 de","Showing 24 of","Rikuchin 24")} {len(filtered)}</div>', unsafe_allow_html=True)
 
 def render_bottom_nav(active):
-    tabs = [("🗺️",_L("Mapa","Map","Mapa"),"Mapa"),("🧭",_L("Explorar","Explore","Maskay"),"Explorar"),("🛒",_L("Tienda","Store","Rantina"),"Tienda"),("👤",_L("Perfil","Profile","Perfil"),"Perfil")]
+    tabs = [
+        ("Mapa","Mapa",'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'),
+        ("Explorar","Explorar",'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>'),
+        ("Tienda","Tienda",'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>'),
+        ("Perfil","Perfil",'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'),
+    ]
+    current_idx = next((i for i, t in enumerate(tabs) if t[0] == active), 0)
     cols = st.columns(len(tabs))
-    current_idx = next((i for i, t in enumerate(tabs) if t[2] == active), 0)
-    for i, (icon, label, key) in enumerate(tabs):
+    for i, (key, label, icon) in enumerate(tabs):
         with cols[i]:
-            is_active = current_idx == i
-            if st.button(f"{icon}\n{label}", key=f"nv_{key}", use_container_width=True, type="primary" if is_active else "secondary"):
+            is_active = i == current_idx
+            if st.button(f"{'● ' if is_active else ''}{label}", key=f"nv_{key}", use_container_width=True, type="primary" if is_active else "secondary"):
                 if not is_active:
                     st.session_state["_nav_rkey"] = key
                     st.rerun()
