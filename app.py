@@ -2429,6 +2429,7 @@ html,body,.stApp{background:var(--bg)!important;height:100%;font-family:'Inter',
 h1,h2,h3{font-family:'Space Grotesk','Inter',sans-serif!important;font-weight:700;color:#F0FFF4!important;letter-spacing:-0.01em}
 .stApp>header,.stApp>footer,#MainMenu,.stDecoration{display:none!important}
 .main>.block-container{max-width:512px;padding:0!important;margin:0 auto!important;background:transparent!important}
+section[data-testid="stSidebar"]{display:none!important;width:0!important;min-width:0!important;overflow:hidden!important}
 section[data-testid="stSidebar"]>div:first-child{background:var(--bg2)!important}
 section[data-testid="stSidebar"] .stMarkdown,section[data-testid="stSidebar"] label,section[data-testid="stSidebar"] p,section[data-testid="stSidebar"] span{color:var(--text)!important}
 ::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:10px}
@@ -2473,23 +2474,7 @@ div[data-testid="stBottom"],div[data-testid="stBottom"]*{background:var(--bg)!im
 div[data-testid="stBottomBlockContainer"],div[data-testid="stBottomBlockContainer"]*{background:var(--bg)!important;border-top:1px solid var(--border)!important}
 
 .bnav-header{text-align:center;font-size:0.5rem;color:rgba(240,255,244,0.15)!important;text-transform:uppercase;letter-spacing:2px;margin:1.5rem 0 0.5rem;font-weight:600}
-/* Bottom nav buttons */
-div[data-testid="stHorizontalBlock"]>:last-child .stButton>button{
-    background:transparent!important;border:none!important;color:rgba(240,255,244,0.35)!important;
-    font-size:0.7rem!important;font-weight:600!important;padding:6px 0!important;
-    border-radius:12px!important;transition:all 0.2s!important;min-height:48px!important;
-    display:flex!important;align-items:center!important;justify-content:center!important;
-}
-div[data-testid="stHorizontalBlock"]>:last-child .stButton>button:hover{
-    color:rgba(0,245,255,0.7)!important;background:rgba(0,245,255,0.05)!important;
-}
-div[data-testid="stHorizontalBlock"]>:last-child .stButton>button[kind="primary"]{
-    color:#00F5FF!important;background:rgba(0,245,255,0.08)!important;
-    box-shadow:none!important;border-bottom:2px solid #00F5FF!important;
-}
-div[data-testid="stHorizontalBlock"]>:last-child .stButton>button[kind="secondary"]{
-    border:none!important;box-shadow:none!important;
-}
+
 
 .mashi-avatar-img{background-image:url('data:image/jpeg;base64,{B64}')!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
 
@@ -2507,11 +2492,12 @@ div[data-testid="stHorizontalBlock"]>:last-child .stButton>button[kind="secondar
 .kpi-value{font-family:'Space Grotesk',sans-serif;font-size:1.4rem;font-weight:800;letter-spacing:-0.01em}
 .kpi-label{font-size:0.55rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text2)!important;margin-top:2px}
 
-.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child{position:fixed!important;bottom:0;left:0;right:0;height:64px;z-index:1001;background:var(--bg)!important;gap:0;padding:0 1rem;max-width:512px;margin:0 auto!important;border-top:1px solid var(--border)}
+.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child{position:fixed!important;bottom:0;left:0;right:0;height:auto;z-index:1001;background:rgba(2,27,21,0.95)!important;backdrop-filter:blur(12px);gap:0;padding:6px 8px;max-width:512px;margin:0 auto!important;border-top:1px solid rgba(240,255,244,0.08)}
 .main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child>div{padding:0!important;flex:1;display:flex;align-items:center;justify-content:center}
 .main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton{width:100%}
-.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button{opacity:0;width:100%;height:64px;min-height:64px;border:none;background:transparent;cursor:pointer;padding:0;border-radius:0;box-shadow:none}
-.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button:hover{opacity:0.1;background:var(--accent)}
+.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button{width:100%;height:48px;min-height:48px;border:none;background:transparent;cursor:pointer;padding:4px 0;border-radius:10px;box-shadow:none;color:rgba(240,255,244,0.4)!important;font-size:0.65rem!important;font-weight:600!important;transition:all 0.2s!important;font-family:'Inter',sans-serif!important}
+.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button:hover{background:rgba(0,245,255,0.06)!important;color:rgba(0,245,255,0.7)!important}
+.main>.block-container>div:last-child>div:last-child>.stHorizontalBlock:last-child .stButton button[kind="primary"]{color:#00F5FF!important;background:rgba(0,245,255,0.08)!important;font-weight:700!important;border-bottom:2px solid #00F5FF!important;border-radius:10px 10px 0 0!important}
 .main>.block-container{padding-bottom:72px!important}
 
 .main>.block-container{animation:pageIn 0.3s ease-out}
@@ -4494,17 +4480,13 @@ def render_map_view():
     initial = user_name[0].upper() if user_name else "U"
     avatar_html = f'<img src="data:image/png;base64,{MASHI_LOGO_B64}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" />' if MASHI_LOGO_B64 else f'<span style="font-size:0.7rem;font-weight:700;color:#00F5FF;">{initial}</span>'
     st.markdown(f"""
-    <div style="position:sticky;top:0;z-index:1000;background:linear-gradient(to bottom,rgba(2,27,21,0.97),rgba(2,27,21,0.85) 70%,transparent);padding:16px 16px 20px;">
+    <div style="position:sticky;top:0;z-index:1000;background:linear-gradient(to bottom,rgba(2,27,21,0.97),rgba(2,27,21,0.85) 70%,transparent);padding:16px 16px 4px;">
         <div style="max-width:512px;margin:0 auto;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                <div style="display:flex;align-items:center;gap:8px;cursor:pointer;" onclick="window.parent.postMessage('navigate_profile','*')">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+                <div style="display:flex;align-items:center;gap:8px;">
                     <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(0,245,255,0.2),rgba(0,255,171,0.2));border:1.5px solid rgba(0,245,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">{avatar_html}</div>
                     <span style="color:#F0FFF4;font-size:0.85rem;font-weight:500;max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">{user_name}</span>
                 </div>
-            </div>
-            <div style="position:relative;">
-                <span style="position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:0.8rem;opacity:0.3;">🔍</span>
-                <input type="text" placeholder="{L("Buscar emprendimientos, productos o ruta...","Search ventures, products or routes...","Maskay rantina, rurakuna o ñan...")}" style="width:100%;padding:14px 16px 14px 40px;border-radius:16px;background:rgba(2,27,21,0.95);backdrop-filter:blur(12px);border:1px solid rgba(240,255,244,0.1);color:#F0FFF4;font-size:0.8rem;outline:none;box-sizing:border-box;" />
             </div>
         </div>
     </div>
@@ -4691,13 +4673,24 @@ def render_map_view():
             unsafe_allow_html=True
         )
 
-    # FAB reportar button — matches Base44 spec (bottom-24 right-4)
-    st.markdown('<div style="position:relative;height:0;">', unsafe_allow_html=True)
-    fab_c1, fab_c2, fab_c3 = st.columns([5,1,1])
-    with fab_c3:
-        if st.button("⚠️", key="fab_reportar_btn", help=L("Reportar incidente","Report incident","Willay"), use_container_width=True):
-            st.session_state["_nav_rkey"] = "Reportar Incidente"
-            st.rerun()
+    # FAB reportar button — uses Streamlit button with styled wrapper
+    st.markdown("""<style>
+    .reportar-fab-wrap{position:relative;height:0;overflow:visible;}
+    .reportar-fab-wrap .stButton{position:fixed;bottom:130px;right:20px;z-index:9998;}
+    .reportar-fab-wrap .stButton>button{
+        width:48px!important;height:48px!important;border-radius:50%!important;padding:0!important;
+        background:rgba(245,158,11,0.15)!important;color:#f59e0b!important;
+        border:1px solid rgba(245,158,11,0.3)!important;
+        box-shadow:0 4px 12px rgba(245,158,11,0.15)!important;
+        font-size:1.1rem!important;display:flex!important;align-items:center!important;justify-content:center!important;
+        min-height:48px!important;
+    }
+    .reportar-fab-wrap .stButton>button:active{transform:scale(0.95)!important;}
+    </style>""", unsafe_allow_html=True)
+    st.markdown('<div class="reportar-fab-wrap">', unsafe_allow_html=True)
+    if st.button("⚠", key="fab_reportar_btn", help=L("Reportar incidente","Report incident","Willay")):
+        st.session_state["_nav_rkey"] = "Reportar Incidente"
+        st.rerun()
     st.markdown('</div>', unsafe_allow_html=True)
 
     # Legend
@@ -4727,7 +4720,7 @@ def render_store_view():
     wl = st.session_state.setdefault("store_wishlist", [])
     cart = st.session_state.setdefault("store_cart", {})
     cart_count = sum(cart.values())
-    title_suffix = f' <span style="font-size:0.7rem;color:#f97316;">🛒({cart_count})</span>' if cart_count else ""
+    title_suffix = f' <span style="font-size:0.7rem;color:#f97316;">({cart_count})</span>' if cart_count else ""
     online = _is_online()
     sync_queue = st.session_state.setdefault("_sync_queue", [])
     if online and sync_queue:
@@ -4741,7 +4734,7 @@ def render_store_view():
     <div style="position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg),rgba(2,27,21,0.95) 80%,transparent);padding:0.8rem 1rem 1rem;pointer-events:none;">
         <div style="display:flex;align-items:center;justify-content:space-between;pointer-events:auto;">
             <div>
-                <h2 style="color:#F0FFF4!important;font-size:1.2rem;font-weight:700;margin:0;font-family:'Space Grotesk',sans-serif;">🛍️ {_L("Tienda","Store","Rantina")}{title_suffix} <span style="font-size:0.55rem;color:{status_color};font-weight:500;">● {status_text}</span></h2>
+                <h2 style="color:#F0FFF4!important;font-size:1.2rem;font-weight:700;margin:0;font-family:'Space Grotesk',sans-serif;">{_L("Tienda","Store","Rantina")}{title_suffix} <span style="font-size:0.55rem;color:{status_color};font-weight:500;">● {status_text}</span></h2>
             </div>
             <div style="display:flex;align-items:center;gap:8px;">
                 <div style="width:32px;height:32px;border-radius:50%;border:1.5px solid var(--accent);overflow:hidden;">{avatar_html}</div>
@@ -4902,17 +4895,25 @@ def render_store_view():
 
 def render_bottom_nav(active):
     tabs = [
-        ("Mapa","Mapa",'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>'),
-        ("Explorar","Explorar",'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>'),
-        ("Tienda","Tienda",'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>'),
-        ("Perfil","Perfil",'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>'),
+        ("Mapa", "Mapa"),
+        ("Explorar", "Explorar"),
+        ("Tienda", "Tienda"),
+        ("Perfil", "Perfil"),
     ]
+    icons = {
+        "Mapa": '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+        "Explorar": '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>',
+        "Tienda": '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m2 7 4.41-4.41A2 2 0 0 1 7.83 2h8.34a2 2 0 0 1 1.42.59L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4"/><path d="M2 7h20"/></svg>',
+        "Perfil": '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+    }
     current_idx = next((i for i, t in enumerate(tabs) if t[0] == active), 0)
     cols = st.columns(len(tabs))
-    for i, (key, label, icon) in enumerate(tabs):
+    for i, (key, label) in enumerate(tabs):
         with cols[i]:
             is_active = i == current_idx
-            if st.button(f"{'● ' if is_active else ''}{label}", key=f"nv_{key}", use_container_width=True, type="primary" if is_active else "secondary"):
+            icon = icons.get(key, "")
+            label_text = f"● {label}" if is_active else label
+            if st.button(label_text, key=f"nv_{key}", use_container_width=True, type="primary" if is_active else "secondary"):
                 if not is_active:
                     st.session_state["_nav_rkey"] = key
                     st.rerun()
@@ -5304,13 +5305,23 @@ def render_profile():
                     """, unsafe_allow_html=True)
         except Exception:
             pass
-    st.markdown(f'<div style="padding:0 20px 12px;font-size:0.75rem;font-weight:600;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:0.05em;">{L("Configuracion","Settings","Rurakuy")}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div style="padding:0 0 8px;font-size:0.75rem;font-weight:600;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:0.05em;">{L("Configuracion","Settings","Rurakuy")}</div>', unsafe_allow_html=True)
     lc = st.columns(3)
     for i, (code, label) in enumerate([("es","ES"),("en","EN"),("qw","QW")]):
         with lc[i]:
             if st.button(label, key=f"prof_lang_{code}", use_container_width=True, type="primary" if lang==code else "secondary"):
                 st.session_state["lang"] = code
                 st.rerun()
+    st.markdown(f'<div style="padding:0 0 8px;font-size:0.75rem;font-weight:600;color:rgba(240,255,244,0.4);text-transform:uppercase;letter-spacing:0.05em;">{L("Modo de uso","Role","Modo")}</div>', unsafe_allow_html=True)
+    user_role = st.session_state.get("user_role", "tourist")
+    role_map = [("tourist","Mapa",L("Turista","Tourist","Turista")),("entrepreneur","Emprendedor Local",L("Emprendedor","Entrepreneur","Emprendedor")),("company","Panel Compañía",L("Compañía","Company","Compañía"))]
+    for role_key, nav_key, label in role_map:
+        is_active = user_role == role_key
+        if st.button(f"{'● ' if is_active else ''}{label}", key=f"role_{role_key}", use_container_width=True, type="primary" if is_active else "secondary"):
+            _db_update_user_role(st.session_state.get("user_id", 0), role_key)
+            st.session_state["user_role"] = role_key
+            st.session_state["_nav_rkey"] = nav_key
+            st.rerun()
     if st.session_state.get("favorites"):
         with st.expander(f"{L('Mis Favoritos','My Favorites','Huñunakuykun')}"):
             ds = get_full_dataset()
@@ -5352,7 +5363,7 @@ def render_explore():
         <div style="max-width:512px;margin:0 auto;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
                 <div>
-                    <h1 style="font-size:1.5rem;font-weight:700;color:#F0FFF4;margin:0;font-family:'Space Grotesk',sans-serif;">🧭 {L("Explorar","Explore","Rikuchiy")}</h1>
+                    <h1 style="font-size:1.5rem;font-weight:700;color:#F0FFF4;margin:0;font-family:'Space Grotesk',sans-serif;">{L("Explorar","Explore","Rikuchiy")}</h1>
                     <p style="font-size:0.75rem;color:rgba(240,255,244,0.4);margin:4px 0 0;">{L("Descubre comunidades y productos amazónicos","Discover Amazonian communities & products","Amazonía comunidadkunata rikuchiy")}</p>
                 </div>
                 <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,rgba(0,245,255,0.2),rgba(0,255,171,0.2));border:1.5px solid rgba(0,245,255,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;">{avatar_html}</div>
@@ -5369,12 +5380,16 @@ def render_explore():
             pill_html += f'<span style="display:inline-flex;align-items:center;gap:4px;padding:8px 16px;border-radius:20px;font-size:0.8rem;font-weight:500;background:transparent;color:rgba(240,255,244,0.5);border:1px solid rgba(240,255,244,0.1);white-space:nowrap;flex-shrink:0;">{cat_labels.get(ck, ck)}</span>'
     pill_html += '</div>'
     st.markdown(pill_html, unsafe_allow_html=True)
+    # Hidden functional buttons behind the HTML pills
+    st.markdown('<style>.cat-btn-row .stButton button{opacity:0;height:0;padding:0;min-height:0;overflow:hidden;}</style>', unsafe_allow_html=True)
+    st.markdown('<div class="cat-btn-row">', unsafe_allow_html=True)
     pill_cols = st.columns(len(cat_keys))
     for i, ck in enumerate(cat_keys):
         with pill_cols[i]:
             if st.button(cat_labels.get(ck, ck), key=f"cat_{ck}", use_container_width=True, type="primary" if sel == ck else "secondary"):
                 st.session_state["explore_cat"] = ck
                 st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
     search = st.text_input("🔍", placeholder=L("Buscar comunidades, productos...","Search communities, products...","Buskay..."), label_visibility="collapsed", key="explore_search")
     if sel != "all":
         ds = [e for e in ds if e.get("sector") == sel]
